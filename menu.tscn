@@ -1,0 +1,105 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://client_button.gd" type="Script" id=1]
+[ext_resource path="res://server_button.gd" type="Script" id=2]
+
+[node name="menu" type="Node"]
+
+[node name="Panel" type="Panel" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -246.486
+margin_top = -247.011
+margin_right = 237.514
+margin_bottom = 236.989
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="client_button" type="Button" parent="Panel"]
+margin_left = 52.0
+margin_top = 15.0
+margin_right = 200.0
+margin_bottom = 35.0
+text = "Connect to server"
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="port" type="TextEdit" parent="Panel/client_button"]
+margin_left = 118.0
+margin_top = 45.0
+margin_right = 166.0
+margin_bottom = 65.0
+rect_pivot_offset = Vector2( -355.009, -62.9686 )
+text = "2020"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="name" type="TextEdit" parent="Panel/client_button"]
+margin_left = 166.0
+margin_right = 227.0
+margin_bottom = 20.0
+rect_pivot_offset = Vector2( 106.059, 20 )
+text = "dan"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ship_name" type="TextEdit" parent="Panel/client_button"]
+margin_left = 244.0
+margin_right = 380.0
+margin_bottom = 65.0
+rect_pivot_offset = Vector2( 106.059, 20 )
+text = "danship
+"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="color" type="ColorPickerButton" parent="Panel/client_button"]
+margin_left = 176.0
+margin_top = 45.0
+margin_right = 218.0
+margin_bottom = 65.0
+color = Color( 1, 1, 1, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ip" type="TextEdit" parent="Panel/client_button"]
+margin_left = -0.840881
+margin_top = 45.0
+margin_right = 108.159
+margin_bottom = 65.0
+rect_pivot_offset = Vector2( -355.009, -62.9686 )
+text = "127.0.0.1"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="server_button" type="Button" parent="Panel"]
+margin_left = 51.0
+margin_top = 169.0
+margin_right = 135.0
+margin_bottom = 194.0
+text = "Start Server"
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="port" type="TextEdit" parent="Panel/server_button"]
+margin_left = 1.0
+margin_top = 41.2504
+margin_right = 65.0
+margin_bottom = 68.2504
+rect_pivot_offset = Vector2( -355.009, -62.9686 )
+text = "2020"
+__meta__ = {
+"_edit_use_anchors_": false
+}

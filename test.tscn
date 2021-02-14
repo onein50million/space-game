@@ -1,0 +1,51 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://ship.tscn" type="PackedScene" id=1]
+[ext_resource path="res://icon.png" type="Texture" id=2]
+[ext_resource path="res://KinematicBody2D.gd" type="Script" id=3]
+[ext_resource path="res://stars.png" type="Texture" id=4]
+
+[sub_resource type="CircleShape2D" id=1]
+
+[node name="Node2D" type="Node2D"]
+
+[node name="stars" type="Sprite" parent="."]
+position = Vector2( -142.659, -46.5901 )
+texture = ExtResource( 4 )
+
+[node name="ship2" parent="." instance=ExtResource( 1 )]
+position = Vector2( -7.84717, -411.967 )
+
+[node name="ship" parent="." instance=ExtResource( 1 )]
+position = Vector2( -0.661407, 0.3937 )
+continuous_cd = 1
+server_side = true
+
+[node name="KinematicBody2D" type="RigidBody2D" parent="ship"]
+mode = 3
+continuous_cd = 2
+script = ExtResource( 3 )
+
+[node name="Camera2D" type="Camera2D" parent="ship/KinematicBody2D"]
+position = Vector2( 0.661407, -1.93423 )
+rotating = true
+current = true
+
+[node name="Sprite" type="Sprite" parent="ship/KinematicBody2D"]
+position = Vector2( 0.250414, -0.577875 )
+scale = Vector2( 0.281033, 0.281033 )
+texture = ExtResource( 2 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ship/KinematicBody2D"]
+shape = SubResource( 1 )
+
+[node name="KinematicBody2D2" type="KinematicBody2D" parent="ship"]
+position = Vector2( -57.2456, 40.9699 )
+
+[node name="Sprite" type="Sprite" parent="ship/KinematicBody2D2"]
+position = Vector2( 0.250414, -0.577875 )
+scale = Vector2( 0.281033, 0.281033 )
+texture = ExtResource( 2 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ship/KinematicBody2D2"]
+shape = SubResource( 1 )
