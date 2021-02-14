@@ -18,7 +18,7 @@ extends Button
 func _pressed():
 	print("client")
 	
-	var client_scene = load("res://client.tscn").instance()
+	var client_scene = load("res://client/client.tscn").instance()
 	client_scene.color = get_node("color").get_pick_color()
 	client_scene.ip = get_node("ip").get_text()
 	client_scene.port = int(get_node("port").get_text())

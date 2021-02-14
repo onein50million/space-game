@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/person.png-eb0a173b1fa7decb4c9863cfd513b7a5.stex"
+path="res://.import/space-game.png-26a0b4396d091d3db74587e4481d3eeb.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://person.png"
-dest_files=[ "res://.import/person.png-eb0a173b1fa7decb4c9863cfd513b7a5.stex" ]
+source_file="res://assets/space-game.png"
+dest_files=[ "res://.import/space-game.png-26a0b4396d091d3db74587e4481d3eeb.stex" ]
 
 [params]
 

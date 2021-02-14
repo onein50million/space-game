@@ -1,6 +1,6 @@
 extends Area2D
 
-onready var player_resource = load("res://player.tscn")
+onready var player_resource = load("res://shared/player.tscn")
 
 # Declare member variables here. Examples:
 # var a = 2

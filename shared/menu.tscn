@@ -1,7 +1,8 @@
 [gd_scene load_steps=3 format=2]
 
-[ext_resource path="res://client_button.gd" type="Script" id=1]
-[ext_resource path="res://server_button.gd" type="Script" id=2]
+[ext_resource path="res://shared/client_button.gd" type="Script" id=1]
+[ext_resource path="res://shared/server_button.gd" type="Script" id=2]
+
 
 [node name="menu" type="Node"]
 

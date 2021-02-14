@@ -2,11 +2,11 @@ extends Node
 
 const TILE_SIZE = 5
 const PARALLAX_EFFECT = 0.5
-onready var player_scene = load("res://player.tscn")
+onready var player_scene = load("res://shared/player.tscn")
 onready var local_player = player_scene.instance()
-onready var ship_scene = load("res://ship.tscn")
-onready var star_scene = load("res://stars.tscn")
-onready var asteroid_scene = load("res://asteroid.tscn")
+onready var ship_scene = load("res://shared/ship.tscn")
+onready var star_scene = load("res://shared/stars.tscn")
+onready var asteroid_scene = load("res://shared/asteroid.tscn")
 # Declare member variables here. Examples:
 # var a = 2
 # var b = "text"

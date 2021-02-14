@@ -18,9 +18,9 @@ var current_tick = 0
 var current_camera = Camera2D.new()
 
 var time_since_last_update
-onready var player_scene = preload("res://player.tscn")
-onready var ship_scene = preload("res://ship.tscn")
-onready var asteroid_scene = load("res://asteroid.tscn")
+onready var player_scene = preload("res://shared/player.tscn")
+onready var ship_scene = preload("res://shared/ship.tscn")
+onready var asteroid_scene = load("res://shared/asteroid.tscn")
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
