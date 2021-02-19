@@ -17,7 +17,7 @@ var misc_id = 0
 var current_tick = 0
 var current_camera = Camera2D.new()
 
-var time_since_last_update
+var network_process_accumulator = 0
 onready var player_scene = preload("res://shared/player.tscn")
 onready var ship_scene = preload("res://shared/ship.tscn")
 onready var asteroid_scene = load("res://shared/asteroid.tscn")
@@ -25,13 +25,13 @@ onready var asteroid_scene = load("res://shared/asteroid.tscn")
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	socket.listen(port)
-	time_since_last_update = OS.get_ticks_usec()
 
 	var new_asteroid = spawn_body(asteroid_scene)
 func _process(delta):
-	var delta_time = OS.get_ticks_usec() - time_since_last_update
-	if delta_time/1000000.0 > 1.0/Globals.NETWORK_UPDATE_INTERVAL:
-		time_since_last_update = OS.get_ticks_usec()
+
+	network_process_accumulator += delta
+	if 	network_process_accumulator > 1.0/Globals.NETWORK_UPDATE_INTERVAL:
+		network_process_accumulator -= 1.0/Globals.NETWORK_UPDATE_INTERVAL
 		
 		network_process()
 		current_tick += 1

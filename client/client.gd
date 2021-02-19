@@ -27,7 +27,7 @@ var ship_list = {}
 var misc_objects = {}
 
 var time_ping_sent #microseconds
-var time_since_last_update
+var network_process_accumulator = 0
 
 var player_camera = Camera2D.new()
 
@@ -65,7 +65,6 @@ func _ready():
 	}
 	send_command("join_lobby" , join_lobby_data)
 	time_ping_sent = OS.get_ticks_usec()
-	time_since_last_update = OS.get_ticks_usec()
 	state = "connecting"
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
@@ -90,10 +89,9 @@ func _process(delta):
 	
 	player_camera.set_zoom(Vector2(zoom_ratio,zoom_ratio))
 	
-	var delta_time = OS.get_ticks_usec() - time_since_last_update
-	if delta_time/1000000.0 > 1.0/Globals.NETWORK_UPDATE_INTERVAL:
-#		print(delta_time/1000000.0)
-		time_since_last_update = OS.get_ticks_usec()
+	network_process_accumulator += delta
+	if 	network_process_accumulator > 1.0/Globals.NETWORK_UPDATE_INTERVAL:
+		network_process_accumulator -= 1.0/Globals.NETWORK_UPDATE_INTERVAL
 		network_process()
 
 		
