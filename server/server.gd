@@ -34,12 +34,11 @@ func _process(delta):
 		time_since_last_update = OS.get_ticks_usec()
 		
 		network_process()
-		for client in client_list.values():
-			client.network_process()	
 		current_tick += 1
 
 func network_process():
 	for client_key in client_list.keys():
+		client_list[client_key].network_process()	
 		#if last_known_tick is within 3 seconds of 0, probably still connecting and syncing
 		var tick_delta = current_tick - client_list[client_key].last_known_tick
 		if client_list[client_key].has_sent_packet and tick_delta > Globals.BUFFER_LENGTH:
@@ -68,6 +67,7 @@ func process_packet(received):
 	var packet_port = socket.get_packet_port()
 	socket.set_dest_address(packet_ip, packet_port)
 	
+	
 	if typeof(received) != TYPE_DICTIONARY:
 		send_error("packet_not_dict")
 		return
@@ -79,6 +79,8 @@ func process_packet(received):
 			handle_join(received)
 		"input_update":
 			handle_input(received)
+		"ping":
+			send_command("ping_return", "pong")
 		_:
 			send_error("unknown_command")
 
@@ -129,11 +131,16 @@ func handle_input(received):
 	if !client_list.has(client_id):
 		send_error("not_connected")
 		return
-	var local_client = client_list[client_id]
+	var current_client = client_list[client_id]
 	
-	local_client.has_sent_packet = true
-	local_client.input_buffer[local_client.input_buffer_head] = received.data.duplicate()
-	local_client.last_known_tick = received.tick
+	if received.data.interact and current_client in current_client.get_parent().get_node("captain").get_overlapping_areas():
+		if current_client.at_console == "none":
+			current_client.at_console = "captain"
+		else:
+			current_client.at_console = "none"	
+	current_client.has_sent_packet = true
+	current_client.last_input = received.data.duplicate()
+	current_client.last_known_tick = received.tick
 	
 func send_error(message):
 	print("sent error: %s" % [message])
@@ -165,6 +172,7 @@ func send_updates():
 	for client_id in client_list:
 		send_client_data.clients.append({
 			"position" : client_list[client_id].get_position(),
+			"at_console" : client_list[client_id].at_console,
 			"ship" : client_list[client_id].get_parent().name,
 			"username" : client_list[client_id].username,
 			"color" : client_list[client_id].color,

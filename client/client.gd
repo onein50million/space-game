@@ -1,7 +1,7 @@
 extends Node
 
 const TILE_SIZE = 5
-const PARALLAX_EFFECT = 0.5
+const PARALLAX_EFFECT = 0.1
 onready var player_scene = load("res://shared/player.tscn")
 onready var local_player = player_scene.instance()
 onready var ship_scene = load("res://shared/ship.tscn")
@@ -26,7 +26,7 @@ var player_list = {}
 var ship_list = {}
 var misc_objects = {}
 
-var time_connect_packet_sent #microseconds
+var time_ping_sent #microseconds
 var time_since_last_update
 
 var player_camera = Camera2D.new()
@@ -64,25 +64,22 @@ func _ready():
 		"ship" : ship_name,
 	}
 	send_command("join_lobby" , join_lobby_data)
-	time_connect_packet_sent = OS.get_ticks_usec()
+	time_ping_sent = OS.get_ticks_usec()
 	time_since_last_update = OS.get_ticks_usec()
 	state = "connecting"
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	
-	#might help with jitter
-	player_camera.global_position = local_player.get_global_position()
-	player_camera.global_rotation = local_player.get_global_rotation()
-	
+
 	update_background()
 	
-	local_player.input_buffer[local_player.input_buffer_head].up = Input.is_action_pressed("up")
-	local_player.input_buffer[local_player.input_buffer_head].down = Input.is_action_pressed("down")
-	local_player.input_buffer[local_player.input_buffer_head].left = Input.is_action_pressed("left")
-	local_player.input_buffer[local_player.input_buffer_head].right = Input.is_action_pressed("right")
-	
+	local_player.last_input.up = Input.is_action_pressed("up")
+	local_player.last_input.down = Input.is_action_pressed("down")
+	local_player.last_input.left = Input.is_action_pressed("left")
+	local_player.last_input.right = Input.is_action_pressed("right")
+	if Input.is_action_just_pressed("interact"):
+		local_player.last_input.interact = true
 	var mouse_position = local_player.get_local_mouse_position()
-	local_player.input_buffer[local_player.input_buffer_head].angle = mouse_position.angle()
+	local_player.last_input.angle = mouse_position.angle()
 	
 	var viewport_mouse_position = get_viewport().get_mouse_position()
 	var screen_center = get_viewport().get_visible_rect().size / 2.0
@@ -95,19 +92,23 @@ func _process(delta):
 	
 	var delta_time = OS.get_ticks_usec() - time_since_last_update
 	if delta_time/1000000.0 > 1.0/Globals.NETWORK_UPDATE_INTERVAL:
+#		print(delta_time/1000000.0)
 		time_since_last_update = OS.get_ticks_usec()
-		
 		network_process()
-		for player in player_list.values():
-			player.network_process()
-		
 
+		
+	#might help with jitter
+	player_camera.global_position = local_player.get_global_position()
+	player_camera.global_rotation = local_player.get_global_rotation()
 
 func network_process():
 	while socket.get_available_packet_count() > 0:
 		process_packet(socket.get_var())
 	if state == "connected":
-		send_command("input_update", local_player.input_buffer[local_player.input_buffer_head])
+		for player in player_list.values():
+			player.network_process()
+		send_command("input_update", local_player.last_input)
+		local_player.last_input.interact = false
 
 func _physics_process(delta):
 	pass
@@ -122,11 +123,12 @@ func process_packet(received):
 	match received.command:
 		"join_accepted":
 			state = "connected"
-			var round_trip_time = float(OS.get_ticks_usec() - time_connect_packet_sent)
+			var round_trip_time = float(OS.get_ticks_usec() - time_ping_sent)
 			print("round trip time: %s: " % round_trip_time)
 			var ticks_behind = (round_trip_time/2000000.0) / (1.0/Globals.NETWORK_UPDATE_INTERVAL)
 			print("ticks behind: %s" % ticks_behind)
 			local_player.current_tick = received.tick + int(round(ticks_behind))
+			send_command("ping", "ping")
 		"update":
 			process_update(received)
 		"error":
@@ -142,7 +144,17 @@ func process_packet(received):
 			error_dialog.popup_centered()
 			
 			queue_free()
+		"ping_return":
+			var round_trip_time = float(OS.get_ticks_usec() - time_ping_sent)
+			var ticks_behind = (round_trip_time/2000000.0) / (1.0/Globals.NETWORK_UPDATE_INTERVAL)
+			var tick_delta = abs(local_player.current_tick - received.tick + int(round(ticks_behind)))
 			
+			#this might have been causing issues so I made it only happen in extreme circumstances
+			if tick_delta > Globals.BUFFER_LENGTH:
+				tick_delta = received.tick + int(round(ticks_behind))
+#			print("Ping: %s ms" % (round_trip_time/1000.0))
+			send_command("ping", "ping")
+			time_ping_sent = OS.get_ticks_usec()
 		_:
 			print("unknown_command")
 
@@ -190,6 +202,7 @@ func process_update(received):
 			ship_list[received_player.ship].add_child(new_player)
 			print("spawning player")
 
+		#ship changing
 		if player_list[received_player.username].get_parent().get_name() != received_player.ship:
 			player_list[received_player.username].get_parent().remove_child(player_list[received_player.username])
 			ship_list[received_player.ship].add_child(player_list[received_player.username])
@@ -197,6 +210,7 @@ func process_update(received):
 #		local_player.last_known_tick = received.tick
 		player_list[received_player.username].last_known_position = received_player.position
 		player_list[received_player.username].last_known_tick = received_player.last_known_tick
+		player_list[received_player.username].at_console = received_player.at_console
 
 func send_command(command, data):
 	socket.put_var({

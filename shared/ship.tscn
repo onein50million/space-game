@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://shared/ship.gd" type="Script" id=1]
 [ext_resource path="res://client/engine.tscn" type="PackedScene" id=2]
+[ext_resource path="res://assets/console.png" type="Texture" id=3]
 
 [sub_resource type="RectangleShape2D" id=1]
 
@@ -28,46 +29,24 @@ collision_mask = 2147483653
 build_mode = 1
 polygon = PoolVector2Array( 54.3589, 13.6243, -13.3494, 46.5875, -68.1397, 6.94252, -58.3398, -55.8658, 55.2497, -54.084 )
 
-[node name="up" type="Area2D" parent="."]
+[node name="captain" type="Area2D" parent="."]
 position = Vector2( 3.48688, -162.694 )
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="up"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="captain"]
 shape = SubResource( 1 )
 
-[node name="Polygon2D" type="Polygon2D" parent="up"]
-polygon = PoolVector2Array( -9.90293, -9.98654, -9.73608, 10.3698, 9.45225, 9.8692, 9.95281, -9.48598 )
+[node name="Polygon2D" type="Polygon2D" parent="captain"]
+polygon = PoolVector2Array( -10, -10, -10, 10, 10, 10, 10, -10 )
 
-[node name="down" type="Area2D" parent="."]
-position = Vector2( 3.48688, -117.056 )
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="down"]
-shape = SubResource( 1 )
-
-[node name="Polygon2D" type="Polygon2D" parent="down"]
-polygon = PoolVector2Array( -9.90293, -9.98654, -9.73608, 10.3698, 9.45225, 9.8692, 9.95281, -9.48598 )
-
-[node name="left" type="Area2D" parent="."]
-position = Vector2( -32.6265, -140.867 )
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="left"]
-shape = SubResource( 1 )
-
-[node name="Polygon2D" type="Polygon2D" parent="left"]
-polygon = PoolVector2Array( -9.90293, -9.98654, -9.73608, 10.3698, 9.45225, 9.8692, 9.95281, -9.48598 )
-
-[node name="right" type="Area2D" parent="."]
-position = Vector2( 36.4254, -138.486 )
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="right"]
-shape = SubResource( 1 )
-
-[node name="Polygon2D" type="Polygon2D" parent="right"]
-polygon = PoolVector2Array( -9.90293, -9.98654, -9.73608, 10.3698, 9.45225, 9.8692, 9.95281, -9.48598 )
+[node name="console" type="Sprite" parent="captain"]
+position = Vector2( 0.356871, -20.4533 )
+texture = ExtResource( 3 )
 
 [node name="lengine" parent="." instance=ExtResource( 2 )]
+position = Vector2( -115.67, 210.969 )
 
 [node name="rengine" parent="." instance=ExtResource( 2 )]
-position = Vector2( 146.12, 202.835 )
+position = Vector2( 148.432, 209.562 )
 
 [node name="velocity" type="Label" parent="."]
 margin_left = 91.0953

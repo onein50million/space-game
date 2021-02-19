@@ -3,7 +3,6 @@
 [ext_resource path="res://shared/client_button.gd" type="Script" id=1]
 [ext_resource path="res://shared/server_button.gd" type="Script" id=2]
 
-
 [node name="menu" type="Node"]
 
 [node name="Panel" type="Panel" parent="."]

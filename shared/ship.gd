@@ -9,6 +9,14 @@ var ship_velocity = Vector2(0.0,0.0)
 
 const SPEED = 100.0
 const ROTATION = 10000.0
+
+var inputs = {
+	"forward" : false,
+	"backward" : false,
+	"left" : false,
+	"right" : false,
+}
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	$collision_poly.set_polygon($poly.get_polygon())
@@ -23,32 +31,24 @@ func _process(delta):
 	$position.set_text("X: %.f\nY: %.f" % [get_position().x, get_position().y])
 func _physics_process(delta):
 
-	if $up.get_overlapping_areas().size() > 0:
+	if inputs.forward:
 #		position += Vector2.UP.rotated(global_rotation)* SPEED
 		if server_side:
 			apply_central_impulse(Vector2.UP.rotated(global_rotation)* SPEED * delta)
-		$up/Polygon2D.set_color(Color.green)
 		$lengine.set_emitting(true)
 		$rengine.set_emitting(true)	
-	elif $down.get_overlapping_areas().size() > 0:
+	elif inputs.backward:
 #		position += Vector2.DOWN.rotated(global_rotation) * SPEED
 		if server_side:
 			apply_central_impulse(Vector2.DOWN.rotated(global_rotation)* SPEED * delta)
-		$down/Polygon2D.set_color(Color.green)
-	elif $left.get_overlapping_areas().size() > 0:
+	if inputs.left:
 		if server_side:
 			apply_torque_impulse(-ROTATION * delta)
-		$left/Polygon2D.set_color(Color.green)
 		$rengine.set_emitting(true)
-	elif $right.get_overlapping_areas().size() > 0:
+	if inputs.right:
 		if server_side:
 			apply_torque_impulse(ROTATION * delta)
-		$right/Polygon2D.set_color(Color.green)
 		$lengine.set_emitting(true)
-	else:
-		$up/Polygon2D.set_color(Color.white)
-		$down/Polygon2D.set_color(Color.white)
-		$left/Polygon2D.set_color(Color.white)
-		$right/Polygon2D.set_color(Color.white)
+	if true in inputs.values():
 		$lengine.set_emitting(false)
 		$rengine.set_emitting(false)	

@@ -11,10 +11,21 @@ const BOUNDRY = 10.0
 var input_buffer = []
 var input_buffer_head = 0
 
+var last_input = {
+			"up" : false,
+			"down" : false,
+			"left" : false,
+			"right" : false,
+			"angle" : PI/2.0,
+			"interact" : false,
+		}
+
 var color = Color.white
 var ip = "invalid"
 var port = -1
 var username = "default"
+var at_console = "none"
+
 
 var server_side = false
 var has_sent_packet = false
@@ -47,28 +58,45 @@ func _ready():
 			"left" : false,
 			"right" : false,
 			"angle" : PI/2.0,
+			"interact" : false,
 		})
 	print(server_side)
 func _physics_process(delta):
+	input_buffer[input_buffer_head].up = last_input.up
+	input_buffer[input_buffer_head].down = last_input.down
+	input_buffer[input_buffer_head].left = last_input.left
+	input_buffer[input_buffer_head].right = last_input.right
+	input_buffer[input_buffer_head].angle = last_input.angle
+	input_buffer[input_buffer_head].interact = last_input.interact
 	cast_rays()
 	if server_side:
-		move(input_buffer[input_buffer_head])
+		match at_console:
+			"none":
+				move(input_buffer[input_buffer_head])
+			"captain":
+				var ship = get_parent()
+				ship.inputs.forward = input_buffer[input_buffer_head].up
+				ship.inputs.backward = input_buffer[input_buffer_head].down
+				ship.inputs.left = input_buffer[input_buffer_head].left
+				ship.inputs.right = input_buffer[input_buffer_head].right
 		return
-	set_position(last_known_position)
-
-	var tick_delta = current_tick - last_known_tick #magic one, do not remove. TODO: figure out what it does. oops gone
-	if tick_delta < Globals.BUFFER_LENGTH:
-		for i in range(-tick_delta, 1):
-#			print("i: %s" % i)
-			var present_input = input_buffer[posmod(input_buffer_head + i, Globals.BUFFER_LENGTH)]
-#			print("input down: %s" % present_input.down)
-#			print("input_buffer_head: %s" % input_buffer_head)
-			cast_rays()
-			move(present_input)
-	else:
-		print("too far behind")
+		
+	if at_console == "none":
+		set_position(last_known_position)
+		var tick_delta = current_tick - last_known_tick - 1 #magic one, do not remove. TODO: figure out what it does. oops it's gone
+		if tick_delta < Globals.BUFFER_LENGTH:
+			for i in range(-tick_delta, 1):
+	#			print("i: %s" % i)
+				var present_input = input_buffer[posmod(input_buffer_head + i, Globals.BUFFER_LENGTH)]
+	#			print("input down: %s" % present_input.down)
+	#			print("input_buffer_head: %s" % input_buffer_head)
+				cast_rays()
+				move(present_input)
+		else:
+			print("too far behind")
 	current_tick += 1
 	input_buffer_head = posmod(input_buffer_head + 1, Globals.BUFFER_LENGTH)
+#	input_buffer[input_buffer_head].interact = false
 
 func cast_rays():
 	var space_state =  get_world_2d().direct_space_state
