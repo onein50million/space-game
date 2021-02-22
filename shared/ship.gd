@@ -49,6 +49,6 @@ func _physics_process(delta):
 		if server_side:
 			apply_torque_impulse(ROTATION * delta)
 		$lengine.set_emitting(true)
-	if true in inputs.values():
+	if not true in inputs.values():
 		$lengine.set_emitting(false)
 		$rengine.set_emitting(false)	
