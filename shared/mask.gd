@@ -33,6 +33,7 @@ func _physics_process(delta):
 
 func _draw():
 	for i in range(0,NUM_RAYS):
+		var ray_distance = max(get_viewport_rect().size.x, get_viewport_rect().size.x)
 		var previous_angle = TAU*(float(i-1)/float(NUM_RAYS))
 		var angle = TAU*(float(i)/float(NUM_RAYS))
 		if draw_rays:
@@ -41,8 +42,8 @@ func _draw():
 		var points = PoolVector2Array([
 			Vector2(ray_results[i-1],0.0).rotated(previous_angle),
 			Vector2(ray_results[i],0.0).rotated(angle),
-			Vector2(1000.0,0.0).rotated(angle),
-			Vector2(1000.0,0.0).rotated(previous_angle),
+			Vector2(ray_distance,0.0).rotated(angle),
+			Vector2(ray_distance,0.0).rotated(previous_angle),
 		])
 		draw_polygon(points,colors)
 #	for blocker in get_tree().get_nodes_in_group("vision_block"):
