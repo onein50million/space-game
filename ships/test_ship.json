@@ -1,0 +1,17 @@
+{
+	"ship_name": "test_ship",
+	"points": [
+		[0.0,-140.0,"window"],
+		[100.0,-100.0,"wall"],
+		[80.0,200.0, "wall"],
+
+	],
+	"consoles":[
+		{
+			"type": "captain",
+			"position": [0.0,0.0]
+		}
+	],
+	"interior_walls":[
+	]
+}

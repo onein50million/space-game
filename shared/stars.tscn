@@ -1,8 +1,65 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://assets/stars.png" type="Texture" id=1]
 
+[sub_resource type="Shader" id=1]
+code = "shader_type canvas_item;
+
+uniform sampler2D ALPHA_NOISE;
+uniform sampler2D RED_NOISE;
+uniform sampler2D GREEN_NOISE;
+uniform sampler2D BLUE_NOISE;
+uniform vec4 modifier = vec4(0.8,0.1,0.5,1.0);
+
+void fragment(){
+	COLOR = texture(TEXTURE, UV);
+	COLOR += vec4(
+		texture(RED_NOISE, UV).r*modifier.r,
+		texture(GREEN_NOISE, UV).g*modifier.g,
+		texture(BLUE_NOISE, UV).b*modifier.b,
+		texture(ALPHA_NOISE, UV).x*modifier.a);
+}"
+
+[sub_resource type="OpenSimplexNoise" id=3]
+period = 256.0
+
+[sub_resource type="NoiseTexture" id=4]
+seamless = true
+noise = SubResource( 3 )
+
+[sub_resource type="OpenSimplexNoise" id=5]
+seed = 3
+period = 256.0
+
+[sub_resource type="NoiseTexture" id=6]
+seamless = true
+noise = SubResource( 5 )
+
+[sub_resource type="OpenSimplexNoise" id=7]
+seed = 2
+period = 256.0
+
+[sub_resource type="NoiseTexture" id=8]
+seamless = true
+noise = SubResource( 7 )
+
+[sub_resource type="OpenSimplexNoise" id=9]
+seed = 1
+period = 256.0
+
+[sub_resource type="NoiseTexture" id=10]
+seamless = true
+noise = SubResource( 9 )
+
+[sub_resource type="ShaderMaterial" id=2]
+shader = SubResource( 1 )
+shader_param/modifier = Plane( 0.8, 0.1, 0.5, 1 )
+shader_param/ALPHA_NOISE = SubResource( 4 )
+shader_param/RED_NOISE = SubResource( 10 )
+shader_param/GREEN_NOISE = SubResource( 8 )
+shader_param/BLUE_NOISE = SubResource( 6 )
 
 [node name="stars" type="Sprite"]
+material = SubResource( 2 )
 texture = ExtResource( 1 )
 centered = false

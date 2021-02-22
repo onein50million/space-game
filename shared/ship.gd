@@ -7,6 +7,7 @@ extends RigidBody2D
 export var server_side = false
 var ship_velocity = Vector2(0.0,0.0)
 
+
 const SPEED = 100.0
 const ROTATION = 10000.0
 
@@ -19,10 +20,47 @@ var inputs = {
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	$collision_poly.set_polygon($poly.get_polygon())
-	$ship_wall/player_collision_poly.set_polygon($poly.get_polygon())
+	var file = File.new()
+	print("file open: %s" % file.open("res://ships/test_ship_two.json",file.READ))
+	var parsed = parse_json(file.get_as_text())
+	file.close()
+	print(parsed)
+	var reversed_points = parsed.points.duplicate(true)
+	reversed_points.invert()
+	for i in range(0,reversed_points.size()):
+		reversed_points[i][0] *= -1.0
+#		if reversed_points[i][0] == 0:
+#			reversed_points.remove(i)
+		
+	var points = parsed.points + reversed_points
+	var ship_shape = PoolVector2Array()
 
+	for i in range(0,points.size()):
+		print(points[i])
+		var new_area = Area2D.new()
+		var shift = -1
+		if i >= parsed.points.size():
+			shift = 0
+		match points[i+shift][2]:
+			"wall":
+				new_area.collision_layer=0b1100
+			"window":
+				new_area.collision_layer = 0b0100
+			"_":
+				print("unknown wall type")
+				new_area.collision_layer = 0b1100
+		add_child(new_area)
+		var new_collision_shape = CollisionShape2D.new()
+		new_area.add_child(new_collision_shape)
+		var new_segment = SegmentShape2D.new()
+		new_segment.a = Vector2(points[i-1][0],points[i-1][1])
+		new_segment.b = Vector2(points[i][0],points[i][1])
+		ship_shape.append(Vector2(points[i][0],points[i][1]))
+		new_collision_shape.shape = new_segment
 
+	$collision_poly.set_polygon(ship_shape)
+	$poly.set_polygon(ship_shape)
+	$captain.set_position(Vector2(parsed.consoles[0].position[0], parsed.consoles[0].position[1]))
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	if server_side:

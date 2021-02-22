@@ -1,7 +1,8 @@
 extends Node2D
 
 
-const NUM_RAYS = 1000
+const NUM_RAYS = 100
+const THICKNESS = 1.0 #how much of the object will be shown
 var ray_results = []
 
 var draw_rays = false
@@ -10,6 +11,7 @@ func _ready():
 	if get_parent().server_side:
 		set_process(false)
 		set_physics_process(false)
+		visible = false
 	for i in range(0, NUM_RAYS):
 		ray_results.append(10.0)
 
@@ -26,26 +28,28 @@ func _physics_process(delta):
 				global_position + Vector2(ray_distance,0.0).rotated(angle),
 				[self], 
 				0b1000,true,true)
-		if result.size() > 0:
+		if result.size() > 0 :
 			ray_results[i] = get_parent().global_position.distance_to(result.position)
 		else:
 			ray_results[i] = ray_distance
 
 func _draw():
+
 	for i in range(0,NUM_RAYS):
 		var ray_distance = max(get_viewport_rect().size.x, get_viewport_rect().size.x)
-		var previous_angle = TAU*(float(i-1)/float(NUM_RAYS))
-		var angle = TAU*(float(i)/float(NUM_RAYS))
+		var previous_angle = TAU*(float(i-1)/float(NUM_RAYS)) - global_rotation
+		var angle = TAU*(float(i)/float(NUM_RAYS)) - global_rotation
 		if draw_rays:
 			draw_line(Vector2(0.0,0.0), Vector2(ray_results[i],0.0).rotated(angle),Color.red)
-		var colors = PoolColorArray([Color.black])
-		var points = PoolVector2Array([
-			Vector2(ray_results[i-1],0.0).rotated(previous_angle),
-			Vector2(ray_results[i],0.0).rotated(angle),
-			Vector2(ray_distance,0.0).rotated(angle),
-			Vector2(ray_distance,0.0).rotated(previous_angle),
-		])
-		draw_polygon(points,colors)
+		else:
+			var colors = PoolColorArray([Color.black])
+			var points = PoolVector2Array([
+				Vector2(ray_results[i-1] + THICKNESS,0.0).rotated(previous_angle),
+				Vector2(ray_distance+1.0,0.0).rotated(previous_angle),
+				Vector2(ray_distance+1.0,0.0).rotated(angle),
+				Vector2(ray_results[i] + THICKNESS,0.0).rotated(angle),
+			])
+			draw_polygon(points,colors)
 #	for blocker in get_tree().get_nodes_in_group("vision_block"):
 #		for vertex in blocker.get_polygon():
 #			#triangle made from abc
