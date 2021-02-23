@@ -133,9 +133,16 @@ func cast_rays():
 				ray_direction = Vector2.UP + Vector2.LEFT
 				continue
 		var position_change =  (BOUNDRY*ray_direction.normalized().rotated(global_rotation))
-		var result = space_state.intersect_ray(
-			global_position, global_position + position_change, [self],	0b100,true,	true)
-		allowed_directions[direction] = result.size() <= 0
+		var new_shape_query = Physics2DShapeQueryParameters.new()
+		new_shape_query.collide_with_areas = true
+		new_shape_query.collision_layer = 0b100
+		new_shape_query.exclude = [self]
+		new_shape_query.set_shape($CollisionShape2D.shape)
+		new_shape_query.transform = transform
+		new_shape_query.motion = position_change
+		var result = space_state.cast_motion(new_shape_query)
+		print(result)
+		allowed_directions[direction] = true
 
 func network_process():
 	pass
