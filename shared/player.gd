@@ -29,6 +29,7 @@ var at_console = "none"
 
 var server_side = false
 var has_sent_packet = false
+var is_local = false
 
 var last_known_position = Vector2.ZERO
 var last_known_tick = 0

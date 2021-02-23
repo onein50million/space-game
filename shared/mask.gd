@@ -8,7 +8,7 @@ var ray_results = []
 var draw_rays = false
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	if get_parent().server_side:
+	if get_parent().server_side or not get_parent().is_local:
 		set_process(false)
 		set_physics_process(false)
 		visible = false

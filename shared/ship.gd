@@ -60,7 +60,14 @@ func _ready():
 
 	$collision_poly.set_polygon(ship_shape)
 	$poly.set_polygon(ship_shape)
-	$captain.set_position(Vector2(parsed.consoles[0].position[0], parsed.consoles[0].position[1]))
+	for console in parsed.consoles:
+		match console.type:
+			"captain":	
+				$captain.set_position(Vector2(console.position[0], console.position[1]))
+			"map":
+				pass
+			"_":
+				print("unknown console type")
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	if server_side:

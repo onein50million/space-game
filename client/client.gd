@@ -42,6 +42,7 @@ func _ready():
 	local_player.ip = ip
 	local_player.port = port
 	local_player.username = username
+	local_player.is_local = true
 
 #	local_player.add_child(player_camera)
 	add_child(player_camera)
@@ -107,7 +108,7 @@ func network_process():
 			player.network_process()
 		send_command("input_update", local_player.last_input)
 		local_player.last_input.interact = false
-
+	
 func _physics_process(delta):
 	pass
 	
