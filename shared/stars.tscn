@@ -20,46 +20,46 @@ void fragment(){
 		texture(ALPHA_NOISE, UV).x*modifier.a);
 }"
 
-[sub_resource type="OpenSimplexNoise" id=3]
+[sub_resource type="OpenSimplexNoise" id=2]
 period = 256.0
 
-[sub_resource type="NoiseTexture" id=4]
+[sub_resource type="NoiseTexture" id=3]
 seamless = true
-noise = SubResource( 3 )
+noise = SubResource( 2 )
 
-[sub_resource type="OpenSimplexNoise" id=5]
+[sub_resource type="OpenSimplexNoise" id=4]
 seed = 3
 period = 256.0
 
-[sub_resource type="NoiseTexture" id=6]
+[sub_resource type="NoiseTexture" id=5]
 seamless = true
-noise = SubResource( 5 )
+noise = SubResource( 4 )
 
-[sub_resource type="OpenSimplexNoise" id=7]
+[sub_resource type="OpenSimplexNoise" id=6]
 seed = 2
 period = 256.0
 
-[sub_resource type="NoiseTexture" id=8]
+[sub_resource type="NoiseTexture" id=7]
 seamless = true
-noise = SubResource( 7 )
+noise = SubResource( 6 )
 
-[sub_resource type="OpenSimplexNoise" id=9]
+[sub_resource type="OpenSimplexNoise" id=8]
 seed = 1
 period = 256.0
 
-[sub_resource type="NoiseTexture" id=10]
+[sub_resource type="NoiseTexture" id=9]
 seamless = true
-noise = SubResource( 9 )
+noise = SubResource( 8 )
 
-[sub_resource type="ShaderMaterial" id=2]
+[sub_resource type="ShaderMaterial" id=10]
 shader = SubResource( 1 )
 shader_param/modifier = Plane( 0.8, 0.1, 0.5, 1 )
-shader_param/ALPHA_NOISE = SubResource( 4 )
-shader_param/RED_NOISE = SubResource( 10 )
-shader_param/GREEN_NOISE = SubResource( 8 )
-shader_param/BLUE_NOISE = SubResource( 6 )
+shader_param/ALPHA_NOISE = SubResource( 3 )
+shader_param/RED_NOISE = SubResource( 9 )
+shader_param/GREEN_NOISE = SubResource( 7 )
+shader_param/BLUE_NOISE = SubResource( 5 )
 
 [node name="stars" type="Sprite"]
-material = SubResource( 2 )
+material = SubResource( 10 )
 texture = ExtResource( 1 )
 centered = false

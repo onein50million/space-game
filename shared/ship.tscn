@@ -1,17 +1,7 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://shared/ship.gd" type="Script" id=1]
 [ext_resource path="res://client/engine.tscn" type="PackedScene" id=2]
-[ext_resource path="res://assets/console.png" type="Texture" id=3]
-[ext_resource path="res://assets/table.png" type="Texture" id=4]
-[ext_resource path="res://client/radar_beam.gd" type="Script" id=5]
-[ext_resource path="res://assets/RobotoMono-Regular.ttf" type="DynamicFontData" id=6]
-
-[sub_resource type="RectangleShape2D" id=1]
-
-[sub_resource type="DynamicFont" id=2]
-size = 12
-font_data = ExtResource( 6 )
 
 [node name="ship" type="RigidBody2D"]
 z_index = 1
@@ -26,19 +16,6 @@ polygon = PoolVector2Array( -90, -170.22, -118.544, 15.0873, -116.763, 212.867, 
 
 [node name="collision_poly" type="CollisionPolygon2D" parent="."]
 polygon = PoolVector2Array( -20, -20, 0, -50, 20, -20, 25, 40, 10, 20, -10, 20, -25, 40 )
-
-[node name="captain" type="Area2D" parent="."]
-position = Vector2( 3.48688, -162.694 )
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="captain"]
-shape = SubResource( 1 )
-
-[node name="Polygon2D" type="Polygon2D" parent="captain"]
-polygon = PoolVector2Array( -10, -10, -10, 10, 10, 10, 10, -10 )
-
-[node name="console" type="Sprite" parent="captain"]
-position = Vector2( 0.356871, -20.4533 )
-texture = ExtResource( 3 )
 
 [node name="lengine" parent="." instance=ExtResource( 2 )]
 position = Vector2( -115.67, 210.969 )
@@ -63,26 +40,6 @@ margin_top = -245.862
 margin_right = -77.3871
 margin_bottom = -231.862
 text = "position"
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="map" type="Sprite" parent="."]
-position = Vector2( -1.48981, -97.8347 )
-scale = Vector2( 0.5, 0.5 )
-texture = ExtResource( 4 )
-
-[node name="radar_beam" type="Node2D" parent="map"]
-script = ExtResource( 5 )
-
-[node name="radar_distance" type="Label" parent="map"]
-margin_left = -42.7149
-margin_top = 28.6991
-margin_right = -28.7149
-margin_bottom = 45.6991
-custom_fonts/font = SubResource( 2 )
-custom_colors/font_color = Color( 0, 1, 0, 1 )
-text = "69"
 __meta__ = {
 "_edit_use_anchors_": false
 }

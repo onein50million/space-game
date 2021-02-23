@@ -21,9 +21,10 @@ var network_process_accumulator = 0
 onready var player_scene = preload("res://shared/player.tscn")
 onready var ship_scene = preload("res://shared/ship.tscn")
 onready var asteroid_scene = load("res://shared/asteroid.tscn")
-
+onready var world = load("res://shared/world.tscn").instance()
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	add_child(world)
 	socket.listen(port)
 
 	var new_asteroid = spawn_body(asteroid_scene)
@@ -133,11 +134,23 @@ func handle_input(received):
 		return
 	var current_client = client_list[client_id]
 	
-	if received.data.interact and current_client in current_client.get_parent().get_node("captain").get_overlapping_areas():
-		if current_client.at_console == "none":
-			current_client.at_console = "captain"
-		else:
-			current_client.at_console = "none"	
+	var captain_collisions = current_client.get_parent().get_node("captain").get_overlapping_areas()
+	var weapons_collisions = current_client.get_parent().get_node("weapons").get_overlapping_areas()
+	
+	
+	#TODO: Clean this up
+	if received.data.interact :
+		if current_client in captain_collisions:
+			if current_client.at_console == "none":
+				current_client.at_console = "captain"
+			else:
+				current_client.at_console = "none"
+		if current_client in weapons_collisions:
+			if current_client.at_console == "none":
+				current_client.at_console = "weapons"
+			else:
+				current_client.at_console = "none"
+
 	current_client.has_sent_packet = true
 	current_client.last_input = received.data.duplicate()
 	current_client.last_known_tick = received.tick

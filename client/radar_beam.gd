@@ -9,7 +9,7 @@ const RADAR_DISTANCE = 10000.0
 const RADAR_DETECTION_ANGLE = TAU/16.0
 const BEAM_TRAIL_LENGTH = 1 #doesn't look as good as I hoped(weird aliasing artifacts), so just keeping it at 1
 const LIFETIME = 1.0
-const RADAR_DISPLAY_RADIUS = 50.0
+const RADAR_DISPLAY_RADIUS = 25.0
 
 var contacts = []
 

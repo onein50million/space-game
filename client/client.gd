@@ -7,6 +7,7 @@ onready var local_player = player_scene.instance()
 onready var ship_scene = load("res://shared/ship.tscn")
 onready var star_scene = load("res://shared/stars.tscn")
 onready var asteroid_scene = load("res://shared/asteroid.tscn")
+onready var world = load("res://shared/world.tscn").instance()
 # Declare member variables here. Examples:
 # var a = 2
 # var b = "text"
@@ -45,6 +46,7 @@ func _ready():
 	local_player.is_local = true
 
 #	local_player.add_child(player_camera)
+	add_child(world)
 	add_child(player_camera)
 	player_camera.make_current()
 	player_camera.set_rotating(true)

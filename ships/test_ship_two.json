@@ -9,10 +9,18 @@
 		[40.0,80.0, "wall"],
 
 	],
-	"consoles":[
+	"systems":[
 		{
 			"type": "captain",
 			"position": [0.0,0.0]
+		},
+		{
+			"type": "map",
+			"position":[0.0,-100.0]
+		},
+		{
+			"type": "weapons",
+			"position":[0.0,50]
 		}
 	],
 	"interior_walls":[

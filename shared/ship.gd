@@ -60,14 +60,22 @@ func _ready():
 
 	$collision_poly.set_polygon(ship_shape)
 	$poly.set_polygon(ship_shape)
-	for console in parsed.consoles:
-		match console.type:
+	for system in parsed.systems:
+		match system.type:
 			"captain":	
-				$captain.set_position(Vector2(console.position[0], console.position[1]))
+				var new_captain = load("res://client/ship_subsystems/captain.tscn").instance()
+				add_child(new_captain)
+				new_captain.set_position(Vector2(system.position[0], system.position[1]))
 			"map":
-				pass
+				var new_map = load("res://client/ship_subsystems/map.tscn").instance()
+				add_child(new_map)
+				new_map.set_position(Vector2(system.position[0],system.position[1]))
+			"weapons":
+				var new_weapons = load("res://client/ship_subsystems/weapons.tscn").instance()
+				add_child(new_weapons)
+				new_weapons.set_position(Vector2(system.position[0],system.position[1]))
 			"_":
-				print("unknown console type")
+				print("unknown system type")
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	if server_side:
