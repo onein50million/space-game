@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/weapons.png-552ca21a46938f361763c84a696e3f82.stex"
+path="res://.import/railgun.png-8ded3b21bc7bdc22cc2a7be2f8817b60.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/weapons.png"
-dest_files=[ "res://.import/weapons.png-552ca21a46938f361763c84a696e3f82.stex" ]
+source_file="res://assets/railgun.png"
+dest_files=[ "res://.import/railgun.png-8ded3b21bc7bdc22cc2a7be2f8817b60.stex" ]
 
 [params]
 

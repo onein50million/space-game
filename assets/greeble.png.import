@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/weapons.png-552ca21a46938f361763c84a696e3f82.stex"
+path="res://.import/greeble.png-291a7e6694728cfd6c706d67d8b34c7f.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/weapons.png"
-dest_files=[ "res://.import/weapons.png-552ca21a46938f361763c84a696e3f82.stex" ]
+source_file="res://assets/greeble.png"
+dest_files=[ "res://.import/greeble.png-291a7e6694728cfd6c706d67d8b34c7f.stex" ]
 
 [params]
 
@@ -19,7 +19,7 @@ compress/lossy_quality=0.7
 compress/hdr_mode=0
 compress/bptc_ldr=0
 compress/normal_map=0
-flags/repeat=0
+flags/repeat=1
 flags/filter=false
 flags/mipmaps=false
 flags/anisotropic=false

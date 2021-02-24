@@ -169,11 +169,20 @@ func send_updates():
 		"misc_objects" : []
 	}
 	for ship in ship_list:
+		var subsystem_send = []
+		for subsystem in ship_list[ship].systems:
+			var data = subsystem.latest_data.duplicate(true)
+			subsystem_send.append({
+				"type" : subsystem.type,
+				"data": data
+			})
+
 		send_client_data.ships.append({
 			"name" : ship,
 			"position" : ship_list[ship].get_position(),
 			"rotation" : ship_list[ship].get_rotation(),
 			"velocity" : ship_list[ship].get_linear_velocity(),
+			"subsystems" : subsystem_send,
 		})
 	for object in misc_objects.values():
 		send_client_data.misc_objects.append({

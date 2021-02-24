@@ -18,6 +18,8 @@ var last_input = {
 			"right" : false,
 			"angle" : PI/2.0,
 			"interact" : false,
+			"lclick" : false,
+			"rclick" : false,
 		}
 
 var color = Color.white
@@ -50,7 +52,7 @@ var collision_check = 1.0
 # Called when the node enters the scene tree for the first time.
 func _ready():
 
-	$name.set_text(username)
+	$"player_text/name".set_text(username)
 	set_modulate(color)
 	for i in range(0, Globals.BUFFER_LENGTH):
 		input_buffer.append( {
@@ -60,6 +62,8 @@ func _ready():
 			"right" : false,
 			"angle" : PI/2.0,
 			"interact" : false,
+			"lclick" : false,
+			"rclick" : false,
 		})
 	print(server_side)
 func _physics_process(delta):
@@ -69,6 +73,8 @@ func _physics_process(delta):
 	input_buffer[input_buffer_head].right = last_input.right
 	input_buffer[input_buffer_head].angle = last_input.angle
 	input_buffer[input_buffer_head].interact = last_input.interact
+	input_buffer[input_buffer_head].lclick = last_input.lclick
+	input_buffer[input_buffer_head].rclick = last_input.rclick
 	cast_rays()
 	if server_side:
 		match at_console:
@@ -80,9 +86,18 @@ func _physics_process(delta):
 				ship.inputs.backward = input_buffer[input_buffer_head].down
 				ship.inputs.left = input_buffer[input_buffer_head].left
 				ship.inputs.right = input_buffer[input_buffer_head].right
+			"weapons":
+				var ship = get_parent()
+				for system in ship.systems:
+					if system.type == "turret":
+						system.latest_data = {
+							"rotation": input_buffer[input_buffer_head].angle,
+							"is_firing": input_buffer[input_buffer_head].lclick
+						}
 		return
 		
 	if at_console == "none":
+		$"..".outside_view = false
 		set_position(last_known_position)
 		var tick_delta = current_tick - last_known_tick - 1 #magic one, do not remove. TODO: figure out what it does. oops it's gone
 		if tick_delta < Globals.BUFFER_LENGTH:
@@ -95,6 +110,8 @@ func _physics_process(delta):
 				move(present_input)
 		else:
 			print("too far behind")
+	elif at_console == "weapons":
+		$"..".outside_view = true
 	current_tick += 1
 	input_buffer_head = posmod(input_buffer_head + 1, Globals.BUFFER_LENGTH)
 #	input_buffer[input_buffer_head].interact = false

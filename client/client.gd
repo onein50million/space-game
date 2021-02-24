@@ -78,6 +78,8 @@ func _process(delta):
 	local_player.last_input.down = Input.is_action_pressed("down")
 	local_player.last_input.left = Input.is_action_pressed("left")
 	local_player.last_input.right = Input.is_action_pressed("right")
+	local_player.last_input.lclick = Input.is_action_pressed("lclick")
+	local_player.last_input.rclick = Input.is_action_pressed("r_click")
 	if Input.is_action_just_pressed("interact"):
 		local_player.last_input.interact = true
 	var mouse_position = local_player.get_local_mouse_position()
@@ -175,6 +177,9 @@ func process_update(received):
 		ship_list[received_ship.name].set_position(received_ship.position)
 		ship_list[received_ship.name].set_rotation(received_ship.rotation)
 		ship_list[received_ship.name].ship_velocity = received_ship.velocity
+		for i in range(0,ship_list[received_ship.name].systems.size()):
+			#this is kinda sketch because it relies on both the client and server making the arrays in the same order
+			ship_list[received_ship.name].systems[i].latest_data = received_ship.subsystems[i].data
 	
 	for received_object in received.data.misc_objects:
 		if not misc_objects.has(received_object.misc_id):

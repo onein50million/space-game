@@ -21,6 +21,10 @@
 		{
 			"type": "weapons",
 			"position":[0.0,50]
+		},
+		{
+			"type": "turret",
+			"position": [0.0,50.0]
 		}
 	],
 	"interior_walls":[

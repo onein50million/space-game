@@ -19,6 +19,7 @@ __meta__ = {
 }
 
 [node name="client_button" type="Button" parent="Panel"]
+anchor_right = 0.0785124
 margin_left = 52.0
 margin_top = 15.0
 margin_right = 200.0
@@ -30,31 +31,35 @@ __meta__ = {
 }
 
 [node name="port" type="TextEdit" parent="Panel/client_button"]
-margin_left = 118.0
-margin_top = 45.0
-margin_right = 166.0
-margin_bottom = 65.0
+margin_top = 82.0
+margin_right = 64.0
+margin_bottom = 102.0
 rect_pivot_offset = Vector2( -355.009, -62.9686 )
+hint_tooltip = "Port"
 text = "2020"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="name" type="TextEdit" parent="Panel/client_button"]
-margin_left = 166.0
-margin_right = 227.0
-margin_bottom = 20.0
+margin_left = 247.676
+margin_top = 0.943878
+margin_right = 340.676
+margin_bottom = 20.9439
 rect_pivot_offset = Vector2( 106.059, 20 )
+hint_tooltip = "Username"
 text = "dan"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="ship_name" type="TextEdit" parent="Panel/client_button"]
-margin_left = 244.0
-margin_right = 380.0
-margin_bottom = 65.0
+margin_left = 247.0
+margin_top = 44.0
+margin_right = 340.0
+margin_bottom = 102.0
 rect_pivot_offset = Vector2( 106.059, 20 )
+hint_tooltip = "Ship name"
 text = "danship
 "
 __meta__ = {
@@ -62,21 +67,20 @@ __meta__ = {
 }
 
 [node name="color" type="ColorPickerButton" parent="Panel/client_button"]
-margin_left = 176.0
-margin_top = 45.0
-margin_right = 218.0
-margin_bottom = 65.0
+margin_left = 369.841
+margin_right = 411.841
+margin_bottom = 20.0
 color = Color( 1, 1, 1, 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="ip" type="TextEdit" parent="Panel/client_button"]
-margin_left = -0.840881
 margin_top = 45.0
-margin_right = 108.159
+margin_right = 186.0
 margin_bottom = 65.0
 rect_pivot_offset = Vector2( -355.009, -62.9686 )
+hint_tooltip = "IP address"
 text = "127.0.0.1"
 __meta__ = {
 "_edit_use_anchors_": false

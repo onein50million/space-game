@@ -8,6 +8,7 @@
 radius = 5.63383
 
 [node name="player" type="Area2D"]
+z_index = -1
 collision_layer = 5
 collision_mask = 5
 script = ExtResource( 1 )
@@ -18,7 +19,10 @@ texture = ExtResource( 2 )
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource( 1 )
 
-[node name="name" type="Label" parent="."]
+[node name="player_text" type="Node2D" parent="."]
+z_index = 2048
+
+[node name="name" type="Label" parent="player_text"]
 margin_left = -47.6858
 margin_top = -21.875
 margin_right = -7.68576

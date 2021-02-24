@@ -12,6 +12,7 @@ func _ready():
 		set_process(false)
 		set_physics_process(false)
 		visible = false
+
 	for i in range(0, NUM_RAYS):
 		ray_results.append(10.0)
 
@@ -34,7 +35,8 @@ func _physics_process(delta):
 			ray_results[i] = ray_distance
 
 func _draw():
-
+	if $"../..".outside_view:
+		return
 	for i in range(0,NUM_RAYS):
 		var ray_distance = max(get_viewport_rect().size.x, get_viewport_rect().size.x)
 		var previous_angle = TAU*(float(i-1)/float(NUM_RAYS)) - global_rotation

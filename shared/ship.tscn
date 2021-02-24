@@ -2,17 +2,17 @@
 
 [ext_resource path="res://shared/ship.gd" type="Script" id=1]
 [ext_resource path="res://client/engine.tscn" type="PackedScene" id=2]
-
-[sub_resource type="CapsuleShape2D" id=1]
+[ext_resource path="res://assets/greeble.png" type="Texture" id=3]
 
 [node name="ship" type="RigidBody2D"]
-z_index = 1
+z_index = 5
 collision_layer = 2
 collision_mask = 2147483650
 can_sleep = false
 script = ExtResource( 1 )
 
 [node name="poly" type="Polygon2D" parent="."]
+z_index = -1
 color = Color( 0.47451, 0.47451, 0.47451, 1 )
 polygon = PoolVector2Array( -90, -170.22, -118.544, 15.0873, -116.763, 212.867, -69.545, 81.9047, -20.5455, 113.977, 25.7813, 113.977, 88.1441, 74.7775, 147.834, 211.085, 125.562, 12.4146, 96.1622, -174.674, 6.18146, -207.637 )
 
@@ -46,10 +46,10 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="RigidBody2D" type="RigidBody2D" parent="."]
-position = Vector2( 163.29, -8.49486 )
-collision_layer = 5
-collision_mask = 5
+[node name="outside_layer" type="Node2D" parent="."]
+z_index = 1024
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="RigidBody2D"]
-shape = SubResource( 1 )
+[node name="poly" type="Polygon2D" parent="outside_layer"]
+color = Color( 0.380392, 0.407843, 0.396078, 1 )
+texture = ExtResource( 3 )
+polygon = PoolVector2Array( 22.481, -88.7757, -29.1523, -68.0102, 37.073, -58.4692 )
