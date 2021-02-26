@@ -4,7 +4,6 @@ extends Node2D
 const NUM_RAYS = 100
 const THICKNESS = 1.0 #how much of the object will be shown
 var ray_results = []
-var previous_angle = 0
 var rotate = 0.0
 const ROTATE_INCREASE = 0.1
 var draw_rays = false
@@ -22,11 +21,13 @@ func _process(delta):
 	update()
 
 func _physics_process(delta):
-#	rotate += ROTATE_INCREASE
+	var rng = RandomNumberGenerator.new() #probably terrible for performance but eh
+#	rotate += ROTATE_INCREASE*(rng.randf() + 0.5)
 	var ray_distance = max(get_viewport_rect().size.x, get_viewport_rect().size.x)
 	var space_state = get_world_2d().direct_space_state
 	for i in range(0,NUM_RAYS):
 		var angle = TAU*(float(i)/float(NUM_RAYS)) + rotate
+		
 		var result = space_state.intersect_ray(
 				get_parent().global_position, 
 				global_position + Vector2(ray_distance,0.0).rotated(angle),
@@ -44,6 +45,7 @@ func _draw():
 	for i in range(0,NUM_RAYS):
 		var ray_distance = max(get_viewport_rect().size.x, get_viewport_rect().size.x)
 		var angle = TAU*(float(i)/float(NUM_RAYS)) - global_rotation + rotate
+		var previous_angle = TAU*(float(i-1)/float(NUM_RAYS)) - global_rotation + rotate
 		if draw_rays:
 			draw_line(Vector2(0.0,0.0), Vector2(ray_results[i],0.0).rotated(angle),Color.red)
 		else:
@@ -55,7 +57,7 @@ func _draw():
 				Vector2(ray_results[i] + THICKNESS,0.0).rotated(angle),
 			])
 			draw_polygon(points,colors)
-		previous_angle = angle
+
 #	for blocker in get_tree().get_nodes_in_group("vision_block"):
 #		for vertex in blocker.get_polygon():
 #			#triangle made from abc

@@ -37,7 +37,7 @@ func _draw():
 	for object in main.misc_objects.values():
 		draw_contact(object, 0.5)
 	for ship in main.ship_list.values():
-		draw_contact(ship, 2.0)
+		draw_contact(ship, 1.0)
 func draw_contact(object, size):
 	var angle_to_object = global_position.angle_to_point(object.global_position)
 	var distance_to_object = global_position.distance_to(object.global_position)
@@ -48,7 +48,8 @@ func draw_contact(object, size):
 		if contact.distance_to(object.global_position) < 10.0:
 			is_new = false
 
-	if abs(angle_to_object-global_angle) < RADAR_DETECTION_ANGLE and is_new and distance_to_object < RADAR_DISTANCE:
+	var delta_angle = fposmod(abs(angle_to_object-global_angle),TAU)
+	if delta_angle < RADAR_DETECTION_ANGLE and is_new and distance_to_object < RADAR_DISTANCE and object != get_parent().get_parent():
 		var new_contact = radar_contact.instance()
 		add_child(new_contact)
 		new_contact.lifetime = LIFETIME
