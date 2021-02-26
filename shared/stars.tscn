@@ -64,6 +64,7 @@ shader_param/BLUE_NOISE = SubResource( 5 )
 
 [node name="stars" type="Sprite"]
 material = SubResource( 10 )
+z_index = -2048
 texture = ExtResource( 1 )
 centered = false
 script = ExtResource( 2 )

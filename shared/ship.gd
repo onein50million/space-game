@@ -6,7 +6,7 @@ extends RigidBody2D
 # var b = "text"
 export var server_side = false
 var ship_velocity = Vector2(0.0,0.0)
-var outside_view = false
+var outside_view = true
 var ship_shape = PoolVector2Array()
 
 var systems = []
@@ -115,8 +115,6 @@ func _physics_process(delta):
 #		position += Vector2.UP.rotated(global_rotation)* SPEED
 		if server_side:
 			apply_central_impulse(Vector2.UP.rotated(global_rotation)* SPEED * delta)
-		$lengine.set_emitting(true)
-		$rengine.set_emitting(true)	
 	elif inputs.backward:
 #		position += Vector2.DOWN.rotated(global_rotation) * SPEED
 		if server_side:
@@ -124,12 +122,8 @@ func _physics_process(delta):
 	if inputs.left:
 		if server_side:
 			apply_torque_impulse(-ROTATION * delta)
-		$rengine.set_emitting(true)
 	if inputs.right:
 		if server_side:
 			apply_torque_impulse(ROTATION * delta)
-		$lengine.set_emitting(true)
 	if not true in inputs.values():
-		$lengine.set_emitting(false)
-		$rengine.set_emitting(false)	
-
+		pass

@@ -19,6 +19,9 @@ var username = "default"
 var ship_name = "test"
 var menu
 
+var last_player_position = Vector2(0,0)
+var last_player_rotation = Vector2(0,0)
+var last_zoom = 1.0
 var starscape
 
 var socket = PacketPeerUDP.new()
@@ -30,8 +33,6 @@ var misc_objects = {}
 var time_ping_sent #microseconds
 var network_process_accumulator = 0
 
-var player_camera = Camera2D.new()
-
 var state = "unloaded"
 
 # Called when the node enters the scene tree for the first time.
@@ -39,23 +40,25 @@ func _ready():
 	print("TEST")
 	state = "unconnected"
 
+	add_child(world)
+
 	local_player.color = color
 	local_player.ip = ip
 	local_player.port = port
 	local_player.username = username
 	local_player.is_local = true
 
-#	local_player.add_child(player_camera)
-	add_child(world)
-	add_child(player_camera)
-	player_camera.make_current()
-	player_camera.set_rotating(true)
-
+	
 	var new_ship = ship_scene.instance()
 	ship_list[ship_name] = new_ship
 	add_child(new_ship)
 	new_ship.add_child(local_player)
 	new_ship.set_name(ship_name)
+	
+	var new_transform = get_viewport().canvas_transform.translated(get_viewport().size/2.0)
+	get_viewport().canvas_transform = new_transform
+	last_player_position = local_player.global_position
+	last_player_rotation = local_player.global_rotation
 	
 	make_background()
 
@@ -72,7 +75,7 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 
-	update_background()
+
 	
 	local_player.last_input.up = Input.is_action_pressed("up")
 	local_player.last_input.down = Input.is_action_pressed("down")
@@ -92,18 +95,29 @@ func _process(delta):
 	if Input.is_action_pressed("overview"):
 		zoom_ratio = 16.0
 	
-	player_camera.set_zoom(Vector2(zoom_ratio,zoom_ratio))
-	
 	network_process_accumulator += delta
 	if 	network_process_accumulator > 1.0/Globals.NETWORK_UPDATE_INTERVAL:
 		network_process_accumulator -= 1.0/Globals.NETWORK_UPDATE_INTERVAL
 		network_process()
-
 		
-	#might help with jitter
-	player_camera.global_position = local_player.get_global_position()
-	player_camera.global_rotation = local_player.get_global_rotation()
 
+	#transform stuff because godot's camera was having jitter issues
+	#I have no idea what I'm doing
+	var zoom_delta = last_zoom/zoom_ratio
+	var player_position_delta = last_player_position - local_player.global_position
+	var player_rotation_delta = last_player_rotation - local_player.global_rotation
+	var new_transform = get_viewport().canvas_transform.translated(player_position_delta)
+
+	new_transform.origin += -screen_center
+	new_transform = new_transform.scaled(Vector2(zoom_delta,zoom_delta))
+	new_transform = new_transform.rotated(player_rotation_delta)
+	new_transform.origin += screen_center
+	
+	last_zoom = zoom_ratio
+	get_viewport().canvas_transform = new_transform
+	last_player_position = local_player.global_position
+	last_player_rotation = local_player.global_rotation
+	update_background()
 func network_process():
 	while socket.get_available_packet_count() > 0:
 		process_packet(socket.get_var())
@@ -236,7 +250,7 @@ func make_background():
 			starscape.add_child(new_star)
 	add_child(starscape)
 func update_background():
-	starscape.global_position = player_camera.global_position - Vector2(
-		posmod(player_camera.global_position.x*PARALLAX_EFFECT, 512),
-		posmod(player_camera.global_position.y*PARALLAX_EFFECT, 512))
+	starscape.global_position = local_player.global_position - Vector2(
+		posmod(local_player.global_position.x*PARALLAX_EFFECT, 512),
+		posmod(local_player.global_position.y*PARALLAX_EFFECT, 512))
 	
