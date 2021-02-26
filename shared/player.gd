@@ -34,6 +34,7 @@ var has_sent_packet = false
 var is_local = false
 
 var last_known_position = Vector2.ZERO
+var last_known_rotation = 0
 var last_known_tick = 0
 var current_tick = -1
 
@@ -99,6 +100,7 @@ func _physics_process(delta):
 	if at_console == "none":
 		$"..".outside_view = false
 		set_position(last_known_position)
+		$sprite.set_rotation(last_known_rotation)
 		var tick_delta = current_tick - last_known_tick - 1 #magic one, do not remove. TODO: figure out what it does. oops it's gone
 		if tick_delta < Globals.BUFFER_LENGTH:
 			for i in range(-tick_delta, 1):

@@ -1,6 +1,6 @@
 extends Node
 
-const TILE_SIZE = 5
+const TILE_SIZE = 10
 const PARALLAX_EFFECT = 0.1
 onready var player_scene = load("res://shared/player.tscn")
 onready var local_player = player_scene.instance()
@@ -82,7 +82,7 @@ func _process(delta):
 	local_player.last_input.left = Input.is_action_pressed("left")
 	local_player.last_input.right = Input.is_action_pressed("right")
 	local_player.last_input.lclick = Input.is_action_pressed("lclick")
-	local_player.last_input.rclick = Input.is_action_pressed("r_click")
+	local_player.last_input.rclick = Input.is_action_pressed("rclick")
 	if Input.is_action_just_pressed("interact"):
 		local_player.last_input.interact = true
 	var mouse_position = local_player.get_local_mouse_position()
@@ -229,6 +229,7 @@ func process_update(received):
 #		local_player.last_known_position = received_player.position
 #		local_player.last_known_tick = received.tick
 		player_list[received_player.username].last_known_position = received_player.position
+		player_list[received_player.username].last_known_rotation = received_player.rotation
 		player_list[received_player.username].last_known_tick = received_player.last_known_tick
 		player_list[received_player.username].at_console = received_player.at_console
 

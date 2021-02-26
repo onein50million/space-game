@@ -6,7 +6,7 @@ extends RigidBody2D
 # var b = "text"
 export var server_side = false
 var ship_velocity = Vector2(0.0,0.0)
-var outside_view = true
+var outside_view = false
 var ship_shape = PoolVector2Array()
 var ship_shape_blockers = []
 var systems = []

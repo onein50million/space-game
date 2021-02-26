@@ -194,6 +194,7 @@ func send_updates():
 	for client_id in client_list:
 		send_client_data.clients.append({
 			"position" : client_list[client_id].get_position(),
+			"rotation" : client_list[client_id].get_node("sprite").get_rotation(),
 			"at_console" : client_list[client_id].at_console,
 			"ship" : client_list[client_id].get_parent().name,
 			"username" : client_list[client_id].username,
