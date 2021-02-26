@@ -1,10 +1,5 @@
 extends Node2D
 
-
-
-const THICKNESS = 1.0 #how much of the object will be shown
-var rotate = 0.0
-const ROTATE_INCREASE = 0.1
 var draw_rays = false
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -12,7 +7,6 @@ func _ready():
 		set_process(false)
 		set_physics_process(false)
 		visible = false
-
 
 func _process(delta):
 	update()
