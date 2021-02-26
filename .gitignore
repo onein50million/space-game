@@ -22,3 +22,4 @@ mono_crash.*.json
 #other stuff
 *.exe
 export/
+*.zip

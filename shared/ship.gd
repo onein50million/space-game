@@ -8,7 +8,7 @@ export var server_side = false
 var ship_velocity = Vector2(0.0,0.0)
 var outside_view = true
 var ship_shape = PoolVector2Array()
-
+var ship_shape_blockers = []
 var systems = []
 
 const SPEED = 100.0
@@ -44,10 +44,12 @@ func _ready():
 		var shift = -1
 		if i >= parsed.points.size():
 			shift = 0
+		var blocker = false
 		match points[i+shift][2]:
 			"wall":
 				new_area.collision_layer=0b1100
 				new_outside_segment.default_color = Color.gray
+				blocker = true
 			"window":
 				new_area.collision_layer = 0b0100
 				new_outside_segment.default_color = Color.lightblue * Color(1,1,1,0.3)
@@ -63,6 +65,10 @@ func _ready():
 		var b = Vector2(points[i][0],points[i][1])
 		new_segment.a = a
 		new_segment.b = b
+		
+		if blocker:
+			ship_shape_blockers.append([a,b])
+		
 		new_outside_segment.points = PoolVector2Array([a,b])
 		ship_shape.append(Vector2(points[i][0],points[i][1]))
 		new_collision_shape.shape = new_segment
