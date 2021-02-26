@@ -10,10 +10,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -246.486
-margin_top = -247.011
-margin_right = 237.514
-margin_bottom = 236.989
+margin_left = -238.935
+margin_top = -261.169
+margin_right = 245.065
+margin_bottom = 222.831
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -30,18 +30,15 @@ __meta__ = {
 "_edit_use_anchors_": true
 }
 
-[node name="port" type="TextEdit" parent="Panel/client_button"]
+[node name="port" type="LineEdit" parent="Panel/client_button"]
 margin_top = 82.0
 margin_right = 64.0
 margin_bottom = 102.0
 rect_pivot_offset = Vector2( -355.009, -62.9686 )
 hint_tooltip = "Port"
 text = "2020"
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
-[node name="name" type="TextEdit" parent="Panel/client_button"]
+[node name="name" type="LineEdit" parent="Panel/client_button"]
 margin_left = 247.676
 margin_top = 0.943878
 margin_right = 340.676
@@ -49,19 +46,15 @@ margin_bottom = 20.9439
 rect_pivot_offset = Vector2( 106.059, 20 )
 hint_tooltip = "Username"
 text = "dan"
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
-[node name="ship_name" type="TextEdit" parent="Panel/client_button"]
+[node name="ship_name" type="LineEdit" parent="Panel/client_button"]
 margin_left = 247.0
 margin_top = 44.0
 margin_right = 340.0
-margin_bottom = 102.0
+margin_bottom = 68.0
 rect_pivot_offset = Vector2( 106.059, 20 )
 hint_tooltip = "Ship name"
-text = "danship
-"
+text = "danship"
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -75,16 +68,13 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="ip" type="TextEdit" parent="Panel/client_button"]
+[node name="ip" type="LineEdit" parent="Panel/client_button"]
 margin_top = 45.0
 margin_right = 186.0
 margin_bottom = 65.0
 rect_pivot_offset = Vector2( -355.009, -62.9686 )
 hint_tooltip = "IP address"
 text = "127.0.0.1"
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="server_button" type="Button" parent="Panel"]
 margin_left = 51.0
@@ -97,13 +87,10 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="port" type="TextEdit" parent="Panel/server_button"]
+[node name="port" type="LineEdit" parent="Panel/server_button"]
 margin_left = 1.0
 margin_top = 41.2504
 margin_right = 65.0
 margin_bottom = 68.2504
 rect_pivot_offset = Vector2( -355.009, -62.9686 )
 text = "2020"
-__meta__ = {
-"_edit_use_anchors_": false
-}

@@ -11,6 +11,7 @@ var ship_shape = PoolVector2Array()
 var ship_shape_blockers = []
 var systems = []
 
+
 const SPEED = 100.0
 const ROTATION = 10000.0
 
@@ -76,34 +77,32 @@ func _ready():
 	$collision_poly.set_polygon(ship_shape)
 	$poly.set_polygon(ship_shape)
 	$"outside_layer/poly".set_polygon(ship_shape)
+	
+
+
 	for system in parsed.systems:
+		var new_system = null
+		var parent = self
 		match system.type:
 			"captain":	
-				var new_captain = load("res://shared/ship_subsystems/captain.tscn").instance()
-				systems.append(new_captain)
-				add_child(new_captain)
-				new_captain.set_position(Vector2(system.position[0], system.position[1]))
-				new_captain.server_side = server_side
+				new_system = load("res://shared/ship_subsystems/captain.tscn").instance()
 			"map":
-				var new_map = load("res://shared/ship_subsystems/map.tscn").instance()
-				systems.append(new_map)
-				add_child(new_map)
-				new_map.set_position(Vector2(system.position[0],system.position[1]))
-				new_map.server_side = server_side
+				new_system = load("res://shared/ship_subsystems/map.tscn").instance()
 			"weapons":
-				var new_weapons = load("res://shared/ship_subsystems/weapons.tscn").instance()
-				systems.append(new_weapons)
-				add_child(new_weapons)
-				new_weapons.set_position(Vector2(system.position[0],system.position[1]))
-				new_weapons.server_side = server_side
+				new_system = load("res://shared/ship_subsystems/weapons.tscn").instance()
 			"turret":
-				var new_turret = load("res://shared/ship_subsystems/turret.tscn").instance()
-				systems.append(new_turret)
-				$outside_layer.add_child(new_turret)
-				new_turret.set_position(Vector2(system.position[0],system.position[1]))
-				new_turret.server_side = server_side
+				new_system = load("res://shared/ship_subsystems/turret.tscn").instance()
+				parent = $outside_layer
+			"communications":
+				new_system = load("res://shared/ship_subsystems/communications.tscn").instance()
 			"_":
 				print("unknown system type")
+		
+		if new_system != null:
+			systems.append(new_system)
+			parent.add_child(new_system)
+			new_system.set_position(Vector2(system.position[0], system.position[1]))
+			new_system.server_side = server_side
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	if outside_view:

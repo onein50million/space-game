@@ -9,6 +9,8 @@ const BUFFER_LENGTH = 3 * NETWORK_UPDATE_INTERVAL
 const PLAYER_SPEED = 100.0
 const DEFAULT_ZOOM = 300.0
 
+const MISSION_FREQUENCY = 1000000
+
 const GAME_AREA = Rect2(-1000.0,-1000.0,2000.0,2000.0)
 const SAFE_DISTANCE = 100.0 #for spawning things
 # Called when the node enters the scene tree for the first time.

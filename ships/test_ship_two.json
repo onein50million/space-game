@@ -25,6 +25,10 @@
 		{
 			"type": "turret",
 			"position": [0.0,50.0]
+		},
+		{
+			"type": "communications",
+			"position": [-50,50]
 		}
 	],
 	"interior_walls":[

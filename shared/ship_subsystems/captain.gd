@@ -1,4 +1,4 @@
-extends Area2D
+extends Node2D
 
 
 # Declare member variables here. Examples:
@@ -6,7 +6,7 @@ extends Area2D
 # var b = "text"
 var type = "captain"
 var latest_data = {}
-
+var client_send_data = {}
 var server_side = false
 
 # Called when the node enters the scene tree for the first time.

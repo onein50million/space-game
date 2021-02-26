@@ -78,23 +78,24 @@ func _physics_process(delta):
 	input_buffer[input_buffer_head].rclick = last_input.rclick
 	cast_rays()
 	if server_side:
+		var ship = get_parent()
 		match at_console:
 			"none":
 				move(input_buffer[input_buffer_head])
 			"captain":
-				var ship = get_parent()
+
 				ship.inputs.forward = input_buffer[input_buffer_head].up
 				ship.inputs.backward = input_buffer[input_buffer_head].down
 				ship.inputs.left = input_buffer[input_buffer_head].left
 				ship.inputs.right = input_buffer[input_buffer_head].right
 			"weapons":
-				var ship = get_parent()
 				for system in ship.systems:
 					if system.type == "turret":
 						system.latest_data = {
 							"rotation": input_buffer[input_buffer_head].angle,
 							"is_firing": input_buffer[input_buffer_head].lclick
 						}
+
 		return
 		
 	if at_console == "none":
@@ -114,6 +115,8 @@ func _physics_process(delta):
 			print("too far behind")
 	elif at_console == "weapons":
 		$"..".outside_view = true
+	$"..".get_node("communications").is_open = (at_console == "communications")
+	
 	current_tick += 1
 	input_buffer_head = posmod(input_buffer_head + 1, Globals.BUFFER_LENGTH)
 #	input_buffer[input_buffer_head].interact = false

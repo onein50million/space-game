@@ -6,6 +6,7 @@ extends Sprite
 # var b = "text"
 var type = "map"
 var latest_data = {}
+var client_send_data = {}
 
 var server_side = false
 

@@ -14,6 +14,9 @@ var misc_objects = {}
 
 var misc_id = 0
 
+var time_last_mission_requested = 0
+var missions = []
+
 var current_tick = 0
 var current_camera = Camera2D.new()
 
@@ -30,6 +33,7 @@ func _ready():
 	var new_asteroid = spawn_body(asteroid_scene)
 func _process(delta):
 
+	process_systems()
 	network_process_accumulator += delta
 	if 	network_process_accumulator > 1.0/Globals.NETWORK_UPDATE_INTERVAL:
 		network_process_accumulator -= 1.0/Globals.NETWORK_UPDATE_INTERVAL
@@ -59,7 +63,15 @@ func network_process():
 	send_updates()
 
 
-
+func process_systems():
+	for ship in ship_list.values():
+		for system in ship.systems:
+			match system.type:
+				"communications":
+					system.latest_data.ship_name = ship.name
+					system.latest_data.missions = missions
+				"_":
+					pass
 func _physics_process(delta):
 	pass
 
@@ -80,6 +92,8 @@ func process_packet(received):
 			handle_join(received)
 		"input_update":
 			handle_input(received)
+		"systems_update":
+			handle_systems_update(received)
 		"ping":
 			send_command("ping_return", "pong")
 		_:
@@ -134,27 +148,46 @@ func handle_input(received):
 		return
 	var current_client = client_list[client_id]
 	
-	var captain_collisions = current_client.get_parent().get_node("captain").get_overlapping_areas()
-	var weapons_collisions = current_client.get_parent().get_node("weapons").get_overlapping_areas()
-	
-	
-	#TODO: Clean this up
-	if received.data.interact :
-		if current_client in captain_collisions:
-			if current_client.at_console == "none":
-				current_client.at_console = "captain"
-			else:
-				current_client.at_console = "none"
-		if current_client in weapons_collisions:
-			if current_client.at_console == "none":
-				current_client.at_console = "weapons"
-			else:
-				current_client.at_console = "none"
+	if received.data.interact:
+		handle_interact(received,current_client)
 
 	current_client.has_sent_packet = true
 	current_client.last_input = received.data.duplicate()
 	current_client.last_known_tick = received.tick
+
+
+func handle_systems_update(received):
+	var packet_ip = socket.get_packet_ip()
+	var packet_port = socket.get_packet_port()
+	var client_id = "%s:%s" % [packet_ip, packet_port]
+	if !client_list.has(client_id):
+		send_error("not_connected")
+		return
+	var current_client = client_list[client_id]
 	
+	if client_list[client_id].at_console == received.data.type:
+		match received.data.type:
+			"communications":
+				if received.data.systems_data.request_mission and OS.get_ticks_usec() - time_last_mission_requested > Globals.MISSION_FREQUENCY:
+					time_last_mission_requested = OS.get_ticks_usec()
+					new_mission()
+			"_":
+				pass
+#fun indent slide
+func handle_interact(received,current_client):
+	if current_client.at_console == "none":
+		for ship in ship_list.values():
+			for system in ship.systems:
+				if system.has_node("chair"):
+					var chair_collisions = system.get_node("chair").get_overlapping_areas()
+					for collision in chair_collisions:
+						if collision == current_client:
+							current_client.at_console = system.type
+							return
+	else:
+		current_client.at_console = "none"
+
+
 func send_error(message):
 	print("sent error: %s" % [message])
 	socket.put_var({
@@ -240,3 +273,21 @@ func spawn_body(body, is_ship = false):
 			new_body.set_position(random_location)
 			break
 	return new_body
+
+
+func new_mission():
+	var rng = RandomNumberGenerator.new()
+	rng.randomize()
+	var verbs = ["rescue", "kill", "destroy", "save", "identify"]
+	var adjectives = ["tasty", "hungry", "ferocious", "evil", "scary"]
+	var nouns = ["monsters", "pirates", "aliens", "bugs", "allies"]
+	
+	var verb = verbs[rng.randi_range(0,verbs.size()-1)]
+	var number = rng.randi_range(3,15)
+	var adjective = adjectives[rng.randi_range(0,adjectives.size()-1)]
+	var noun = nouns[rng.randi_range(0,nouns.size()-1)]
+	var mission_title = "%s the %s %s %s" %[verb,number,adjective,noun]
+	missions.append({
+		"title" : mission_title,
+		"complete": false
+	})

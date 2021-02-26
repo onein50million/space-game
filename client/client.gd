@@ -124,6 +124,12 @@ func network_process():
 	if state == "connected":
 		for player in player_list.values():
 			player.network_process()
+			for system in player.get_parent().systems:
+				var systems_update_send_data = {
+					"type" : system.type,
+					"systems_data" : system.client_send_data,
+				}
+				send_command("systems_update", systems_update_send_data)
 		send_command("input_update", local_player.last_input)
 		local_player.last_input.interact = false
 	

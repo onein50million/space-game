@@ -9,6 +9,7 @@ var latest_data = {
 	"rotation": 0,
 	"is_firing": false,
 }
+var client_send_data = {}
 const FIRE_RATE = 1000000 #in microseconds (usec)
 const RANGE = 1000
 
