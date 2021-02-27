@@ -19,6 +19,8 @@ var username = "default"
 var ship_name = "test"
 var menu
 
+
+
 var last_player_position = Vector2(0,0)
 var last_player_rotation = Vector2(0,0)
 var last_zoom = 1.0
@@ -39,7 +41,7 @@ var state = "unloaded"
 func _ready():
 	print("TEST")
 	state = "unconnected"
-
+	add_notification("initializing world")
 	add_child(world)
 
 	local_player.color = color
@@ -71,11 +73,10 @@ func _ready():
 	}
 	send_command("join_lobby" , join_lobby_data)
 	time_ping_sent = OS.get_ticks_usec()
+	add_notification("connecting to server")
 	state = "connecting"
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-
-
 	
 	local_player.last_input.up = Input.is_action_pressed("up")
 	local_player.last_input.down = Input.is_action_pressed("down")
@@ -132,7 +133,9 @@ func network_process():
 				send_command("systems_update", systems_update_send_data)
 		send_command("input_update", local_player.last_input)
 		local_player.last_input.interact = false
-	
+	elif state == "connecting" and local_player.current_tick > Globals.BUFFER_LENGTH:
+		add_notification("connection failed")
+		exit_scene("connection failed")
 func _physics_process(delta):
 	pass
 	
@@ -146,6 +149,7 @@ func process_packet(received):
 	match received.command:
 		"join_accepted":
 			state = "connected"
+			add_notification("connection succeeded")
 			var round_trip_time = float(OS.get_ticks_usec() - time_ping_sent)
 			print("round trip time: %s: " % round_trip_time)
 			var ticks_behind = (round_trip_time/2000000.0) / (1.0/Globals.NETWORK_UPDATE_INTERVAL)
@@ -156,17 +160,8 @@ func process_packet(received):
 			process_update(received)
 		"error":
 			print("Error received: %s" % received.msg)
-
-			get_tree().get_root().add_child(menu)
-			var canvas = CanvasLayer.new()
-			menu.add_child(canvas)
-			var error_dialog = AcceptDialog.new()
-
-			canvas.add_child(error_dialog)
-			error_dialog.set_text(received.msg)
-			error_dialog.popup_centered()
+			exit_scene(received.msg)
 			
-			queue_free()
 		"ping_return":
 			var round_trip_time = float(OS.get_ticks_usec() - time_ping_sent)
 			var ticks_behind = (round_trip_time/2000000.0) / (1.0/Globals.NETWORK_UPDATE_INTERVAL)
@@ -261,3 +256,26 @@ func update_background():
 		posmod(local_player.global_position.x*PARALLAX_EFFECT, 512),
 		posmod(local_player.global_position.y*PARALLAX_EFFECT, 512))
 	
+
+func add_notification(message):
+	var notifications_box = $ui/notifications_scroll/notifications_vbox
+	var new_label = Label.new()
+	notifications_box.add_child(new_label)
+	new_label.text = message
+
+func exit_scene(error):
+#	menu.get_parent().remove_child(menu)
+
+
+
+	get_tree().get_root().add_child(menu)
+	var canvas = CanvasLayer.new()
+	menu.add_child(canvas)
+	var error_dialog = AcceptDialog.new()
+	
+	canvas.add_child(error_dialog)
+	error_dialog.set_text(error)
+	error_dialog.popup_centered()
+	
+
+	queue_free()
