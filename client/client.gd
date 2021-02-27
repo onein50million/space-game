@@ -91,6 +91,7 @@ func _process(delta):
 	
 	var viewport_mouse_position = get_viewport().get_mouse_position()
 	var screen_center = get_viewport().get_visible_rect().size / 2.0
+	
 	var zoom_ratio = clamp(viewport_mouse_position.abs().distance_to(screen_center) / Globals.DEFAULT_ZOOM,0.2,1.0)
 	
 	if Input.is_action_pressed("overview"):
@@ -107,8 +108,12 @@ func _process(delta):
 	var zoom_delta = last_zoom/zoom_ratio
 	var player_position_delta = last_player_position - local_player.global_position
 	var player_rotation_delta = last_player_rotation - local_player.global_rotation
-	var new_transform = get_viewport().canvas_transform.translated(player_position_delta)
 
+	var new_transform = get_viewport().canvas_transform.translated(player_position_delta)
+	var delta_center = new_transform.xform(local_player.global_position) - screen_center
+	
+	new_transform.origin -= (delta_center)
+	
 	new_transform.origin += -screen_center
 	new_transform = new_transform.scaled(Vector2(zoom_delta,zoom_delta))
 	new_transform = new_transform.rotated(player_rotation_delta)
@@ -265,8 +270,6 @@ func add_notification(message):
 
 func exit_scene(error):
 #	menu.get_parent().remove_child(menu)
-
-
 
 	get_tree().get_root().add_child(menu)
 	var canvas = CanvasLayer.new()
