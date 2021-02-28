@@ -16,7 +16,7 @@ anchor_right = 1.0
 margin_left = -212.0
 margin_bottom = 167.0
 scroll_horizontal_enabled = false
-scroll_vertical = 169
+scroll_vertical = 100
 __meta__ = {
 "_edit_use_anchors_": false
 }

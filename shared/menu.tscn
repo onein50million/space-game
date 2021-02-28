@@ -21,7 +21,10 @@ __meta__ = {
 }
 
 [node name="client_button" type="Button" parent="Panel"]
-anchor_right = 0.0785124
+anchor_left = -0.00206612
+anchor_top = 0.00510167
+anchor_right = 0.0764463
+anchor_bottom = 0.046424
 margin_left = 52.0
 margin_top = 15.0
 margin_right = 200.0
@@ -33,56 +36,68 @@ __meta__ = {
 }
 
 [node name="port" type="LineEdit" parent="Panel/client_button"]
-margin_top = 82.0
-margin_right = 64.0
-margin_bottom = 102.0
+margin_top = 89.0
+margin_right = 130.0
+margin_bottom = 133.0
 rect_pivot_offset = Vector2( -355.009, -62.9686 )
 hint_tooltip = "Port"
 text = "2020"
+placeholder_text = "Port"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="name" type="LineEdit" parent="Panel/client_button"]
-margin_left = 247.676
-margin_top = 0.943878
-margin_right = 340.676
-margin_bottom = 20.9439
+margin_left = 246.861
+margin_right = 376.861
+margin_bottom = 44.0
 rect_pivot_offset = Vector2( 106.059, 20 )
 hint_tooltip = "Username"
 text = "dan"
+placeholder_text = "Player Name"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="ship_name" type="LineEdit" parent="Panel/client_button"]
-margin_left = 247.0
-margin_top = 44.0
-margin_right = 340.0
-margin_bottom = 68.0
+margin_left = 247.342
+margin_top = 46.0
+margin_right = 377.342
+margin_bottom = 90.0
 rect_pivot_offset = Vector2( 106.059, 20 )
 hint_tooltip = "Ship name"
 text = "danship"
+placeholder_text = "Ship Name"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="color" type="ColorPickerButton" parent="Panel/client_button"]
-margin_left = 369.841
-margin_right = 411.841
-margin_bottom = 20.0
+margin_left = 378.676
+margin_right = 420.676
+margin_bottom = 32.0
 color = Color( 1, 1, 1, 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="ip" type="LineEdit" parent="Panel/client_button"]
-margin_top = 45.0
+margin_top = 46.0
 margin_right = 186.0
-margin_bottom = 65.0
+margin_bottom = 90.0
 rect_pivot_offset = Vector2( -355.009, -62.9686 )
 hint_tooltip = "IP address"
 text = "127.0.0.1"
+placeholder_text = "IP Address"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="server_button" type="Button" parent="Panel"]
 margin_left = 51.0
-margin_top = 169.0
-margin_right = 135.0
-margin_bottom = 194.0
+margin_top = 171.649
+margin_right = 173.0
+margin_bottom = 211.649
 text = "Start Server"
 script = ExtResource( 2 )
 __meta__ = {
@@ -90,9 +105,9 @@ __meta__ = {
 }
 
 [node name="port" type="LineEdit" parent="Panel/server_button"]
-margin_left = 1.0
 margin_top = 41.2504
-margin_right = 65.0
-margin_bottom = 68.2504
+margin_right = 130.0
+margin_bottom = 85.2504
 rect_pivot_offset = Vector2( -355.009, -62.9686 )
 text = "2020"
+placeholder_text = "Port"
