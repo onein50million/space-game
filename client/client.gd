@@ -8,6 +8,7 @@ onready var ship_scene = load("res://shared/ship.tscn")
 onready var star_scene = load("res://shared/stars.tscn")
 onready var asteroid_scene = load("res://shared/asteroid.tscn")
 onready var world = load("res://shared/world.tscn").instance()
+
 # Declare member variables here. Examples:
 # var a = 2
 # var b = "text"
@@ -88,6 +89,9 @@ func _process(delta):
 		local_player.last_input.interact = true
 	var mouse_position = local_player.get_local_mouse_position()
 	local_player.last_input.angle = mouse_position.angle()
+	
+	
+
 	
 	var viewport_mouse_position = get_viewport().get_mouse_position()
 	var screen_center = get_viewport().get_visible_rect().size / 2.0
@@ -238,7 +242,9 @@ func process_update(received):
 		player_list[received_player.username].last_known_rotation = received_player.rotation
 		player_list[received_player.username].last_known_tick = received_player.last_known_tick
 		player_list[received_player.username].at_console = received_player.at_console
-
+		player_list[received_player.username].health = received_player.health
+		if received_player.died:
+			player_list[received_player.username].died = true
 func send_command(command, data):
 	socket.put_var({
 		"command": command,

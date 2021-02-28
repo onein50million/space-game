@@ -8,7 +8,7 @@ func _ready():
 		set_physics_process(false)
 		visible = false
 
-func _process(delta):
+func _process(_delta):
 	update()
 
 func _draw():

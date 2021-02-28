@@ -1,7 +1,7 @@
 extends Area2D
 
 onready var player_resource = load("res://shared/player.tscn")
-
+onready var corpse_scene = load("res://shared/corpse.tscn")
 # Declare member variables here. Examples:
 # var a = 2
 # var b = "text"
@@ -10,6 +10,10 @@ const BOUNDRY = 10.0
 
 var input_buffer = []
 var input_buffer_head = 0
+
+const MAX_HEALTH = 100
+var health = MAX_HEALTH
+var died = false
 
 var last_input = {
 			"up" : false,
@@ -55,7 +59,7 @@ func _ready():
 
 	$"player_text/name".set_text(username)
 	set_modulate(color)
-	for i in range(0, Globals.BUFFER_LENGTH):
+	for _i in range(0, Globals.BUFFER_LENGTH):
 		input_buffer.append( {
 			"up" : false,
 			"down" : false,
@@ -67,7 +71,8 @@ func _ready():
 			"rclick" : false,
 		})
 	print(server_side)
-func _physics_process(delta):
+func _physics_process(_delta):	
+
 	input_buffer[input_buffer_head].up = last_input.up
 	input_buffer[input_buffer_head].down = last_input.down
 	input_buffer[input_buffer_head].left = last_input.left
@@ -78,6 +83,11 @@ func _physics_process(delta):
 	input_buffer[input_buffer_head].rclick = last_input.rclick
 	cast_rays()
 	if server_side:
+		
+		if health <= 0.0:
+			die()
+			died = true #sent to the client
+		
 		var ship = get_parent()
 		match at_console:
 			"none":
@@ -97,7 +107,11 @@ func _physics_process(delta):
 						}
 
 		return
-		
+	
+	if died:
+		die()
+		died = false
+
 	if at_console == "none":
 		if is_local:
 			$"..".outside_view = false
@@ -123,13 +137,13 @@ func _physics_process(delta):
 		if is_local:
 			$"..".get_node("communications").is_open = true
 	
+	
 	current_tick += 1
 	input_buffer_head = posmod(input_buffer_head + 1, Globals.BUFFER_LENGTH)
 #	input_buffer[input_buffer_head].interact = false
 
 func cast_rays():
 	var space_state =  get_world_2d().direct_space_state
-	var present_input = input_buffer[input_buffer_head]
 
 	var ray_direction : Vector2 = Vector2.ZERO
 	
@@ -168,6 +182,10 @@ func cast_rays():
 func network_process():
 	pass
 
+
+func _process(_delta):
+	update()
+
 func move(inputs):
 	$sprite.set_rotation(inputs.angle)
 	var delta = 1.0/Globals.NETWORK_UPDATE_INTERVAL
@@ -192,16 +210,11 @@ func move(inputs):
 	elif inputs.left and allowed_directions.left:
 		input_vector = Vector2.LEFT
 
-
-#	input_vector = input_vector.rotated(global_rotation)
-#	if inputs.up:
-#		input_vector += Vector2.UP
-#	if inputs.down:
-#		input_vector += Vector2.DOWN
-#	if inputs.left:
-#		input_vector += Vector2.LEFT
-#	if inputs.right:
-#		input_vector += Vector2.RIGHT
-
-
 	position += (Globals.PLAYER_SPEED * input_vector.normalized() * delta * collision_check)
+
+func die():
+	var new_corpse = corpse_scene.instance()
+	get_parent().add_child(new_corpse)
+	new_corpse.global_position = global_position
+	health = MAX_HEALTH
+	position = Vector2(0,0)

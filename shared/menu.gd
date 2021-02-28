@@ -1,6 +1,6 @@
 extends Node
 
-func _process(delta):
+func _process(_delta):
 	#prevents wierd things form happening when transform changes at last second during scene transition
 	get_viewport().canvas_transform.origin = Vector2(0,0)
 	get_viewport().canvas_transform.x = Vector2(1,0)

@@ -25,7 +25,7 @@ func _ready():
 	
 	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
+func _process(_delta):
 	client_send_data.request_mission = $console/PanelContainer/left_vbox/request_mission.pressed
 	#lazily setting it each frame even though it shouldn't change
 	$console/PanelContainer/left_vbox/ship_name.text = "Ship: %s" % latest_data.ship_name

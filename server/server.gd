@@ -29,8 +29,7 @@ onready var world = load("res://shared/world.tscn").instance()
 func _ready():
 	add_child(world)
 	socket.listen(port)
-
-	var new_asteroid = spawn_body(asteroid_scene)
+	spawn_body(asteroid_scene)
 func _process(delta):
 
 	process_systems()
@@ -72,7 +71,7 @@ func process_systems():
 					system.latest_data.missions = missions
 				"_":
 					pass
-func _physics_process(delta):
+func _physics_process(_delta):
 	pass
 
 func process_packet(received):
@@ -149,7 +148,7 @@ func handle_input(received):
 	var current_client = client_list[client_id]
 	
 	if received.data.interact:
-		handle_interact(received,current_client)
+		handle_interact(current_client)
 
 	current_client.has_sent_packet = true
 	current_client.last_input = received.data.duplicate()
@@ -163,9 +162,9 @@ func handle_systems_update(received):
 	if !client_list.has(client_id):
 		send_error("not_connected")
 		return
-	var current_client = client_list[client_id]
 	
-	if client_list[client_id].at_console == received.data.type:
+	var current_client = client_list[client_id]
+	if current_client.at_console == received.data.type:
 		match received.data.type:
 			"communications":
 				if received.data.systems_data.request_mission and OS.get_ticks_usec() - time_last_mission_requested > Globals.MISSION_FREQUENCY:
@@ -174,7 +173,7 @@ func handle_systems_update(received):
 			"_":
 				pass
 #fun indent slide
-func handle_interact(received,current_client):
+func handle_interact(current_client):
 	if current_client.at_console == "none":
 		for ship in ship_list.values():
 			for system in ship.systems:
@@ -234,12 +233,15 @@ func send_updates():
 		send_client_data.clients.append({
 			"position" : client.get_position(),
 			"rotation" : client.get_node("sprite").get_rotation(),
+			"health": client.health,
+			"died": client.died,
 			"at_console" : client.at_console,
 			"ship" : client.get_parent().name,
 			"username" : client.username,
 			"color" : client.color,
 			"last_known_tick" : client.last_known_tick,
 		})
+		client.died = false
 	for client in client_list.values():
 		socket.set_dest_address(client.ip, client.port)
 		send_command("update", send_client_data)

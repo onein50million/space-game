@@ -25,7 +25,7 @@ func _ready():
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _physics_process(delta):
+func _physics_process(_delta):
 	var delta_fire = OS.get_ticks_usec() - last_fired
 	if delta_fire > FIRE_RATE and latest_data.is_firing:
 		$muzzle_blast.emitting = true
