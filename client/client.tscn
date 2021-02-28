@@ -22,12 +22,12 @@ __meta__ = {
 }
 
 [node name="notifications_vbox" type="VBoxContainer" parent="ui/notifications_scroll"]
-margin_right = 69.0
-margin_bottom = 13.0
+margin_right = 138.0
+margin_bottom = 34.0
 
 [node name="Label" type="Label" parent="ui/notifications_scroll/notifications_vbox"]
-margin_right = 69.0
-margin_bottom = 13.0
+margin_right = 138.0
+margin_bottom = 34.0
 text = "notifications log"
 
 [node name="quit_button" type="Button" parent="ui"]

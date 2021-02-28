@@ -224,15 +224,21 @@ func send_updates():
 			"position" : object.get_position(),
 			"rotation" : object.get_rotation(),
 		})
+		
+	#we want to see where disconnected people are standing (no ghosts allowed)
+	var iterate_clients = []
 	for client_id in client_list:
+		iterate_clients.append(client_list[client_id])
+	iterate_clients += disconnected_client_list
+	for client in iterate_clients:
 		send_client_data.clients.append({
-			"position" : client_list[client_id].get_position(),
-			"rotation" : client_list[client_id].get_node("sprite").get_rotation(),
-			"at_console" : client_list[client_id].at_console,
-			"ship" : client_list[client_id].get_parent().name,
-			"username" : client_list[client_id].username,
-			"color" : client_list[client_id].color,
-			"last_known_tick" : client_list[client_id].last_known_tick,
+			"position" : client.get_position(),
+			"rotation" : client.get_node("sprite").get_rotation(),
+			"at_console" : client.at_console,
+			"ship" : client.get_parent().name,
+			"username" : client.username,
+			"color" : client.color,
+			"last_known_tick" : client.last_known_tick,
 		})
 	for client in client_list.values():
 		socket.set_dest_address(client.ip, client.port)

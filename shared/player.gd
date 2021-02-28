@@ -99,11 +99,14 @@ func _physics_process(delta):
 		return
 		
 	if at_console == "none":
-		$"..".outside_view = false
+		if is_local:
+			$"..".outside_view = false
+			$"..".get_node("communications").is_open = false
 		set_position(last_known_position)
 		$sprite.set_rotation(last_known_rotation)
 		var tick_delta = current_tick - last_known_tick - 1 #magic one, do not remove. TODO: figure out what it does. oops it's gone
 		if tick_delta < Globals.BUFFER_LENGTH:
+			$player_text/discconected_sprite.visible = false
 			for i in range(-tick_delta, 1):
 	#			print("i: %s" % i)
 				var present_input = input_buffer[posmod(input_buffer_head + i, Globals.BUFFER_LENGTH)]
@@ -112,10 +115,13 @@ func _physics_process(delta):
 				cast_rays()
 				move(present_input)
 		else:
-			print("too far behind")
+			$player_text/discconected_sprite.visible = true
 	elif at_console == "weapons":
-		$"..".outside_view = true
-	$"..".get_node("communications").is_open = (at_console == "communications")
+		if is_local:
+			$"..".outside_view = true
+	if at_console == "communications":
+		if is_local:
+			$"..".get_node("communications").is_open = true
 	
 	current_tick += 1
 	input_buffer_head = posmod(input_buffer_head + 1, Globals.BUFFER_LENGTH)
