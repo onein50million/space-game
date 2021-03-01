@@ -8,6 +8,7 @@ onready var ship_scene = load("res://shared/ship.tscn")
 onready var star_scene = load("res://shared/stars.tscn")
 onready var asteroid_scene = load("res://shared/asteroid.tscn")
 onready var world = load("res://shared/world.tscn").instance()
+onready var laser_scene = load("res://shared/items/laser.tscn")
 
 # Declare member variables here. Examples:
 # var a = 2
@@ -234,6 +235,12 @@ func process_update(received):
 		misc_objects[received_object.misc_id].set_position(received_object.position)
 		misc_objects[received_object.misc_id].set_rotation(received_object.rotation)
 	
+	for received_shot in received.data.shots:
+		var new_laser = laser_scene.instance()
+		ship_list[received_shot.ship].add_child(new_laser)
+		new_laser.points[0] = received_shot.laser_start
+		new_laser.points[1] = received_shot.laser_end
+
 	for received_player in received.data.clients:
 		if !player_list.has(received_player.username):
 			var new_player = player_scene.instance()

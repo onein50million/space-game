@@ -17,6 +17,8 @@ var misc_id = 0
 var time_last_mission_requested = 0
 var missions = []
 
+var unprocessed_shots = []
+
 var current_tick = 0
 var current_camera = Camera2D.new()
 
@@ -154,7 +156,6 @@ func handle_input(received):
 	current_client.last_input = received.data.duplicate()
 	current_client.last_known_tick = received.tick
 
-
 func handle_systems_update(received):
 	var packet_ip = socket.get_packet_ip()
 	var packet_port = socket.get_packet_port()
@@ -198,7 +199,8 @@ func send_updates():
 	var send_client_data = {
 		"clients": [],
 		"ships" : [],
-		"misc_objects" : []
+		"misc_objects" : [],
+		"shots": [],
 	}
 	for ship in ship_list:
 		var subsystem_send = []
@@ -243,6 +245,9 @@ func send_updates():
 			"last_known_tick" : client.last_known_tick,
 		})
 		client.died = false
+		send_client_data.shots = unprocessed_shots.duplicate(true)
+		unprocessed_shots = []
+		
 	for client in client_list.values():
 		socket.set_dest_address(client.ip, client.port)
 		send_command("update", send_client_data)

@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://assets/medkit.png" type="Texture" id=1]
+[ext_resource path="res://shared/items/medkit.gd" type="Script" id=2]
+
+[node name="medkit" type="Sprite"]
+position = Vector2( 1.5026, 11.6673 )
+texture = ExtResource( 1 )
+script = ExtResource( 2 )

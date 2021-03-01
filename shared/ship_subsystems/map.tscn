@@ -18,10 +18,10 @@ script = ExtResource( 4 )
 script = ExtResource( 2 )
 
 [node name="radar_distance" type="Label" parent="."]
-margin_left = -21.3153
-margin_top = 11.108
-margin_right = -11.3153
-margin_bottom = 24.108
+margin_left = -21.0
+margin_top = 11.0
+margin_right = -11.0
+margin_bottom = 24.0
 custom_fonts/font = SubResource( 1 )
 custom_colors/font_color = Color( 0, 1, 0, 1 )
 text = "69"

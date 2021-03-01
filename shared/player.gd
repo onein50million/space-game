@@ -11,6 +11,9 @@ const BOUNDRY = 10.0
 var input_buffer = []
 var input_buffer_head = 0
 
+var position_buffer = []
+var position_buffer_head = 0
+
 const MAX_HEALTH = 100
 var health = MAX_HEALTH
 var died = false
@@ -64,15 +67,17 @@ func _ready():
 	set_modulate(color)
 	for _i in range(0, Globals.BUFFER_LENGTH):
 		input_buffer.append(last_input.duplicate(true))
-	print(server_side)
-func _physics_process(_delta):	
+		position_buffer.append(Vector2(0,0))
 	
+	for item in $sprite.get_children():
+		item.server_side = server_side
+
+func _physics_process(_delta):	
 	for input in input_buffer[input_buffer_head]:
 		input_buffer[input_buffer_head][input] = last_input[input]
 	
 	cast_rays()
 	if server_side:
-		
 		if health <= 0.0:
 			die()
 			died = true #sent to the client
@@ -81,6 +86,7 @@ func _physics_process(_delta):
 		match at_console:
 			"none":
 				move(input_buffer[input_buffer_head])
+				$sprite/gun.firing = (input_buffer[input_buffer_head].lclick and input_buffer[input_buffer_head].slot == 0)
 			"captain":
 
 				ship.inputs.forward = input_buffer[input_buffer_head].up
@@ -132,10 +138,12 @@ func _physics_process(_delta):
 	if at_console == "communications":
 		if is_local:
 			$"..".get_node("communications").is_open = true
-	
-	
+			
+			
+	position_buffer[position_buffer_head] = get_position()
 	current_tick += 1
 	input_buffer_head = posmod(input_buffer_head + 1, Globals.BUFFER_LENGTH)
+	position_buffer_head = posmod(position_buffer_head + 1, Globals.BUFFER_LENGTH)
 	previous_last_known_slot = last_known_slot
 #	input_buffer[input_buffer_head].interact = false
 

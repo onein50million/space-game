@@ -48,11 +48,11 @@ func _ready():
 		var blocker = false
 		match points[i+shift][2]:
 			"wall":
-				new_area.collision_layer=0b1100
+				new_area.collision_layer=0b11100
 				new_outside_segment.default_color = Color.gray
 				blocker = true
 			"window":
-				new_area.collision_layer = 0b0100
+				new_area.collision_layer = 0b00100
 				new_outside_segment.default_color = Color.lightblue * Color(1,1,1,0.3)
 			"_":
 				print("unknown wall type")
