@@ -15,6 +15,8 @@ const MAX_HEALTH = 100
 var health = MAX_HEALTH
 var died = false
 
+var previous_last_known_slot = 0
+var last_known_slot = 0
 var last_input = {
 			"up" : false,
 			"down" : false,
@@ -24,6 +26,7 @@ var last_input = {
 			"interact" : false,
 			"lclick" : false,
 			"rclick" : false,
+			"slot": 0,
 		}
 
 var color = Color.white
@@ -60,27 +63,13 @@ func _ready():
 	$"player_text/name".set_text(username)
 	set_modulate(color)
 	for _i in range(0, Globals.BUFFER_LENGTH):
-		input_buffer.append( {
-			"up" : false,
-			"down" : false,
-			"left" : false,
-			"right" : false,
-			"angle" : PI/2.0,
-			"interact" : false,
-			"lclick" : false,
-			"rclick" : false,
-		})
+		input_buffer.append(last_input.duplicate(true))
 	print(server_side)
 func _physics_process(_delta):	
-
-	input_buffer[input_buffer_head].up = last_input.up
-	input_buffer[input_buffer_head].down = last_input.down
-	input_buffer[input_buffer_head].left = last_input.left
-	input_buffer[input_buffer_head].right = last_input.right
-	input_buffer[input_buffer_head].angle = last_input.angle
-	input_buffer[input_buffer_head].interact = last_input.interact
-	input_buffer[input_buffer_head].lclick = last_input.lclick
-	input_buffer[input_buffer_head].rclick = last_input.rclick
+	
+	for input in input_buffer[input_buffer_head]:
+		input_buffer[input_buffer_head][input] = last_input[input]
+	
 	cast_rays()
 	if server_side:
 		
@@ -114,22 +103,29 @@ func _physics_process(_delta):
 
 	if at_console == "none":
 		if is_local:
+			for slot in $"../../ui/item_slots".get_children():
+				slot.selected = false
+			$"../../ui/item_slots".get_children()[last_known_slot].selected = true
 			$"..".outside_view = false
 			$"..".get_node("communications").is_open = false
 		set_position(last_known_position)
 		$sprite.set_rotation(last_known_rotation)
+		
 		var tick_delta = current_tick - last_known_tick - 1 #magic one, do not remove. TODO: figure out what it does. oops it's gone
 		if tick_delta < Globals.BUFFER_LENGTH:
-			$player_text/discconected_sprite.visible = false
+			$player_text/disconected_sprite.visible = false
+			var slot_changed = false
+			if previous_last_known_slot != last_known_slot:
+				slot_changed = true
 			for i in range(-tick_delta, 1):
-	#			print("i: %s" % i)
 				var present_input = input_buffer[posmod(input_buffer_head + i, Globals.BUFFER_LENGTH)]
-	#			print("input down: %s" % present_input.down)
-	#			print("input_buffer_head: %s" % input_buffer_head)
+
 				cast_rays()
+				if slot_changed:
+					$"../../ui/item_slots".get_children()[present_input.slot].calculate_lifetime(1.0/Globals.NETWORK_UPDATE_INTERVAL)
 				move(present_input)
 		else:
-			$player_text/discconected_sprite.visible = true
+			$player_text/disconected_sprite.visible = true
 	elif at_console == "weapons":
 		if is_local:
 			$"..".outside_view = true
@@ -140,6 +136,7 @@ func _physics_process(_delta):
 	
 	current_tick += 1
 	input_buffer_head = posmod(input_buffer_head + 1, Globals.BUFFER_LENGTH)
+	previous_last_known_slot = last_known_slot
 #	input_buffer[input_buffer_head].interact = false
 
 func cast_rays():

@@ -85,13 +85,25 @@ func _process(delta):
 	local_player.last_input.right = Input.is_action_pressed("right")
 	local_player.last_input.lclick = Input.is_action_pressed("lclick")
 	local_player.last_input.rclick = Input.is_action_pressed("rclick")
+
+	if Input.is_action_pressed("slot0"):
+		local_player.last_input.slot = 0
+	if Input.is_action_pressed("slot1"):
+		local_player.last_input.slot = 1
+	if Input.is_action_pressed("slot2"):
+		local_player.last_input.slot = 2
+
+
+#	for slot in $ui/item_slots.get_children():
+#		slot.selected = false
+#	$ui/item_slots.get_children()[local_player.last_input.slot].selected = true
+	
+
 	if Input.is_action_just_pressed("interact"):
 		local_player.last_input.interact = true
 	var mouse_position = local_player.get_local_mouse_position()
 	local_player.last_input.angle = mouse_position.angle()
 	
-	
-
 	
 	var viewport_mouse_position = get_viewport().get_mouse_position()
 	var screen_center = get_viewport().get_visible_rect().size / 2.0
@@ -134,12 +146,12 @@ func network_process():
 	if state == "connected":
 		for player in player_list.values():
 			player.network_process()
-			for system in player.get_parent().systems:
-				var systems_update_send_data = {
-					"type" : system.type,
-					"systems_data" : system.client_send_data,
-				}
-				send_command("systems_update", systems_update_send_data)
+		for system in local_player.get_parent().systems:
+			var systems_update_send_data = {
+				"type" : system.type,
+				"systems_data" : system.client_send_data,
+			}
+			send_command("systems_update", systems_update_send_data)
 		send_command("input_update", local_player.last_input)
 		local_player.last_input.interact = false
 	elif state == "connecting" and local_player.current_tick > Globals.BUFFER_LENGTH:
@@ -240,9 +252,11 @@ func process_update(received):
 #		local_player.last_known_tick = received.tick
 		player_list[received_player.username].last_known_position = received_player.position
 		player_list[received_player.username].last_known_rotation = received_player.rotation
+		player_list[received_player.username].last_known_slot = received_player.slot
 		player_list[received_player.username].last_known_tick = received_player.last_known_tick
 		player_list[received_player.username].at_console = received_player.at_console
 		player_list[received_player.username].health = received_player.health
+
 		if received_player.died:
 			player_list[received_player.username].died = true
 func send_command(command, data):

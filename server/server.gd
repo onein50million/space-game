@@ -235,6 +235,7 @@ func send_updates():
 			"rotation" : client.get_node("sprite").get_rotation(),
 			"health": client.health,
 			"died": client.died,
+			"slot": client.last_input.slot,
 			"at_console" : client.at_console,
 			"ship" : client.get_parent().name,
 			"username" : client.username,

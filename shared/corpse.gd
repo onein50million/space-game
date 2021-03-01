@@ -4,7 +4,7 @@ const MAX_LIFETIME = 10.0
 var lifetime = MAX_LIFETIME
 
 func _ready():
-	pass
+	$blood_explosion.emitting = true
 
 func _process(delta):
 

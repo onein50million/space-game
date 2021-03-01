@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://assets/corpse.png" type="Texture" id=1]
 [ext_resource path="res://shared/corpse.gd" type="Script" id=2]
@@ -37,6 +37,20 @@ scale_random = 0.2
 scale_curve = SubResource( 2 )
 color = Color( 1, 0, 0, 1 )
 
+[sub_resource type="ParticlesMaterial" id=8]
+flag_disable_z = true
+spread = 180.0
+gravity = Vector3( 0, 98, 0 )
+initial_velocity = 200.0
+initial_velocity_random = 0.5
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+damping = 50.0
+damping_random = 0.5
+scale = 4.0
+scale_random = 0.5
+color = Color( 1, 0, 0, 1 )
+
 [node name="corpse" type="Sprite"]
 texture = ExtResource( 1 )
 script = ExtResource( 2 )
@@ -45,3 +59,11 @@ script = ExtResource( 2 )
 amount = 64
 lifetime = 2.0
 process_material = SubResource( 3 )
+
+[node name="blood_explosion" type="Particles2D" parent="."]
+emitting = false
+amount = 64
+lifetime = 100.0
+one_shot = true
+explosiveness = 1.0
+process_material = SubResource( 8 )

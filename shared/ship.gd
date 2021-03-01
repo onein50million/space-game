@@ -97,7 +97,6 @@ func _ready():
 				new_system = load("res://shared/ship_subsystems/communications.tscn").instance()
 			"_":
 				print("unknown system type")
-		
 		if new_system != null:
 			systems.append(new_system)
 			parent.add_child(new_system)
