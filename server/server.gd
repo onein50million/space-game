@@ -131,6 +131,7 @@ func handle_join(received):
 	new_player.server_side = true
 	if not ship_list.has(received.data.ship):
 		var new_ship = spawn_body(ship_scene, true)
+		new_ship.ship_type = received.data.ship_type
 		new_ship.server_side = true
 		new_ship.set_name(received.data.ship)
 		ship_list[received.data.ship] = new_ship
@@ -215,6 +216,7 @@ func send_updates():
 
 		send_client_data.ships.append({
 			"name" : ship,
+			"ship_type":ship_list[ship].ship_type,
 			"position" : ship_list[ship].get_position(),
 			"rotation" : ship_list[ship].get_rotation(),
 			"velocity" : ship_list[ship].get_linear_velocity(),

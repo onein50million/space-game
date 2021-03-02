@@ -18,6 +18,7 @@ var color = Color.blue
 var ip = "127.0.0.1"
 var port = 2020
 var username = "default"
+var ship_type = "test_ship_two.json"
 var ship_name = "test"
 var menu
 
@@ -57,10 +58,12 @@ func _ready():
 
 	
 	var new_ship = ship_scene.instance()
+	new_ship.ship_type = ship_type
 	ship_list[ship_name] = new_ship
 	add_child(new_ship)
 	new_ship.add_child(local_player)
 	new_ship.set_name(ship_name)
+
 	
 	var new_transform = get_viewport().canvas_transform.translated(get_viewport().size/2.0)
 	get_viewport().canvas_transform = new_transform
@@ -75,6 +78,7 @@ func _ready():
 		"username" : local_player.username,
 		"color" : local_player.color,
 		"ship" : ship_name,
+		"ship_type": ship_type,
 	}
 	send_command("join_lobby" , join_lobby_data)
 	time_ping_sent = OS.get_ticks_usec()
@@ -218,6 +222,7 @@ func process_update(received):
 	for received_ship in received.data.ships:
 		if not ship_list.has(received_ship.name):
 			var new_ship = ship_scene.instance()
+			new_ship.ship_type = received_ship.ship_type
 			add_child(new_ship)
 			new_ship.set_mode(RigidBody2D.MODE_KINEMATIC)
 			new_ship.set_name(received_ship.name)

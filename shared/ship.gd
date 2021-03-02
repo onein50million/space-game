@@ -11,6 +11,8 @@ var ship_shape = PoolVector2Array()
 var ship_shape_blockers = []
 var systems = []
 
+var ship_type = "test_ship_two.json"
+
 var max_health = 10000.0
 var health = max_health
 
@@ -27,8 +29,10 @@ var inputs = {
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	yield(get_tree(), "idle_frame")
 	var file = File.new()
-	print("file open: %s" % file.open("res://ships/test_ship_two.json",file.READ))
+	print(ship_type)
+	print("file open: %s" % file.open("res://ships/%s" % ship_type,file.READ))
 	var parsed = parse_json(file.get_as_text())
 	file.close()
 	var reversed_points = parsed.points.duplicate(true)

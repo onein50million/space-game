@@ -1,0 +1,36 @@
+{
+	"ship_name": "big_ship",
+	"points": [
+		[0.0,-2000.0,"window"],
+		[800.0,-800.0,"wall"],
+		[900.0,-100.0,"window"],
+		[900.0,100.0,"wall"],
+		[1000,1600.0,"wall"],
+		[400.0,800.0, "wall"],
+
+	],
+	"systems":[
+		{
+			"type": "captain",
+			"position": [0.0,0.0]
+		},
+		{
+			"type": "map",
+			"position":[0.0,-100.0]
+		},
+		{
+			"type": "weapons",
+			"position":[0.0,50]
+		},
+		{
+			"type": "turret",
+			"position": [0.0,50.0]
+		},
+		{
+			"type": "communications",
+			"position": [-50,50]
+		}
+	],
+	"interior_walls":[
+	]
+}

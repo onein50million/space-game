@@ -12,10 +12,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -238.935
-margin_top = -261.169
-margin_right = 245.065
-margin_bottom = 222.831
+margin_left = -415.5
+margin_top = -242.0
+margin_right = 415.5
+margin_bottom = 242.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -111,3 +111,25 @@ margin_bottom = 85.2504
 rect_pivot_offset = Vector2( -355.009, -62.9686 )
 text = "2020"
 placeholder_text = "Port"
+
+[node name="ship_list_container" type="ScrollContainer" parent="Panel"]
+margin_left = 525.144
+margin_top = 63.4692
+margin_right = 803.144
+margin_bottom = 470.469
+scroll_horizontal_enabled = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ship_list_box" type="VBoxContainer" parent="Panel/ship_list_container"]
+
+[node name="ship_title" type="Label" parent="Panel"]
+margin_left = 622.964
+margin_top = 17.4692
+margin_right = 668.964
+margin_bottom = 51.4692
+text = "Ships"
+__meta__ = {
+"_edit_use_anchors_": false
+}

@@ -24,6 +24,7 @@ func _pressed():
 	client_scene.port = int(get_node("port").get_text())
 	client_scene.username = get_node("name").get_text()
 	client_scene.ship_name = get_node("ship_name").get_text()
+	client_scene.ship_type = get_node("/root/menu").ship_button_group.get_pressed_button().text
 	client_scene.menu = get_node("/root/menu")
 	
 	get_tree().get_root().add_child(client_scene)
