@@ -32,6 +32,7 @@ func _ready():
 	add_child(world)
 	socket.listen(port)
 	spawn_body(asteroid_scene)
+	AudioServer.set_bus_mute(0,true)
 func _process(delta):
 
 	process_systems()
@@ -217,6 +218,7 @@ func send_updates():
 			"position" : ship_list[ship].get_position(),
 			"rotation" : ship_list[ship].get_rotation(),
 			"velocity" : ship_list[ship].get_linear_velocity(),
+			"health": ship_list[ship].health,
 			"subsystems" : subsystem_send,
 		})
 	for object in misc_objects.values():

@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://shared/ship_subsystems/turret.gd" type="Script" id=1]
 [ext_resource path="res://assets/railgun.png" type="Texture" id=2]
+[ext_resource path="res://assets/railgun.wav" type="AudioStream" id=3]
 
 [sub_resource type="ParticlesMaterial" id=1]
 flag_disable_z = true
@@ -34,3 +35,7 @@ one_shot = true
 speed_scale = 10.0
 local_coords = false
 process_material = SubResource( 1 )
+
+[node name="railgun_sound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 3 )
+volume_db = -10.0

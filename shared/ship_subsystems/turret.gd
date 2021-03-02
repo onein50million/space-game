@@ -12,7 +12,8 @@ var latest_data = {
 var client_send_data = {}
 const FIRE_RATE = 1000000 #in microseconds (usec)
 const RANGE = 1000
-
+const DAMAGE = 1000.0
+const FORCE_RATIO = 0.1
 var last_fired = 0
 
 var server_side = false
@@ -28,6 +29,10 @@ func _ready():
 func _physics_process(_delta):
 	var delta_fire = OS.get_ticks_usec() - last_fired
 	if delta_fire > FIRE_RATE and latest_data.is_firing:
+		var ship = get_parent().get_parent()
+		var recoil_offset = global_position - ship.global_position
+		ship.apply_impulse(recoil_offset,-Vector2(DAMAGE*FORCE_RATIO,0).rotated(global_rotation))
+		$railgun_sound.play()
 		$muzzle_blast.emitting = true
 		last_fired = OS.get_ticks_usec()
 		var space_state =  get_world_2d().direct_space_state
@@ -38,7 +43,9 @@ func _physics_process(_delta):
 			final_destination = result.position
 			if result.collider.get_class() == "RigidBody2D":
 				var offset = final_destination - result.collider.global_position
-				result.collider.apply_impulse(offset,Vector2(100,0).rotated(global_rotation))
+				result.collider.apply_impulse(offset,Vector2(DAMAGE*FORCE_RATIO,0).rotated(global_rotation))
+			if result.collider.is_in_group("health"):
+				result.collider.health -= DAMAGE
 		var new_line = bullet_scene.instance()
 		$"../../..".add_child(new_line)
 		new_line.points = PoolVector2Array([global_position,final_destination])

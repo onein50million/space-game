@@ -1,9 +1,14 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://assets/gun.png" type="Texture" id=1]
 [ext_resource path="res://shared/items/gun.gd" type="Script" id=2]
+[ext_resource path="res://assets/hit.wav" type="AudioStream" id=3]
 
 [node name="gun" type="Sprite"]
 position = Vector2( 6.3163, 6.81395 )
 texture = ExtResource( 1 )
 script = ExtResource( 2 )
+
+[node name="hitmarker" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 3 )
+volume_db = -15.0

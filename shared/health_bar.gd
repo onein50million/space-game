@@ -7,7 +7,7 @@ func _process(_delta):
 	update()
 
 func _draw():
-	var health_ratio = get_parent().health/get_parent().MAX_HEALTH
+	var health_ratio = get_parent().health/get_parent().max_health
 	draw_rect(
 		Rect2(
 			Vector2(0,-HEIGHT/2.0),

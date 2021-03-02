@@ -39,6 +39,8 @@ var time_ping_sent #microseconds
 var network_process_accumulator = 0
 
 var state = "unloaded"
+var draw_server_lasers = false
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -220,7 +222,8 @@ func process_update(received):
 			new_ship.set_mode(RigidBody2D.MODE_KINEMATIC)
 			new_ship.set_name(received_ship.name)
 			ship_list[received_ship.name] = new_ship
-			
+	
+		ship_list[received_ship.name].health = received_ship.health
 		ship_list[received_ship.name].set_position(received_ship.position)
 		ship_list[received_ship.name].set_rotation(received_ship.rotation)
 		ship_list[received_ship.name].ship_velocity = received_ship.velocity
@@ -246,11 +249,12 @@ func process_update(received):
 		misc_objects[received_object.misc_id].set_rotation(received_object.rotation)
 	
 	for received_shot in received.data.shots:
-		var new_laser = laser_scene.instance()
-		ship_list[received_shot.ship].add_child(new_laser)
-		new_laser.modulate = Color.red
-		new_laser.points[0] = received_shot.laser_start
-		new_laser.points[1] = received_shot.laser_end
+		if draw_server_lasers:
+			var new_laser = laser_scene.instance()
+			ship_list[received_shot.ship].add_child(new_laser)
+			new_laser.modulate = Color.red
+			new_laser.points[0] = received_shot.laser_start
+			new_laser.points[1] = received_shot.laser_end
 
 	for received_player in received.data.clients:
 		if !player_list.has(received_player.username):

@@ -14,8 +14,8 @@ var input_buffer_head = 0
 var position_buffer = []
 var position_buffer_head = 0
 
-const MAX_HEALTH = 100
-var health = MAX_HEALTH
+var max_health = 100
+var health = max_health
 var died = false
 
 var previous_last_known_slot = 0
@@ -79,6 +79,8 @@ func _physics_process(_delta):
 		input_buffer[input_buffer_head][input] = last_input[input]
 	position_buffer[position_buffer_head] = get_position()
 	position_buffer_head = posmod(position_buffer_head + 1, Globals.BUFFER_LENGTH)
+	for child in $sprite.get_children():
+		child.firing = (input_buffer[input_buffer_head].lclick and input_buffer[input_buffer_head].slot == child.slot_number and at_console=="none")
 	cast_rays()
 	if server_side:
 		if health <= 0.0:
@@ -89,7 +91,7 @@ func _physics_process(_delta):
 		match at_console:
 			"none":
 				move(input_buffer[input_buffer_head])
-				$sprite/gun.firing = (input_buffer[input_buffer_head].lclick and input_buffer[input_buffer_head].slot == 0)
+
 			"captain":
 
 				ship.inputs.forward = input_buffer[input_buffer_head].up
@@ -117,7 +119,7 @@ func _physics_process(_delta):
 			$"../../ui/item_slots".get_children()[last_known_slot].selected = true
 			$"..".outside_view = false
 			$"..".get_node("communications").is_open = false
-			$sprite/gun.firing = (input_buffer[input_buffer_head].lclick and input_buffer[input_buffer_head].slot == 0)
+#			$sprite/gun.firing = (input_buffer[input_buffer_head].lclick and input_buffer[input_buffer_head].slot == 0 and at_console == "none")
 		set_position(last_known_position)
 		$sprite.set_rotation(last_known_rotation)
 		
@@ -221,8 +223,9 @@ func move(inputs):
 	position += (Globals.PLAYER_SPEED * input_vector.normalized() * delta * collision_check)
 
 func die():
+	
 	var new_corpse = corpse_scene.instance()
 	get_parent().add_child(new_corpse)
 	new_corpse.global_position = global_position
-	health = MAX_HEALTH
+	health = max_health
 	position = Vector2(0,0)

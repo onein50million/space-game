@@ -7,8 +7,9 @@ func _ready():
 	slot_number = 2
 
 func _physics_process(delta):
+
 	if firing and draw_lifetime >= Globals.DRAW_TIME:
 		heal(player)
 
 func heal(target):
-	player.health += HEAL_RATE*(1.0/Globals.BUFFER_LENGTH)
+	target.health = min(target.max_health,target.health + HEAL_RATE*(1.0/Globals.BUFFER_LENGTH))

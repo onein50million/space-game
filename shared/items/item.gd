@@ -23,7 +23,6 @@ func _process(delta):
 	#code is in multiple places (bad) so careful when changing
 	if player.input_buffer[player.input_buffer_head].slot == slot_number:
 		draw_lifetime = min(draw_lifetime+delta,Globals.DRAW_TIME)
-		firing = (player.input_buffer[player.input_buffer_head].lclick)
 	else:
 		draw_lifetime = 0.0
 

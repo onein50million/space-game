@@ -43,7 +43,6 @@ func fire():
 		start_saved_location = global_position
 #		var ticks_behind = server.current_tick - player.client_last_known_tick
 		var ticks_behind = player.ticks_behind
-		print(ticks_behind)
 		for client in server.client_list.values():
 
 			saved_locations.append(client.position)
@@ -63,8 +62,13 @@ func fire():
 
 	if "position" in result:
 		b = result.position
-		if result.collider.is_in_group("player"):
+		if result.collider.is_in_group("health"):
 			result.collider.health -= DAMAGE
+			$hitmarker.play()
+		var collider_parent = result.collider.get_parent()
+		if collider_parent and collider_parent.is_in_group("health"):
+			collider_parent.health -= DAMAGE
+			$hitmarker.play()
 	new_laser.points[0] = player.get_parent().to_local(a)
 	new_laser.points[1] = player.get_parent().to_local(b)
 	
@@ -72,10 +76,7 @@ func fire():
 	if server_side:
 		var i = 0
 		for client in server.client_list.values():
-
 			client.position = saved_locations[i]
-
-
 			i += 1
 		server.unprocessed_shots.append({
 			"laser_start":player.get_parent().to_local(a),

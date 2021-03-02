@@ -11,6 +11,9 @@ var ship_shape = PoolVector2Array()
 var ship_shape_blockers = []
 var systems = []
 
+var max_health = 10000.0
+var health = max_health
+
 
 const SPEED = 100.0
 const ROTATION = 10000.0
@@ -113,8 +116,10 @@ func _process(_delta):
 		
 	$velocity.set_text("Vel: %.f" % ship_velocity.length())
 	$position.set_text("X: %.f\nY: %.f" % [get_position().x, get_position().y])
+	$health.set_text("Integrity: %s%%" % ((health/max_health)*100))
 func _physics_process(delta):
-
+	if health <= 0.0:
+		die()
 	if inputs.forward:
 #		position += Vector2.UP.rotated(global_rotation)* SPEED
 		if server_side:
@@ -131,3 +136,10 @@ func _physics_process(delta):
 			apply_torque_impulse(ROTATION * delta)
 	if not true in inputs.values():
 		pass
+
+func die():
+	$explosion_particles.emitting = true
+	global_position = Vector2.ZERO
+	health = max_health
+	$explosion.play()
+
