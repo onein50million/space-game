@@ -6,11 +6,14 @@ extends Node
 # var b = "text"
 var port = 2020
 var socket = PacketPeerUDP.new()
+var menu
 
 var client_list = {}
 var disconnected_client_list = []
 var ship_list = {}
 var misc_objects = {}
+
+
 
 var misc_id = 0
 
@@ -135,6 +138,8 @@ func handle_join(received):
 		new_ship.server_side = true
 		new_ship.set_name(received.data.ship)
 		ship_list[received.data.ship] = new_ship
+
+		
 	ship_list[received.data.ship].add_child(new_player)
 	client_list[client_id] = new_player 
 	new_player.add_child(current_camera)
@@ -313,3 +318,19 @@ func new_mission():
 		"title" : mission_title,
 		"complete": false
 	})
+
+
+func exit_scene(error):
+#	menu.get_parent().remove_child(menu)
+
+	get_tree().get_root().add_child(menu)
+	var canvas = CanvasLayer.new()
+	menu.add_child(canvas)
+	var error_dialog = AcceptDialog.new()
+	
+	canvas.add_child(error_dialog)
+	error_dialog.set_text(error)
+	error_dialog.popup_centered()
+	
+	queue_free()
+

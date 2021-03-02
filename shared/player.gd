@@ -118,7 +118,8 @@ func _physics_process(_delta):
 				slot.selected = false
 			$"../../ui/item_slots".get_children()[last_known_slot].selected = true
 			$"..".outside_view = false
-			$"..".get_node("communications").is_open = false
+			if $"..".has_node("communications"):
+				$"..".get_node("communications").is_open = false
 #			$sprite/gun.firing = (input_buffer[input_buffer_head].lclick and input_buffer[input_buffer_head].slot == 0 and at_console == "none")
 		set_position(last_known_position)
 		$sprite.set_rotation(last_known_rotation)

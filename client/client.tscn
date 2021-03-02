@@ -1,7 +1,6 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://client/client.gd" type="Script" id=1]
-[ext_resource path="res://client/quit_button.gd" type="Script" id=2]
 [ext_resource path="res://assets/hum.ogg" type="AudioStream" id=3]
 [ext_resource path="res://client/item_slot.tscn" type="PackedScene" id=4]
 [ext_resource path="res://assets/medkit_icon.png" type="Texture" id=5]
@@ -33,15 +32,6 @@ margin_bottom = 34.0
 margin_right = 138.0
 margin_bottom = 34.0
 text = "notifications log"
-
-[node name="quit_button" type="Button" parent="ui"]
-margin_right = 28.0
-margin_bottom = 19.0
-text = "Quit"
-script = ExtResource( 2 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="item_slots" type="HBoxContainer" parent="ui"]
 anchor_left = 0.5

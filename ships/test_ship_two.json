@@ -32,5 +32,10 @@
 		}
 	],
 	"interior_walls":[
+		{
+			"type": "wall",
+			"start": [50,0],
+			"end": [90,-10]
+		}
 	]
 }

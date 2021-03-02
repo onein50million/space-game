@@ -20,5 +20,6 @@ func _pressed():
 	
 	var server_scene = load("res://server/server.tscn").instance()
 	server_scene.port = int(get_node("port").get_text())
+	server_scene.menu = get_node("/root/menu")
 	get_tree().get_root().add_child(server_scene)
-	get_node("/root/menu").queue_free()
+	get_tree().get_root().remove_child(get_node("/root/menu"))

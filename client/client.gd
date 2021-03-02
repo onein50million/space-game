@@ -57,13 +57,10 @@ func _ready():
 	local_player.is_local = true
 
 	
-	var new_ship = ship_scene.instance()
-	new_ship.ship_type = ship_type
-	ship_list[ship_name] = new_ship
-	add_child(new_ship)
-	new_ship.add_child(local_player)
-	new_ship.set_name(ship_name)
-
+	var temp_ship = ship_scene.instance()
+	add_child(temp_ship)
+	temp_ship.add_child(local_player)
+	temp_ship.temporary = true
 	
 	var new_transform = get_viewport().canvas_transform.translated(get_viewport().size/2.0)
 	get_viewport().canvas_transform = new_transform
@@ -85,14 +82,25 @@ func _ready():
 	add_notification("connecting to server")
 	state = "connecting"
 # Called every frame. 'delta' is the elapsed time since the previous frame.
+
+func _unhandled_input(event):
+	
+	check_key(event,"up")
+	check_key(event,"down")
+	check_key(event,"left")
+	check_key(event,"right")
+	check_key(event,"lclick")
+	check_key(event,"rclick")
+
+func check_key(event,key):
+	if event.is_action_pressed(key):
+		local_player.last_input[key] = true
+	if event.is_action_released(key):
+		local_player.last_input[key] = false
+
 func _process(delta):
 	
-	local_player.last_input.up = Input.is_action_pressed("up")
-	local_player.last_input.down = Input.is_action_pressed("down")
-	local_player.last_input.left = Input.is_action_pressed("left")
-	local_player.last_input.right = Input.is_action_pressed("right")
-	local_player.last_input.lclick = Input.is_action_pressed("lclick")
-	local_player.last_input.rclick = Input.is_action_pressed("rclick")
+
 
 	if Input.is_action_just_pressed("fake_input"):
 		fake_input = !fake_input
@@ -227,7 +235,11 @@ func process_update(received):
 			new_ship.set_mode(RigidBody2D.MODE_KINEMATIC)
 			new_ship.set_name(received_ship.name)
 			ship_list[received_ship.name] = new_ship
-	
+			if local_player.get_parent().temporary:
+				var temp_ship = local_player.get_parent()
+				temp_ship.remove_child(local_player)
+				new_ship.add_child(local_player)
+				temp_ship.queue_free()
 		ship_list[received_ship.name].health = received_ship.health
 		ship_list[received_ship.name].set_position(received_ship.position)
 		ship_list[received_ship.name].set_rotation(received_ship.rotation)

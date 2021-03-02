@@ -6,7 +6,7 @@
 		[80.0,200.0, "wall"],
 
 	],
-	"consoles":[
+	"systems":[
 		{
 			"type": "captain",
 			"position": [0.0,0.0]

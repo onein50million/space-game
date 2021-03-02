@@ -7,6 +7,9 @@ extends RigidBody2D
 export var server_side = false
 var ship_velocity = Vector2(0.0,0.0)
 var outside_view = false
+
+var temporary = false
+
 var ship_shape = PoolVector2Array()
 var ship_shape_blockers = []
 var systems = []
@@ -41,7 +44,7 @@ func _ready():
 		reversed_points[i][0] *= -1.0
 #		if reversed_points[i][0] == 0:
 #			reversed_points.remove(i)
-		
+	
 	var points = parsed.points + reversed_points
 
 
@@ -80,7 +83,45 @@ func _ready():
 		new_outside_segment.points = PoolVector2Array([a,b])
 		ship_shape.append(Vector2(points[i][0],points[i][1]))
 		new_collision_shape.shape = new_segment
-
+	
+	#interior walls
+	var interior_walls = parsed.interior_walls
+	var mirrored_walls = interior_walls.duplicate(true)
+	for mirrored_wall in mirrored_walls:
+		mirrored_wall.start[0]*=-1.0
+		mirrored_wall.end[0]*=-1.0
+	interior_walls += mirrored_walls
+	for interior_wall in interior_walls:
+		var a = Vector2(interior_wall.start[0],interior_wall.start[1])
+		var b = Vector2(interior_wall.end[0],interior_wall.end[1])
+		
+		var new_area = Area2D.new()
+		var new_interior_wall = Line2D.new()
+		new_interior_wall.width = 2.0
+		var blocker = false
+		match interior_wall.type:
+			"wall":
+				blocker = true
+				new_area.collision_layer=0b11100
+				new_interior_wall.default_color = Color.darkgray
+			"window":
+				blocker = true
+				new_area.collision_layer=0b00100
+				new_interior_wall.default_color = Color.darkblue*Color(1,1,1,0.3)
+		add_child(new_area)
+		var new_collision_shape = CollisionShape2D.new()
+		new_area.add_child(new_collision_shape)
+		var new_segment = SegmentShape2D.new()
+		new_segment.a = a
+		new_segment.b = b
+		new_collision_shape.shape = new_segment
+		
+		add_child(new_interior_wall)
+		new_interior_wall.points = PoolVector2Array([a,b])
+		
+		if blocker:
+			ship_shape_blockers.append([a,b])
+		
 	$collision_poly.set_polygon(ship_shape)
 	$poly.set_polygon(ship_shape)
 	$"outside_layer/poly".set_polygon(ship_shape)
@@ -118,9 +159,9 @@ func _process(_delta):
 	if server_side:
 		ship_velocity = get_linear_velocity()
 		
-	$velocity.set_text("Vel: %.f" % ship_velocity.length())
-	$position.set_text("X: %.f\nY: %.f" % [get_position().x, get_position().y])
-	$health.set_text("Integrity: %s%%" % ((health/max_health)*100))
+	$velocity.set_text("Vel: %.2f" % ship_velocity.length())
+	$position.set_text("X: %.2f\nY: %.2f" % [get_position().x, get_position().y])
+	$health.set_text("Integrity: %.2f%%" % ((health/max_health)*100))
 func _physics_process(delta):
 	if health <= 0.0:
 		die()
