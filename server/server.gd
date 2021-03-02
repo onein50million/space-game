@@ -36,7 +36,7 @@ func _process(delta):
 
 	process_systems()
 	network_process_accumulator += delta
-	if 	network_process_accumulator > 1.0/Globals.NETWORK_UPDATE_INTERVAL:
+	while 	network_process_accumulator > 1.0/Globals.NETWORK_UPDATE_INTERVAL:
 		network_process_accumulator -= 1.0/Globals.NETWORK_UPDATE_INTERVAL
 		
 		network_process()
@@ -155,7 +155,8 @@ func handle_input(received):
 	current_client.has_sent_packet = true
 	current_client.last_input = received.data.duplicate()
 	current_client.last_known_tick = received.tick
-
+	current_client.client_last_known_tick = received.last_received
+	current_client.ticks_behind = received.ticks_behind
 func handle_systems_update(received):
 	var packet_ip = socket.get_packet_ip()
 	var packet_port = socket.get_packet_port()
@@ -231,6 +232,10 @@ func send_updates():
 	for client_id in client_list:
 		iterate_clients.append(client_list[client_id])
 	iterate_clients += disconnected_client_list
+	
+	send_client_data.shots = unprocessed_shots.duplicate(true)
+	unprocessed_shots = []
+	
 	for client in iterate_clients:
 		send_client_data.clients.append({
 			"position" : client.get_position(),
@@ -245,8 +250,7 @@ func send_updates():
 			"last_known_tick" : client.last_known_tick,
 		})
 		client.died = false
-		send_client_data.shots = unprocessed_shots.duplicate(true)
-		unprocessed_shots = []
+
 		
 	for client in client_list.values():
 		socket.set_dest_address(client.ip, client.port)

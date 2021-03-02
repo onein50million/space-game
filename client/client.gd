@@ -21,7 +21,8 @@ var username = "default"
 var ship_name = "test"
 var menu
 
-
+var fake_input = false
+var fake_input_direction_count = 0
 
 var last_player_position = Vector2(0,0)
 var last_player_rotation = Vector2(0,0)
@@ -87,6 +88,14 @@ func _process(delta):
 	local_player.last_input.lclick = Input.is_action_pressed("lclick")
 	local_player.last_input.rclick = Input.is_action_pressed("rclick")
 
+	if Input.is_action_just_pressed("fake_input"):
+		fake_input = !fake_input
+	if fake_input:
+		fake_input_direction_count += 1
+		if posmod(fake_input_direction_count,500) > 250:
+			local_player.last_input.left = true
+		else:
+			local_player.last_input.right = true
 	if Input.is_action_pressed("slot0"):
 		local_player.last_input.slot = 0
 	if Input.is_action_pressed("slot1"):
@@ -115,7 +124,7 @@ func _process(delta):
 		zoom_ratio = 16.0
 	
 	network_process_accumulator += delta
-	if 	network_process_accumulator > 1.0/Globals.NETWORK_UPDATE_INTERVAL:
+	while 	network_process_accumulator > 1.0/Globals.NETWORK_UPDATE_INTERVAL:
 		network_process_accumulator -= 1.0/Globals.NETWORK_UPDATE_INTERVAL
 		network_process()
 		
@@ -148,11 +157,12 @@ func network_process():
 		for player in player_list.values():
 			player.network_process()
 		for system in local_player.get_parent().systems:
-			var systems_update_send_data = {
-				"type" : system.type,
-				"systems_data" : system.client_send_data,
-			}
-			send_command("systems_update", systems_update_send_data)
+			if local_player.at_console == system.type:
+				var systems_update_send_data = {
+					"type" : system.type,
+					"systems_data" : system.client_send_data,
+				}
+				send_command("systems_update", systems_update_send_data)
 		send_command("input_update", local_player.last_input)
 		local_player.last_input.interact = false
 	elif state == "connecting" and local_player.current_tick > Globals.BUFFER_LENGTH:
@@ -238,6 +248,7 @@ func process_update(received):
 	for received_shot in received.data.shots:
 		var new_laser = laser_scene.instance()
 		ship_list[received_shot.ship].add_child(new_laser)
+		new_laser.modulate = Color.red
 		new_laser.points[0] = received_shot.laser_start
 		new_laser.points[1] = received_shot.laser_end
 
@@ -270,6 +281,8 @@ func send_command(command, data):
 	socket.put_var({
 		"command": command,
 		"tick" : local_player.current_tick,
+		"last_received": local_player.last_known_tick,
+		"ticks_behind": local_player.current_tick - local_player.last_known_tick,
 		"data" : data
 	})
 

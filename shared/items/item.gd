@@ -19,14 +19,16 @@ func _ready():
 
 func _process(delta):
 	player = $"../.."
+	if player.input_buffer[player.input_buffer_head].slot == slot_number:
+		draw_lifetime = min(draw_lifetime+delta,Globals.DRAW_TIME)
+	else:
+		draw_lifetime = 0.0
+
 	if server_side:
 		server = player.get_parent().get_parent()
-
-		if player.input_buffer[player.input_buffer_head].slot == slot_number:
-			draw_lifetime = min(draw_lifetime+delta,Globals.DRAW_TIME)
-		else:
-			draw_lifetime = 0.0
 		return
+	
+
 
 	client = player.get_parent().get_parent()
 	item_slot = client.get_node("ui/item_slots/").get_node(type)

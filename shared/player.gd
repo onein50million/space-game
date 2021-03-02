@@ -48,6 +48,8 @@ var last_known_rotation = 0
 var last_known_tick = 0
 var current_tick = -1
 
+var client_last_known_tick = 0 #for the server to know how far behind client is
+var ticks_behind = 0
 var allowed_directions = {
 	"up": true,
 	"up_right": true,
@@ -75,7 +77,8 @@ func _ready():
 func _physics_process(_delta):	
 	for input in input_buffer[input_buffer_head]:
 		input_buffer[input_buffer_head][input] = last_input[input]
-	
+	position_buffer[position_buffer_head] = get_position()
+	position_buffer_head = posmod(position_buffer_head + 1, Globals.BUFFER_LENGTH)
 	cast_rays()
 	if server_side:
 		if health <= 0.0:
@@ -114,10 +117,11 @@ func _physics_process(_delta):
 			$"../../ui/item_slots".get_children()[last_known_slot].selected = true
 			$"..".outside_view = false
 			$"..".get_node("communications").is_open = false
+			$sprite/gun.firing = (input_buffer[input_buffer_head].lclick and input_buffer[input_buffer_head].slot == 0)
 		set_position(last_known_position)
 		$sprite.set_rotation(last_known_rotation)
 		
-		var tick_delta = current_tick - last_known_tick - 1 #magic one, do not remove. TODO: figure out what it does. oops it's gone
+		var tick_delta = current_tick - last_known_tick #magic one, do not remove. TODO: figure out what it does. oops it's gone
 		if tick_delta < Globals.BUFFER_LENGTH:
 			$player_text/disconected_sprite.visible = false
 			var slot_changed = false
@@ -140,10 +144,9 @@ func _physics_process(_delta):
 			$"..".get_node("communications").is_open = true
 			
 			
-	position_buffer[position_buffer_head] = get_position()
 	current_tick += 1
 	input_buffer_head = posmod(input_buffer_head + 1, Globals.BUFFER_LENGTH)
-	position_buffer_head = posmod(position_buffer_head + 1, Globals.BUFFER_LENGTH)
+
 	previous_last_known_slot = last_known_slot
 #	input_buffer[input_buffer_head].interact = false
 
