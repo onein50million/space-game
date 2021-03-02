@@ -8,8 +8,7 @@ const DAMAGE = 5.0
 
 var current_fire = FIRE_DELAY
 
-var firing = false
-
+var draw_reconciliation = false
 
 func _ready():
 	type = "gun"
@@ -21,7 +20,6 @@ func _process(delta):
 func _physics_process(delta):
 
 	current_fire += delta
-
 	if firing and current_fire >= FIRE_DELAY and draw_lifetime >= Globals.DRAW_TIME:
 		var temp_delta = delta
 		current_fire = 0
@@ -86,7 +84,7 @@ func fire():
 		})
 
 func _draw():
-	if server_side and server:
+	if server_side and server and draw_reconciliation:
 #		var ticks_behind = server.current_tick - player.client_last_known_tick
 		var ticks_behind = player.ticks_behind
 		for client in server.client_list.values():
