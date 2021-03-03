@@ -12,8 +12,7 @@ var client_list = {}
 var disconnected_client_list = []
 var ship_list = {}
 var misc_objects = {}
-
-
+var deleted_misc_objects = []
 
 var misc_id = 0
 
@@ -29,12 +28,15 @@ var network_process_accumulator = 0
 onready var player_scene = preload("res://shared/player.tscn")
 onready var ship_scene = preload("res://shared/ship.tscn")
 onready var asteroid_scene = load("res://shared/asteroid.tscn")
+onready var alien_scene = load("res://shared/alien.tscn")
 onready var world = load("res://shared/world.tscn").instance()
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	add_child(world)
 	socket.listen(port)
 	spawn_body(asteroid_scene)
+	for _i in range(0,10):
+		spawn_body(alien_scene)
 	AudioServer.set_bus_mute(0,true)
 func _process(delta):
 
@@ -208,6 +210,7 @@ func send_updates():
 		"clients": [],
 		"ships" : [],
 		"misc_objects" : [],
+		"deleted_misc_objects": [],
 		"shots": [],
 	}
 	for ship in ship_list:
@@ -243,6 +246,8 @@ func send_updates():
 	iterate_clients += disconnected_client_list
 	
 	send_client_data.shots = unprocessed_shots.duplicate(true)
+	send_client_data.deleted_misc_objects = deleted_misc_objects.duplicate(true)
+	deleted_misc_objects.clear()
 	unprocessed_shots = []
 	
 	for client in iterate_clients:
@@ -275,6 +280,7 @@ func send_command(command,data):
 func spawn_body(body, is_ship = false):
 	var new_body = body.instance()
 	add_child(new_body)
+	new_body.server_side = true
 	if not is_ship:
 		new_body.misc_id = misc_id
 		misc_objects[misc_id] = new_body
@@ -301,6 +307,9 @@ func spawn_body(body, is_ship = false):
 			break
 	return new_body
 
+func delete_misc(misc_id):
+	misc_objects.erase(misc_id)
+	deleted_misc_objects.append(misc_id)
 
 func new_mission():
 	var rng = RandomNumberGenerator.new()
@@ -314,6 +323,8 @@ func new_mission():
 	var adjective = adjectives[rng.randi_range(0,adjectives.size()-1)]
 	var noun = nouns[rng.randi_range(0,nouns.size()-1)]
 	var mission_title = "%s the %s %s %s" %[verb,number,adjective,noun]
+	if noun == "aliens":
+		spawn_body(alien_scene)
 	missions.append({
 		"title" : mission_title,
 		"complete": false

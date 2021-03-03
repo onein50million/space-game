@@ -13,7 +13,7 @@ const RADAR_DISPLAY_RADIUS = 25.0
 
 var contacts = []
 
-onready var radar_contact = load("res://shared/ship_subsystems/map/radar_contact.tscn")
+onready var radar_contact = preload("res://shared/ship_subsystems/map/radar_contact.tscn")
 var angle = 0
 var rotate_speed = TAU/2.0
 # Called when the node enters the scene tree for the first time.

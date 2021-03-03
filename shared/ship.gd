@@ -64,6 +64,9 @@ func _ready():
 			"window":
 				new_area.collision_layer = 0b00100
 				new_outside_segment.default_color = Color.lightblue * Color(1,1,1,0.3)
+			"door":
+				new_area.collision_layer = 0b00100
+				new_outside_segment.default_color = Color.lightgreen * Color(1,1,1,0.3)
 			"_":
 				print("unknown wall type")
 				new_area.collision_layer = 0b1100
@@ -78,7 +81,7 @@ func _ready():
 		new_segment.b = b
 		
 		if blocker:
-			ship_shape_blockers.append([a,b])
+			ship_shape_blockers.append([a,b,points[i+shift][2]])
 		
 		new_outside_segment.points = PoolVector2Array([a,b])
 		ship_shape.append(Vector2(points[i][0],points[i][1]))
@@ -105,9 +108,13 @@ func _ready():
 				new_area.collision_layer=0b11100
 				new_interior_wall.default_color = Color.darkgray
 			"window":
-				blocker = true
+				blocker = false
 				new_area.collision_layer=0b00100
 				new_interior_wall.default_color = Color.darkblue*Color(1,1,1,0.3)
+			"door":
+				blocker = true
+				new_area.collision_layer=0b11100
+				new_interior_wall.default_color = Color.darkgreen*Color(1,1,1,0.3)
 		add_child(new_area)
 		var new_collision_shape = CollisionShape2D.new()
 		new_area.add_child(new_collision_shape)
@@ -120,7 +127,7 @@ func _ready():
 		new_interior_wall.points = PoolVector2Array([a,b])
 		
 		if blocker:
-			ship_shape_blockers.append([a,b])
+			ship_shape_blockers.append([a,b,interior_wall.type])
 		
 	$collision_poly.set_polygon(ship_shape)
 	$poly.set_polygon(ship_shape)
@@ -158,7 +165,11 @@ func _process(_delta):
 		$outside_layer.z_index = -1024
 	if server_side:
 		ship_velocity = get_linear_velocity()
-		
+	
+	for blocker in ship_shape_blockers:
+		if blocker[2] == "door":
+			blocker[0] = blocker[0] + Vector2(10,0)
+			blocker[1] = blocker[1] + Vector2(10,0)
 	$velocity.set_text("Vel: %.2f" % ship_velocity.length())
 	$position.set_text("X: %.2f\nY: %.2f" % [get_position().x, get_position().y])
 	$health.set_text("Integrity: %.2f%%" % ((health/max_health)*100))

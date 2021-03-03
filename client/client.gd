@@ -7,6 +7,7 @@ onready var local_player = player_scene.instance()
 onready var ship_scene = load("res://shared/ship.tscn")
 onready var star_scene = load("res://shared/stars.tscn")
 onready var asteroid_scene = load("res://shared/asteroid.tscn")
+onready var alien_scene = load("res://shared/alien.tscn")
 onready var world = load("res://shared/world.tscn").instance()
 onready var laser_scene = load("res://shared/items/laser.tscn")
 
@@ -100,8 +101,6 @@ func check_key(event,key):
 
 func _process(delta):
 	
-
-
 	if Input.is_action_just_pressed("fake_input"):
 		fake_input = !fake_input
 	if fake_input:
@@ -132,7 +131,7 @@ func _process(delta):
 	var viewport_mouse_position = get_viewport().get_mouse_position()
 	var screen_center = get_viewport().get_visible_rect().size / 2.0
 	
-	var zoom_ratio = clamp(viewport_mouse_position.abs().distance_to(screen_center) / Globals.DEFAULT_ZOOM,0.2,1.0)
+	var zoom_ratio = clamp(viewport_mouse_position.abs().distance_to(screen_center) / Globals.DEFAULT_ZOOM,0.2,3.0)
 	
 	if Input.is_action_pressed("overview"):
 		zoom_ratio = 16.0
@@ -248,12 +247,18 @@ func process_update(received):
 			#this is kinda sketch because it relies on both the client and server making the arrays in the same order
 			ship_list[received_ship.name].systems[i].latest_data = received_ship.subsystems[i].data
 	
+	for deleted_object in received.data.deleted_misc_objects:
+		print(deleted_object)
+		misc_objects[deleted_object].die()
+		misc_objects.erase(deleted_object)
 	for received_object in received.data.misc_objects:
 		if not misc_objects.has(received_object.misc_id):
 			var new_object
 			match received_object.type:
 				"asteroid":
 					new_object = asteroid_scene.instance()
+				"alien":
+					new_object = alien_scene.instance()
 				_:
 					new_object = asteroid_scene.instance()
 					print("unknown object type")
@@ -272,7 +277,7 @@ func process_update(received):
 			new_laser.modulate = Color.red
 			new_laser.points[0] = received_shot.laser_start
 			new_laser.points[1] = received_shot.laser_end
-
+			
 	for received_player in received.data.clients:
 		if !player_list.has(received_player.username):
 			var new_player = player_scene.instance()

@@ -6,6 +6,7 @@ extends RigidBody2D
 # var b = "text"
 var object_type = "asteroid"
 var misc_id
+var server_side = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready():

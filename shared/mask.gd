@@ -19,8 +19,8 @@ func _draw():
 	for ship in get_parent().get_parent().get_parent().ship_list.values():
 		for blocker in ship.ship_shape_blockers:
 			var added_blocker = []
-			for vertex in blocker:
-				var vertex_global_position = ship.global_position + vertex.rotated(ship.global_rotation)
+			for i in range(0,2):
+				var vertex_global_position = ship.global_position + blocker[i].rotated(ship.global_rotation)
 				added_blocker.append(vertex_global_position)
 			blockers.append(added_blocker)
 
