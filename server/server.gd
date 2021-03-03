@@ -35,7 +35,7 @@ func _ready():
 	add_child(world)
 	socket.listen(port)
 	spawn_body(asteroid_scene)
-	for _i in range(0,10):
+	for _i in range(0,100):
 		spawn_body(alien_scene)
 	AudioServer.set_bus_mute(0,true)
 func _process(delta):

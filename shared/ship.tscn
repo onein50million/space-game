@@ -1,9 +1,10 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://shared/ship.gd" type="Script" id=1]
 [ext_resource path="res://assets/ship_explosion.wav" type="AudioStream" id=2]
 [ext_resource path="res://assets/greeble.png" type="Texture" id=3]
 [ext_resource path="res://assets/explosion.png" type="Texture" id=4]
+[ext_resource path="res://assets/floor.png" type="Texture" id=5]
 
 [sub_resource type="ParticlesMaterial" id=1]
 flag_disable_z = true
@@ -32,6 +33,7 @@ script = ExtResource( 1 )
 [node name="poly" type="Polygon2D" parent="."]
 z_index = -1
 color = Color( 0.47451, 0.47451, 0.47451, 1 )
+texture = ExtResource( 5 )
 polygon = PoolVector2Array( -90, -170.22, -118.544, 15.0873, -116.763, 212.867, -69.545, 81.9047, -20.5455, 113.977, 25.7813, 113.977, 88.1441, 74.7775, 147.834, 211.085, 125.562, 12.4146, 96.1622, -174.674, 6.18146, -207.637 )
 
 [node name="collision_poly" type="CollisionPolygon2D" parent="."]

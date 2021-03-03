@@ -11,7 +11,7 @@ const BEAM_TRAIL_LENGTH = 1 #doesn't look as good as I hoped(weird aliasing arti
 const LIFETIME = 1.0
 const RADAR_DISPLAY_RADIUS = 25.0
 
-var contacts = []
+var contacts = PoolVector2Array([])
 
 onready var radar_contact = preload("res://shared/ship_subsystems/map/radar_contact.tscn")
 var angle = 0
@@ -35,19 +35,36 @@ func _draw():
 		draw_line(Vector2(0,0),Vector2(RADAR_DISPLAY_RADIUS,0).rotated(angle - i*TAU*0.01),beam_color)
 	var main = get_parent().get_parent().get_parent()
 	for object in main.misc_objects.values():
-		draw_contact(object, 0.5)
+#		draw_contact(object, 0.5)
+		call_deferred("draw_contact",object,0.5)
 	for ship in main.ship_list.values():
-		draw_contact(ship, 1.0)
+		call_deferred("draw_contact",ship,1.0)
+#		draw_contact(ship, 1.0)
 func draw_contact(object, size):
 	var angle_to_object = global_position.angle_to_point(object.global_position)
 	var distance_to_object = global_position.distance_to(object.global_position)
 	var global_angle = fposmod(angle+global_rotation + PI,TAU)
 
 	var is_new = true
-	for contact in contacts:
-		if contact.distance_to(object.global_position) < 10.0:
-			is_new = false
+	
+	#performance problems when iterating over large arrays
+	
+	#using while loop
+#	var i = 0
+#	var contacts_size = contacts.size()
+#	while i < contacts_size:
+#		if contacts[i].distance_squared_to(object.global_position) < 10.0:
+#			is_new = false
+#		i += 1
 
+	#using range()
+#	for i in range(0,contacts.size()):
+#		if contacts[i].distance_to(object.global_position) < 10.0:
+#			is_new = false
+	#using in
+#	for contact in contacts:
+#		if contact.distance_to(object.global_position) < 10.0:
+#			is_new = false
 	var delta_angle = fposmod(abs(angle_to_object-global_angle),TAU)
 	if delta_angle < RADAR_DETECTION_ANGLE and is_new and distance_to_object < RADAR_DISTANCE and object != get_parent().get_parent():
 		var new_contact = radar_contact.instance()
@@ -56,4 +73,6 @@ func draw_contact(object, size):
 		new_contact.position = Vector2((distance_to_object/RADAR_DISTANCE)*RADAR_DISPLAY_RADIUS,0.0).rotated(angle_to_object-global_rotation + PI)
 		new_contact.real_position = object.global_position
 		new_contact.size = size
-		contacts.append(object.global_position)
+#		contacts.append(object.global_position)
+#		if contacts.size() > 1000:
+#			contacts = PoolVector2Array([])
