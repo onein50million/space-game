@@ -22,5 +22,6 @@ func die():
 		server.delete_misc(misc_id)
 	var new_sound = splat_sound_scene.instance()
 	get_parent().add_child(new_sound)
+	new_sound.volume_db -= 10
 	new_sound.global_position = global_position
 	queue_free()

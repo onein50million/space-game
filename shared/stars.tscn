@@ -11,7 +11,7 @@ uniform sampler2D ALPHA_NOISE;
 uniform sampler2D RED_NOISE;
 uniform sampler2D GREEN_NOISE;
 uniform sampler2D BLUE_NOISE;
-const vec4 modifier = vec4(0.8,0.2,0.4,1.0);
+const vec4 modifier = vec4(0.1,0.1,0.3,0.1);
 
 void fragment(){
 	COLOR = texture(TEXTURE, UV);
