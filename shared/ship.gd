@@ -220,13 +220,14 @@ func die():
 	dying = true
 
 func respawn():
+	for attached_body in attached:
+		if attached_body:
+			attached_body.die()
 	global_position = Vector2.ZERO
 	linear_velocity = Vector2.ZERO
 	angular_velocity = 0.0
 	health = max_health
-	for attached_body in attached:
-		if attached_body:
-			attached_body.die()
+
 
 func _on_ship_body_entered(body):
 	if server_side:

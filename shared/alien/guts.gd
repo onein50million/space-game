@@ -12,6 +12,7 @@ var send_data = {"index": 0}
 func _ready():
 	linear_damp = 0.0
 	angular_damp = 0.0
+	$blood.get_node("blood_explosion").emitting = true
 func _process(_delta):
 	if server_side:
 		if health <= 0.0:
@@ -31,4 +32,5 @@ func die():
 	get_parent().add_child(blood)
 	blood.global_position = global_position
 	blood.emitting = false
+	blood.get_node("blood_explosion").emitting = true
 	queue_free()

@@ -5,7 +5,9 @@ extends Node2D
 # var a = 2
 # var b = "text"
 var type = "captain"
-var latest_data = {}
+var latest_data = {
+	"alarm_silenced": false
+	}
 var client_send_data = {}
 var server_side = false
 
