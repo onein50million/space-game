@@ -33,7 +33,7 @@ onready var world = load("res://shared/world.tscn").instance()
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	add_child(world)
-	socket.listen(port)
+	print("Socket result: %s " % socket.listen(port))
 	spawn_body(asteroid_scene)
 	for _i in range(0,10):
 		spawn_body(alien_scene)
@@ -290,7 +290,12 @@ func spawn_body(body, is_ship = false, random_position = true, spawn_position = 
 	var rng = RandomNumberGenerator.new()
 	new_body.global_position = spawn_position
 	rng.randomize()
+	var attempts = 0
 	while(true and random_position):
+		if attempts > 20:
+			print("Ran out of attempts when trying to spawn object")
+			break
+		attempts += 1
 		var random_location = Vector2(
 			rng.randf_range(Globals.GAME_AREA.position.x, Globals.GAME_AREA.end.x),
 			rng.randf_range(Globals.GAME_AREA.position.y, Globals.GAME_AREA.end.y)
@@ -316,17 +321,19 @@ func delete_misc(given_misc_id):
 func new_mission():
 	var rng = RandomNumberGenerator.new()
 	rng.randomize()
-	var verbs = ["rescue", "kill", "destroy", "save", "identify"]
+	var verbs = ["kill", "destroy"]
 	var adjectives = ["tasty", "hungry", "ferocious", "evil", "scary"]
-	var nouns = ["monsters", "pirates", "aliens", "bugs"]
+	var nouns = ["aliens"]
 	
 	var verb = verbs[rng.randi_range(0,verbs.size()-1)]
 	var number = rng.randi_range(3,15)
 	var adjective = adjectives[rng.randi_range(0,adjectives.size()-1)]
 	var noun = nouns[rng.randi_range(0,nouns.size()-1)]
 	var mission_title = "%s the %s %s %s" %[verb,number,adjective,noun]
-	if noun == "aliens":
-		spawn_body(alien_scene)
+	match noun:
+		"aliens":
+			for _i in range(0,number):
+				spawn_body(alien_scene)
 	missions.append({
 		"title" : mission_title,
 		"complete": false

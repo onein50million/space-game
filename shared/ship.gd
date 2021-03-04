@@ -157,6 +157,9 @@ func _ready():
 			"turret":
 				new_system = load("res://shared/ship_subsystems/turret.tscn").instance()
 				parent = $outside_layer
+				new_system.RANGE = system.range
+				new_system.DAMAGE = system.damage
+				new_system.FIRE_RATE = system.fire_rate
 			"communications":
 				new_system = load("res://shared/ship_subsystems/communications.tscn").instance()
 			"_":

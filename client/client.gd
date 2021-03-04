@@ -1,6 +1,6 @@
 extends Node2D
 
-const TILE_SIZE = 10
+const TILE_SIZE = 15
 const PARALLAX_EFFECT = 0.1
 onready var player_scene = load("res://shared/player.tscn")
 onready var local_player = player_scene.instance()
@@ -38,6 +38,12 @@ var last_player_position = Vector2(0,0)
 var last_player_rotation = Vector2(0,0)
 var last_zoom = 1.0
 var zoom_ratio = 1.0
+
+
+const ZOOM_MIN_DEFAULT = 0.01
+const ZOOM_MAX_DEFUALT = 1.0
+var zoom_min = ZOOM_MIN_DEFAULT
+var zoom_max = ZOOM_MAX_DEFUALT
 var starscape
 
 var socket = PacketPeerUDP.new()
@@ -158,7 +164,13 @@ func _process(delta):
 	
 	var screen_center = get_viewport().get_visible_rect().size / 2.0
 	
-	zoom_ratio = clamp(zoom_ratio, 0.5,2.0)
+
+	if local_player.at_console == "weapons":
+		zoom_max = 4.0
+	else:
+		zoom_max = ZOOM_MAX_DEFUALT
+	zoom_ratio = clamp(zoom_ratio, zoom_min, zoom_max)
+	
 	if Input.is_action_pressed("overview"):
 		zoom_ratio = 16.0
 	
@@ -349,11 +361,12 @@ func send_command(command, data):
 
 func make_background():
 	starscape = Node2D.new()
-	for row in range(0, TILE_SIZE):
-		for column in range (0,TILE_SIZE):
+	var tile_size_scaled = TILE_SIZE
+	for row in range(0, tile_size_scaled):
+		for column in range (0,tile_size_scaled):
 			var new_star = star_scene.instance()
 			var tile_dimensions = Vector2(new_star.get_texture().get_height(),new_star.get_texture().get_width())
-			var tile_position = Vector2(tile_dimensions.x*row, tile_dimensions.y*column) - (TILE_SIZE/2.0)*tile_dimensions
+			var tile_position = Vector2(tile_dimensions.x*row, tile_dimensions.y*column) - (tile_size_scaled/2.0)*tile_dimensions
 			new_star.global_position = local_player.global_position + tile_position
 			starscape.add_child(new_star)
 	add_child(starscape)

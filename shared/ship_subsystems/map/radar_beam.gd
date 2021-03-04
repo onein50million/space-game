@@ -36,7 +36,11 @@ func _draw():
 	var main = get_parent().get_parent().get_parent()
 	for object in main.misc_objects.values():
 #		draw_contact(object, 0.5)
-		call_deferred("draw_contact",object,0.5)
+		match object.object_type:
+			"guts":
+				call_deferred("draw_contact",object,0.1)
+			_:
+				call_deferred("draw_contact",object,0.5)
 	for ship in main.ship_list.values():
 		call_deferred("draw_contact",ship,1.0)
 #		draw_contact(ship, 1.0)

@@ -10,9 +10,9 @@ var latest_data = {
 	"is_firing": false,
 }
 var client_send_data = {}
-const FIRE_RATE = 1000000 #in microseconds (usec)
-const RANGE = 1000.0
-const DAMAGE = 1000.0
+var FIRE_RATE = 1000000 #in microseconds (usec)
+var RANGE = 1000.0
+var DAMAGE = 1000.0
 const FORCE_RATIO = 0.1
 var last_fired = 0
 

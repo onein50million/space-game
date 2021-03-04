@@ -91,6 +91,7 @@ func spawn_guts():
 		new_gut.global_rotation = (global_rotation + PI/2.0) * rng.randf_range(0.9,1.1)
 		new_gut.linear_velocity = linear_velocity * rng.randf_range(0.9,1.1)
 		new_gut.angular_velocity = angular_velocity + rng.randf_range(-10.0,10.0)
+		new_gut.mass = mass *0.25
 		new_gut.server_side = server_side
 		index += 1
 

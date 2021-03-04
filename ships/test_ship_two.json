@@ -24,7 +24,10 @@
 		},
 		{
 			"type": "turret",
-			"position": [0.0,50.0]
+			"position": [0.0,50.0],
+			"range" : 10000,
+			"damage": 300,
+			"fire_rate": 500000
 		},
 		{
 			"type": "communications",

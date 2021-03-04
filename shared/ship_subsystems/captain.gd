@@ -14,6 +14,10 @@ func _ready():
 	pass # Replace with function body.
 
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
+
+func _process(delta):
+	var health_ratio = get_parent().health/get_parent().max_health
+	if health_ratio < 0.1 and not $warning.playing:
+		$warning.play()
+	if health_ratio > 0.1:
+		$warning.stop()
