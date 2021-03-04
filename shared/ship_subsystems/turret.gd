@@ -69,6 +69,9 @@ func _physics_process(_delta):
 				"ship": ship.name,
 				"player":"none"
 			})
-
+	elif delta_fire > FIRE_RATE and latest_data.is_firing and not server_side:
+		$railgun_sound.play()
+		$muzzle_blast.emitting = true
+		last_fired = OS.get_ticks_usec()
 	if "rotation" in latest_data:
 		set_rotation(latest_data.rotation)

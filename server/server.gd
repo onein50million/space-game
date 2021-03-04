@@ -278,7 +278,7 @@ func send_command(command,data):
 		"data" : data
 	})
 
-func spawn_body(body, is_ship = false):
+func spawn_body(body, is_ship = false, random_position = true, spawn_position = Vector2(0,0)):
 	var new_body = body.instance()
 	add_child(new_body)
 	new_body.server_side = true
@@ -288,8 +288,9 @@ func spawn_body(body, is_ship = false):
 		misc_id += 1
 		
 	var rng = RandomNumberGenerator.new()
+	new_body.global_position = spawn_position
 	rng.randomize()
-	while(true):
+	while(true and random_position):
 		var random_location = Vector2(
 			rng.randf_range(Globals.GAME_AREA.position.x, Globals.GAME_AREA.end.x),
 			rng.randf_range(Globals.GAME_AREA.position.y, Globals.GAME_AREA.end.y)

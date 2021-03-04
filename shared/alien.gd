@@ -1,5 +1,12 @@
 extends RigidBody2D
 
+onready var guts = [
+	preload("res://shared/alien/guts0.tscn"),
+	preload("res://shared/alien/guts1.tscn"),
+	preload("res://shared/alien/guts2.tscn"),
+	preload("res://shared/alien/guts3.tscn")
+]
+onready var splat_sound_scene = preload("res://assets/alien/guts/splat_sound.tscn")
 var max_health = 100.0
 var health = max_health
 var misc_id
@@ -65,4 +72,26 @@ func die():
 	if server_side:
 		var server = get_tree().get_root().get_node("server")
 		server.delete_misc(misc_id)
+		spawn_guts()
+	var new_sound = splat_sound_scene.instance()
+	get_parent().add_child(new_sound)
+	new_sound.global_position = global_position
 	queue_free()
+
+
+func spawn_guts():
+	var rng = RandomNumberGenerator.new()
+	rng.randomize()
+	var index = 0
+	for gut_scene in guts:
+		var server = get_tree().get_root().get_node("server")
+		var new_gut = server.spawn_body(gut_scene,false,false,global_position)
+		new_gut.send_data.index = index
+
+		new_gut.global_rotation = (global_rotation + PI/2.0) * rng.randf_range(0.9,1.1)
+		new_gut.linear_velocity = linear_velocity * rng.randf_range(0.9,1.1)
+		new_gut.angular_velocity = angular_velocity + rng.randf_range(-10.0,10.0)
+		new_gut.server_side = server_side
+		index += 1
+
+		

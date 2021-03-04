@@ -1,0 +1,21 @@
+[gd_scene load_steps=2 format=2]
+
+[sub_resource type="ParticlesMaterial" id=1]
+flag_disable_z = true
+spread = 180.0
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 10.0
+orbit_velocity = 0.0
+orbit_velocity_random = 0.0
+angle = 360.0
+angle_random = 1.0
+scale = 5.0
+scale_random = 0.5
+color = Color( 0.431373, 0, 0, 1 )
+
+[node name="blood" type="Particles2D"]
+z_index = -64
+amount = 64
+lifetime = 32.0
+local_coords = false
+process_material = SubResource( 1 )

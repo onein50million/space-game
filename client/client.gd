@@ -12,6 +12,13 @@ onready var world = load("res://shared/world.tscn").instance()
 onready var laser_scene = load("res://shared/items/laser.tscn")
 onready var railgun_round_scene = load("res://shared/ship_subsystems/railgun-round.tscn")
 
+onready var gut_scenes = [
+	preload("res://shared/alien/guts0.tscn"),
+	preload("res://shared/alien/guts1.tscn"),
+	preload("res://shared/alien/guts2.tscn"),
+	preload("res://shared/alien/guts3.tscn")
+]
+
 # Declare member variables here. Examples:
 # var a = 2
 # var b = "text"
@@ -119,13 +126,18 @@ func _process(delta):
 	
 	
 	if Input.is_action_just_pressed("fake_input"):
+		print(fake_input)
 		fake_input = !fake_input
+		local_player.last_input.left = false
+		local_player.last_input.right = false
 	if fake_input:
 		fake_input_direction_count += 1
 		if posmod(fake_input_direction_count,500) > 250:
 			local_player.last_input.left = true
+			local_player.last_input.right = false
 		else:
 			local_player.last_input.right = true
+			local_player.last_input.left = false
 	if Input.is_action_pressed("slot0"):
 		local_player.last_input.slot = 0
 	if Input.is_action_pressed("slot1"):
@@ -272,6 +284,8 @@ func process_update(received):
 					new_object = asteroid_scene.instance()
 				"alien":
 					new_object = alien_scene.instance()
+				"guts":
+					new_object = gut_scenes[received_object.send_data.index].instance()
 				_:
 					new_object = asteroid_scene.instance()
 					print("unknown object type")
