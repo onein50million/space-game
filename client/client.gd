@@ -10,6 +10,7 @@ onready var asteroid_scene = load("res://shared/asteroid.tscn")
 onready var alien_scene = load("res://shared/alien.tscn")
 onready var world = load("res://shared/world.tscn").instance()
 onready var laser_scene = load("res://shared/items/laser.tscn")
+onready var railgun_round_scene = load("res://shared/ship_subsystems/railgun-round.tscn")
 
 # Declare member variables here. Examples:
 # var a = 2
@@ -285,13 +286,19 @@ func process_update(received):
 		misc_objects[received_object.misc_id].send_data = received_object.send_data.duplicate(true)
 		
 	for received_shot in received.data.shots:
-		if draw_server_lasers or received_shot.player != local_player.username:
-			var new_laser = laser_scene.instance()
-			ship_list[received_shot.ship].add_child(new_laser)
-			new_laser.modulate = Color.red
-			new_laser.points[0] = received_shot.laser_start
-			new_laser.points[1] = received_shot.laser_end
-			
+		match received_shot.type:
+			"hand_laser":
+				if draw_server_lasers or received_shot.player != local_player.username:
+					var new_laser = laser_scene.instance()
+					ship_list[received_shot.ship].add_child(new_laser)
+					new_laser.modulate = Color.red
+					new_laser.points[0] = received_shot.laser_start
+					new_laser.points[1] = received_shot.laser_end
+			"railgun":
+					var new_laser = railgun_round_scene.instance()
+					add_child(new_laser)
+					new_laser.points[0] = received_shot.laser_start
+					new_laser.points[1] = received_shot.laser_end
 	for received_player in received.data.clients:
 		if !player_list.has(received_player.username):
 			var new_player = player_scene.instance()

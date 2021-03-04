@@ -81,6 +81,7 @@ func fire():
 		server.unprocessed_shots.append({
 			"laser_start":player.get_parent().to_local(a),
 			"laser_end": player.get_parent().to_local(b),
+			"type": "hand_laser",
 			"ship": player.get_parent().name,
 			"player":player.username
 		})
