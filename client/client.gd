@@ -1,4 +1,4 @@
-extends Node
+extends Node2D
 
 const TILE_SIZE = 10
 const PARALLAX_EFFECT = 0.1
@@ -29,6 +29,7 @@ var fake_input_direction_count = 0
 var last_player_position = Vector2(0,0)
 var last_player_rotation = Vector2(0,0)
 var last_zoom = 1.0
+var zoom_ratio = 1.0
 var starscape
 
 var socket = PacketPeerUDP.new()
@@ -92,6 +93,11 @@ func _unhandled_input(event):
 	check_key(event,"right")
 	check_key(event,"lclick")
 	check_key(event,"rclick")
+	
+	if Input.is_action_pressed("zoomin"):
+		zoom_ratio *= 0.9
+	if Input.is_action_pressed("zoomout"):
+		zoom_ratio *= 1.1
 
 func check_key(event,key):
 	if event.is_action_pressed(key):
@@ -100,6 +106,16 @@ func check_key(event,key):
 		local_player.last_input[key] = false
 
 func _process(delta):
+	
+	var ship = local_player.get_parent()
+	if ship.health <= 0.0:
+		modulate.a = ship.die_timer/ship.die_timer_start
+	else:
+		modulate.a = 1.0
+	if local_player.hurt_recently:
+		$ouch.play()
+		local_player.hurt_recently = false
+	
 	
 	if Input.is_action_just_pressed("fake_input"):
 		fake_input = !fake_input
@@ -127,12 +143,9 @@ func _process(delta):
 	var mouse_position = local_player.get_local_mouse_position()
 	local_player.last_input.angle = mouse_position.angle()
 	
-	
-	var viewport_mouse_position = get_viewport().get_mouse_position()
 	var screen_center = get_viewport().get_visible_rect().size / 2.0
 	
-	var zoom_ratio = clamp(viewport_mouse_position.abs().distance_to(screen_center) / Globals.DEFAULT_ZOOM,0.2,3.0)
-	
+	zoom_ratio = clamp(zoom_ratio, 0.5,2.0)
 	if Input.is_action_pressed("overview"):
 		zoom_ratio = 16.0
 	
@@ -181,7 +194,7 @@ func network_process():
 	elif state == "connecting" and local_player.current_tick > Globals.BUFFER_LENGTH:
 		add_notification("connection failed")
 		exit_scene("connection failed")
-func _physics_process(delta):
+func _physics_process(_delta):
 	pass
 	
 func process_packet(received):
@@ -248,7 +261,6 @@ func process_update(received):
 			ship_list[received_ship.name].systems[i].latest_data = received_ship.subsystems[i].data
 	
 	for deleted_object in received.data.deleted_misc_objects:
-		print(deleted_object)
 		misc_objects[deleted_object].die()
 		misc_objects.erase(deleted_object)
 	for received_object in received.data.misc_objects:
@@ -262,6 +274,7 @@ func process_update(received):
 				_:
 					new_object = asteroid_scene.instance()
 					print("unknown object type")
+
 			new_object.set_position(received_object.position)
 			new_object.set_mode(RigidBody2D.MODE_KINEMATIC)
 			new_object.misc_id = received_object.misc_id
@@ -269,9 +282,10 @@ func process_update(received):
 			misc_objects[received_object.misc_id] = new_object
 		misc_objects[received_object.misc_id].set_position(received_object.position)
 		misc_objects[received_object.misc_id].set_rotation(received_object.rotation)
-	
+		misc_objects[received_object.misc_id].send_data = received_object.send_data.duplicate(true)
+		
 	for received_shot in received.data.shots:
-		if draw_server_lasers:
+		if draw_server_lasers or received_shot.player != local_player.username:
 			var new_laser = laser_scene.instance()
 			ship_list[received_shot.ship].add_child(new_laser)
 			new_laser.modulate = Color.red

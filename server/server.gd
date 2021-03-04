@@ -35,7 +35,7 @@ func _ready():
 	add_child(world)
 	socket.listen(port)
 	spawn_body(asteroid_scene)
-	for _i in range(0,100):
+	for _i in range(0,10):
 		spawn_body(alien_scene)
 	AudioServer.set_bus_mute(0,true)
 func _process(delta):
@@ -225,8 +225,8 @@ func send_updates():
 		send_client_data.ships.append({
 			"name" : ship,
 			"ship_type":ship_list[ship].ship_type,
-			"position" : ship_list[ship].get_position(),
-			"rotation" : ship_list[ship].get_rotation(),
+			"position" : ship_list[ship].global_position,
+			"rotation" : ship_list[ship].global_rotation,
 			"velocity" : ship_list[ship].get_linear_velocity(),
 			"health": ship_list[ship].health,
 			"subsystems" : subsystem_send,
@@ -235,8 +235,9 @@ func send_updates():
 		send_client_data.misc_objects.append({
 			"type" : object.object_type,
 			"misc_id": object.misc_id,
-			"position" : object.get_position(),
-			"rotation" : object.get_rotation(),
+			"send_data": object.send_data.duplicate(true),
+			"position" : object.global_position,
+			"rotation" : object.global_rotation,
 		})
 		
 	#we want to see where disconnected people are standing (no ghosts allowed)
@@ -307,16 +308,16 @@ func spawn_body(body, is_ship = false):
 			break
 	return new_body
 
-func delete_misc(misc_id):
-	misc_objects.erase(misc_id)
-	deleted_misc_objects.append(misc_id)
+func delete_misc(given_misc_id):
+	misc_objects.erase(given_misc_id)
+	deleted_misc_objects.append(given_misc_id)
 
 func new_mission():
 	var rng = RandomNumberGenerator.new()
 	rng.randomize()
 	var verbs = ["rescue", "kill", "destroy", "save", "identify"]
 	var adjectives = ["tasty", "hungry", "ferocious", "evil", "scary"]
-	var nouns = ["monsters", "pirates", "aliens", "bugs", "allies"]
+	var nouns = ["monsters", "pirates", "aliens", "bugs"]
 	
 	var verb = verbs[rng.randi_range(0,verbs.size()-1)]
 	var number = rng.randi_range(3,15)

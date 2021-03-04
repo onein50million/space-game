@@ -38,7 +38,7 @@ func _physics_process(_delta):
 		var space_state =  get_world_2d().direct_space_state
 		var final_destination = global_position + Vector2(RANGE,0).rotated(global_rotation)
 		var result = space_state.intersect_ray(
-			global_position, final_destination, [$"../.."],	0b10,true, true)
+			global_position, final_destination, [$"../.."],	0b100010,true, true)
 		if "position" in result:
 			final_destination = result.position
 			if result.collider.get_class() == "RigidBody2D":

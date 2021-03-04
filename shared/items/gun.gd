@@ -14,7 +14,7 @@ func _ready():
 	type = "gun"
 	slot_number = 0
 
-func _process(delta):
+func _process(_delta):
 	update()
 
 func _physics_process(delta):
@@ -58,7 +58,7 @@ func fire():
 		a=start_saved_location
 	var b = to_global(Vector2(RANGE*rng.randf_range(0.9,1.1),0).rotated(rng.randf_range(-0.1,0.1)))
 	var space_state = get_world_2d().direct_space_state
-	var result = space_state.intersect_ray(a,b,[player],0b10000,true,true)
+	var result = space_state.intersect_ray(a,b,[player],0b110000,true,true)
 
 	if "position" in result:
 		b = result.position
@@ -66,7 +66,7 @@ func fire():
 			result.collider.health -= DAMAGE
 			$hitmarker.play()
 		var collider_parent = result.collider.get_parent()
-		if collider_parent and collider_parent.is_in_group("health"):
+		if collider_parent and collider_parent.is_in_group("health") and result.collider.is_in_group("ship_wall"):
 			collider_parent.health -= DAMAGE
 			$hitmarker.play()
 	new_laser.points[0] = player.get_parent().to_local(a)
@@ -81,7 +81,8 @@ func fire():
 		server.unprocessed_shots.append({
 			"laser_start":player.get_parent().to_local(a),
 			"laser_end": player.get_parent().to_local(b),
-			"ship": player.get_parent().name
+			"ship": player.get_parent().name,
+			"player":player.username
 		})
 
 func _draw():

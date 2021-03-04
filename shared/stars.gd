@@ -12,6 +12,6 @@ func _ready():
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
+func _process(_delta):
 #	material.set_shader_param("global_transform", get_global_transform())
 	pass

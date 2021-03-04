@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/gnaw.ogg-c3101054da748a899ff5e29b567673a1.oggstr"
+
+[deps]
+
+source_file="res://assets/gnaw.ogg"
+dest_files=[ "res://.import/gnaw.ogg-c3101054da748a899ff5e29b567673a1.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

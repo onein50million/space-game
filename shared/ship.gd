@@ -1,5 +1,6 @@
 extends RigidBody2D
 
+onready var explosion_scene = load("res://shared/explosion.tscn")
 
 # Declare member variables here. Examples:
 # var a = 2
@@ -14,12 +15,16 @@ var ship_shape = PoolVector2Array()
 var ship_shape_blockers = []
 var systems = []
 
+var attached = []
+
 var ship_type = "test_ship_two.json"
 
 var max_health = 10000.0
 var health = max_health
 
-
+var dying = false
+var die_timer_start = 3.0
+var die_timer = die_timer_start
 const SPEED = 100.0
 const ROTATION = 10000.0
 
@@ -32,6 +37,8 @@ var inputs = {
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	contact_monitor = true
+	contacts_reported = 32
 	yield(get_tree(), "idle_frame")
 	var file = File.new()
 	print(ship_type)
@@ -72,6 +79,8 @@ func _ready():
 				new_area.collision_layer = 0b1100
 				new_outside_segment.default_color = Color.pink
 		add_child(new_area)
+		new_area.add_to_group("ship_wall")
+		
 		var new_collision_shape = CollisionShape2D.new()
 		new_area.add_child(new_collision_shape)
 		var new_segment = SegmentShape2D.new()
@@ -174,8 +183,16 @@ func _process(_delta):
 	$position.set_text("X: %.2f\nY: %.2f" % [get_position().x, get_position().y])
 	$health.set_text("Integrity: %.2f%%" % ((health/max_health)*100))
 func _physics_process(delta):
-	if health <= 0.0:
+
+	if health <= 0.0 and not dying:
 		die()
+	if dying:
+		die_timer -= delta
+		if die_timer <= 0.0:
+			dying = false
+			if server_side:
+				respawn()
+			die_timer = die_timer_start
 	if inputs.forward:
 #		position += Vector2.UP.rotated(global_rotation)* SPEED
 		if server_side:
@@ -194,8 +211,22 @@ func _physics_process(delta):
 		pass
 
 func die():
-	$explosion_particles.emitting = true
-	global_position = Vector2.ZERO
-	health = max_health
-	$explosion.play()
+	var new_explosion = explosion_scene.instance()
+	get_parent().add_child(new_explosion)
+	new_explosion.global_position = global_position
+	dying = true
 
+func respawn():
+	global_position = Vector2.ZERO
+	linear_velocity = Vector2.ZERO
+	angular_velocity = 0.0
+	health = max_health
+	for attached_body in attached:
+		if attached_body:
+			attached_body.die()
+
+func _on_ship_body_entered(body):
+	if server_side:
+		if "object_type" in body:
+			if body.object_type == "alien":
+				body.call_deferred("attach",self)

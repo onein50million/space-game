@@ -7,7 +7,7 @@ func _ready():
 	slot_number = 1
 
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	if firing and draw_lifetime >= Globals.DRAW_TIME:
 		repair(player.get_parent())
 

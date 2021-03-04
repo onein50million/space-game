@@ -6,7 +6,7 @@ func _ready():
 	type = "medkit"
 	slot_number = 2
 
-func _physics_process(delta):
+func _physics_process(_delta):
 
 	if firing and draw_lifetime >= Globals.DRAW_TIME:
 		heal(player)

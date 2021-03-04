@@ -16,6 +16,9 @@ var position_buffer_head = 0
 
 var max_health = 100
 var health = max_health
+var last_health = health
+var hurt_recently = false
+
 var died = false
 
 var previous_last_known_slot = 0
@@ -75,6 +78,10 @@ func _ready():
 		item.server_side = server_side
 
 func _physics_process(_delta):	
+	if abs(health-last_health) >= 1.0:
+		hurt_recently = true
+	last_health = health
+	
 	for input in input_buffer[input_buffer_head]:
 		input_buffer[input_buffer_head][input] = last_input[input]
 	position_buffer[position_buffer_head] = get_position()
@@ -149,7 +156,6 @@ func _physics_process(_delta):
 			
 	current_tick += 1
 	input_buffer_head = posmod(input_buffer_head + 1, Globals.BUFFER_LENGTH)
-
 	previous_last_known_slot = last_known_slot
 #	input_buffer[input_buffer_head].interact = false
 
@@ -224,7 +230,7 @@ func move(inputs):
 	position += (Globals.PLAYER_SPEED * input_vector.normalized() * delta * collision_check)
 
 func die():
-	
+	at_console = "none"
 	var new_corpse = corpse_scene.instance()
 	get_parent().add_child(new_corpse)
 	new_corpse.global_position = global_position
