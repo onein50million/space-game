@@ -32,6 +32,10 @@
 		{
 			"type": "communications",
 			"position": [-50,50]
+		},
+		{
+			"type": "capacitor",
+			"position": [50,50]
 		}
 	],
 	"interior_walls":[

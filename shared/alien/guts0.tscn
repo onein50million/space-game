@@ -18,4 +18,4 @@ texture = ExtResource( 1 )
 [node name="blood" parent="." instance=ExtResource( 3 )]
 
 [node name="shape" type="CollisionPolygon2D" parent="."]
-polygon = PoolVector2Array( -8.64763, -1.92539, -2.21749, -15.0216, 9.40396, 2.617, 8.16513, 9.4011, -8.58864, 6.27452 )
+polygon = PoolVector2Array( -8.00529, -0.949345, -0.0796814, -14.1309, 7.7625, 2.30433, 8.51335, 6.97627, -8.42243, 7.14312 )

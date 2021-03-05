@@ -1,20 +1,9 @@
-extends Node2D
+extends Subsystem
 
 
 # Declare member variables here. Examples:
 # var a = 2
 # var b = "text"
-var type = "communications"
-var latest_data = {
-	"missions": [],
-	"ship_name" :  "system_uninitialized",
-
-}
-var client_send_data = {
-	"request_mission" : false
-}
-var server_side = false
-
 
 var is_open = false #client side
 var animation_ratio = 0.0
@@ -22,7 +11,16 @@ var animation_speed = 0.1
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	$console/PanelContainer.rect_pivot_offset = $console/PanelContainer.rect_size
-	
+	type = "communications"
+	latest_data = {
+		"missions": [],
+		"ship_name" :  "system_uninitialized",
+
+	}
+	client_send_data = {
+		"request_mission" : false
+	}
+
 	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):

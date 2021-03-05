@@ -22,6 +22,8 @@ var ship_type = "test_ship_two.json"
 var max_health = 10000.0
 var health = max_health
 
+var has_shields = true
+
 var dying = false
 var die_timer_start = 3.0
 var die_timer = die_timer_start
@@ -35,6 +37,16 @@ var inputs = {
 	"right" : false,
 }
 
+func damage(amount, ignore_shields = false):
+	if server_side:
+		return #let the server handle everything
+	var damage_left = amount
+	var number_capacitors = systems.find("capacitor")
+	if number_capacitors > 0 and has_shields:
+		for system in systems:
+			if system.type == "capacitor":
+				damage_left -= system.charge(amount/number_capacitors) #gives back how much was "eaten"
+	health -= damage_left
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	contact_monitor = true

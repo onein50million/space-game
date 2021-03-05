@@ -8,11 +8,13 @@
 [sub_resource type="DynamicFont" id=1]
 font_data = ExtResource( 3 )
 
-[node name="map" type="Sprite"]
+[node name="map" type="Node2D"]
 position = Vector2( 0.264862, 0 )
 z_index = -1
-texture = ExtResource( 1 )
 script = ExtResource( 4 )
+
+[node name="Sprite" type="Sprite" parent="."]
+texture = ExtResource( 1 )
 
 [node name="radar_beam" type="Node2D" parent="."]
 script = ExtResource( 2 )
