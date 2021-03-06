@@ -8,8 +8,13 @@ func _ready():
 	}
 
 func _process(_delta):
-	var health_ratio = get_parent().health/get_parent().max_health
+	var ship = get_parent()
+	var health_ratio = ship.health/ship.max_health
 	if health_ratio < 0.1 and not $warning.playing:
 		$warning.play()
 	if health_ratio > 0.1:
 		$warning.stop()
+	$console/panel/right_vbox/velocity.text = "Velocity: %.1f" % ship.ship_velocity.length()
+	$console/panel/direction.rotation = ship.ship_velocity.angle()-ship.global_rotation + PI/2.0
+	$console/panel/left_vbox/x_pos.text = "X: %.1f" % ship.position.x
+	$console/panel/left_vbox/y_pos.text = "Y: %.1f" %ship.position.y

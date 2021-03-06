@@ -1,29 +1,26 @@
-extends Node2D
+extends Subsystem
 
 
 # Declare member variables here. Examples:
 # var a = 2
 # var b = "text"
-var type = "turret"
-var latest_data = {
-	"rotation": 0,
-	"is_firing": false,
-}
-var client_send_data = {}
+
+
 var FIRE_RATE = 1000000 #in microseconds (usec)
 var RANGE = 1000.0
 var DAMAGE = 1000.0
 const FORCE_RATIO = 0.1
 var last_fired = 0
 
-var server_side = false
-
 onready var bullet_scene = load("res://shared/ship_subsystems/railgun-round.tscn")
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	pass # Replace with function body.
-
+	type = "turret"
+	latest_data = {
+	"rotation": 0,
+	"is_firing": false,
+}
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(_delta):

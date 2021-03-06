@@ -156,7 +156,7 @@ func _ready():
 			"captain":	
 				new_system = load("res://shared/ship_subsystems/captain.tscn").instance()
 			"map":
-				new_system = load("res://shared/ship_subsystems/map.tscn").instance()
+				new_system = load("res://shared/ship_subsystems/map/map.tscn").instance()
 			"weapons":
 				new_system = load("res://shared/ship_subsystems/weapons.tscn").instance()
 			"turret":
@@ -193,8 +193,6 @@ func _process(_delta):
 		if blocker[2] == "door":
 			blocker[0] = blocker[0] + Vector2(10,0)
 			blocker[1] = blocker[1] + Vector2(10,0)
-	$velocity.set_text("Vel: %.2f" % ship_velocity.length())
-	$position.set_text("X: %.2f\nY: %.2f" % [get_position().x, get_position().y])
 	$health.set_text("Integrity: %.2f%%" % ((health/max_health)*100))
 func _physics_process(delta):
 

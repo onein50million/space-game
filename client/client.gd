@@ -66,6 +66,7 @@ func _ready():
 	add_notification("initializing world")
 	add_child(world)
 
+	color.a = 1.0
 	local_player.color = color
 	local_player.ip = ip
 	local_player.port = port

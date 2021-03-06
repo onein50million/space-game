@@ -9,7 +9,7 @@ func _ready():
 	$shield_area/collision_circle.shape.radius = shield_diameter/2.0
 
 
-func _process(delta):
+func _process(_delta):
 	var total_charge_left = 0
 	for system in get_parent().get_parent().systems:
 		if system.type == "capacitor":

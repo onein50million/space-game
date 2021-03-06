@@ -33,6 +33,8 @@ onready var world = load("res://shared/world.tscn").instance()
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	add_child(world)
+	add_child(current_camera)
+	current_camera.make_current()
 	print("Socket result: %s " % socket.listen(port))
 	spawn_body(asteroid_scene)
 	for _i in range(0,10):
@@ -130,6 +132,7 @@ func handle_join(received):
 			return
 	var new_player = player_scene.instance()
 	new_player.color = received.data.color
+	new_player.color.a = 1.0
 	new_player.username = received.data.username
 	new_player.ip = packet_ip
 	new_player.port = packet_port
@@ -144,8 +147,9 @@ func handle_join(received):
 		
 	ship_list[received.data.ship].add_child(new_player)
 	client_list[client_id] = new_player 
+	current_camera.get_parent().remove_child(current_camera)
 	new_player.add_child(current_camera)
-	current_camera.make_current()
+
 	$CanvasLayer/playerlist.text += "\n%s" % [client_id]
 	send_command("join_accepted", "welcome")
 

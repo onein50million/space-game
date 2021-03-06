@@ -76,7 +76,8 @@ func damage(damage):
 func _ready():
 
 	$"player_text/name".set_text(username)
-	set_modulate(color)
+	color.a = 1.0
+	$player_text/name.set_modulate(color)
 	for _i in range(0, Globals.BUFFER_LENGTH):
 		input_buffer.append(last_input.duplicate(true))
 		position_buffer.append(Vector2(0,0))
@@ -127,14 +128,17 @@ func _physics_process(_delta):
 		die()
 		died = false
 
+	if is_local:
+		for system in $"..".systems:
+			system.is_open = at_console == system.type
 	if at_console == "none":
 		if is_local:
+
 			for slot in $"../../ui/item_slots".get_children():
 				slot.selected = false
 			$"../../ui/item_slots".get_children()[last_known_slot].selected = true
 			$"..".outside_view = false
-			if $"..".has_node("communications"):
-				$"..".get_node("communications").is_open = false
+
 #			$sprite/gun.firing = (input_buffer[input_buffer_head].lclick and input_buffer[input_buffer_head].slot == 0 and at_console == "none")
 		set_position(last_known_position)
 		$sprite.set_rotation(last_known_rotation)
@@ -157,9 +161,6 @@ func _physics_process(_delta):
 	elif at_console == "weapons":
 		if is_local:
 			$"..".outside_view = true
-	if at_console == "communications":
-		if is_local:
-			$"..".get_node("communications").is_open = true
 			
 			
 	current_tick += 1

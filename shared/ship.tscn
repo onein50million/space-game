@@ -23,17 +23,6 @@ polygon = PoolVector2Array( -90, -170.22, -118.544, 15.0873, -116.763, 212.867, 
 position = Vector2( -0.33371, -0.33371 )
 polygon = PoolVector2Array( -20, -20, 0, -50, 20, -20, 25, 40, 10, 20, -10, 20, -25, 40 )
 
-[node name="velocity" type="Label" parent="."]
-margin_left = 91.0953
-margin_top = -245.195
-margin_right = 141.095
-margin_bottom = -231.195
-text = "velocity"
-align = 2
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
 [node name="health" type="Label" parent="."]
 margin_left = 91.0953
 margin_top = -272.966
@@ -42,16 +31,6 @@ margin_bottom = -201.966
 text = "health
 "
 align = 2
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="position" type="Label" parent="."]
-margin_left = -129.387
-margin_top = -245.862
-margin_right = -77.3871
-margin_bottom = -231.862
-text = "position"
 __meta__ = {
 "_edit_use_anchors_": false
 }

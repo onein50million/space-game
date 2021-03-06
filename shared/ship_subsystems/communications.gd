@@ -5,9 +5,6 @@ extends Subsystem
 # var a = 2
 # var b = "text"
 
-var is_open = false #client side
-var animation_ratio = 0.0
-var animation_speed = 0.1
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	$console/PanelContainer.rect_pivot_offset = $console/PanelContainer.rect_size
@@ -37,12 +34,3 @@ func _process(_delta):
 			new_label.modulate = Color.green
 		else:
 			new_label.modulate = Color.red
-	var window_scale = 1.0
-	if is_open:
-		animation_speed = 0.1
-	else:
-		animation_speed = -0.1
-	
-	animation_ratio = clamp(animation_ratio+animation_speed, 0.0,1.0)
-	window_scale = animation_ratio
-	$console/PanelContainer.set_scale(Vector2(window_scale,window_scale))
