@@ -1,0 +1,91 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://shared/quit_button.gd" type="Script" id=1]
+[ext_resource path="res://shared/ui/settings_button.gd" type="Script" id=2]
+[ext_resource path="res://shared/ui/volume_slider.gd" type="Script" id=3]
+[ext_resource path="res://shared/ui/mute_box.gd" type="Script" id=4]
+
+[node name="ui" type="CanvasLayer"]
+
+[node name="quit_button" type="Button" parent="."]
+margin_right = 12.0
+margin_bottom = 40.0
+text = "Quit"
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="settings" type="PanelContainer" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -256.0
+margin_top = -219.5
+margin_right = 256.0
+margin_bottom = 219.5
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="vbox" type="VBoxContainer" parent="settings"]
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 505.0
+margin_bottom = 432.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="settings/vbox"]
+margin_right = 498.0
+margin_bottom = 34.0
+text = "Settings"
+align = 1
+
+[node name="volume" type="HSplitContainer" parent="settings/vbox"]
+margin_top = 38.0
+margin_right = 498.0
+margin_bottom = 72.0
+split_offset = 20
+dragger_visibility = 2
+
+[node name="volume_label" type="Label" parent="settings/vbox/volume"]
+margin_right = 76.0
+margin_bottom = 34.0
+size_flags_vertical = 1
+size_flags_stretch_ratio = 0.0
+text = "Volume"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="volume_slider" type="HSlider" parent="settings/vbox/volume"]
+margin_left = 76.0
+margin_right = 498.0
+margin_bottom = 34.0
+size_flags_vertical = 1
+min_value = -92.0
+max_value = 0.0
+script = ExtResource( 3 )
+
+[node name="mute_box" type="CheckBox" parent="settings/vbox"]
+margin_top = 76.0
+margin_right = 498.0
+margin_bottom = 118.0
+text = "Mute"
+script = ExtResource( 4 )
+
+[node name="settings_button" type="Button" parent="."]
+margin_left = 1132.0
+margin_top = 672.0
+margin_right = 1280.0
+margin_bottom = 720.0
+toggle_mode = true
+text = "Settings"
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+[connection signal="value_changed" from="settings/vbox/volume/volume_slider" to="settings/vbox/volume/volume_slider" method="_on_volume_slider_value_changed"]

@@ -42,7 +42,7 @@ func _draw():
 			_:
 				call_deferred("draw_contact",object,0.5)
 	for ship in main.ship_list.values():
-		call_deferred("draw_contact",ship,1.0)
+		call_deferred("draw_contact",ship,2.0)
 #		draw_contact(ship, 1.0)
 func draw_contact(object, size):
 	var angle_to_object = global_position.angle_to_point(object.global_position)

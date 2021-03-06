@@ -301,8 +301,8 @@ func spawn_body(body, is_ship = false, random_position = true, spawn_position = 
 			break
 		attempts += 1
 		var random_location = Vector2(
-			rng.randfn(0, Globals.GAME_AREA.size.x),
-			rng.randfn(0, Globals.GAME_AREA.size.y)
+			rng.randfn(0, Globals.GAME_AREA),
+			rng.randfn(0, Globals.GAME_AREA)
 		)
 		var minimum_distance = INF
 		for ship in ship_list.values():

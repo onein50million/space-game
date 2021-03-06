@@ -27,6 +27,7 @@ config/icon="res://assets/icon.png"
 [autoload]
 
 Globals="*res://Globals.gd"
+UI="res://shared/ui/ui.tscn"
 
 [debug]
 

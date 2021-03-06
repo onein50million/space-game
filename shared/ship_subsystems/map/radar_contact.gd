@@ -9,6 +9,7 @@ var real_position = Vector2(0,0)
 var size = 0.5
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	$ping.volume_db = size*10 - 40.0
 	pass # Replace with function body.
 
 
