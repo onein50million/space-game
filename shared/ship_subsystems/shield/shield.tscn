@@ -1,7 +1,9 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://shared/ship_subsystems/shield/shield.gd" type="Script" id=1]
 [ext_resource path="res://shared/ship_subsystems/shield/shield_area.gd" type="Script" id=2]
+[ext_resource path="res://assets/shield_down.ogg" type="AudioStream" id=3]
+[ext_resource path="res://assets/shield_up.ogg" type="AudioStream" id=4]
 
 [sub_resource type="Shader" id=1]
 code = "shader_type canvas_item;
@@ -47,3 +49,11 @@ script = ExtResource( 2 )
 
 [node name="collision_circle" type="CollisionShape2D" parent="shield_area"]
 shape = SubResource( 5 )
+
+[node name="shield_up_sound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 4 )
+volume_db = -15.0
+
+[node name="shield_down_sound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 3 )
+volume_db = -15.0
