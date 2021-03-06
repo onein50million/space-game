@@ -53,21 +53,26 @@ func fire():
 	player.get_parent().add_child(new_laser)
 #	add_child(new_laser)
 #	server.add_child(new_laser)
+	var current_ship_shield = []
+	for system in player.get_parent().systems:
+		if system.type == "shield":
+			current_ship_shield += system.get_node("shield_area")
+			
 	var a = global_position
 	if server_side:
 		a=start_saved_location
 	var b = to_global(Vector2(RANGE*rng.randf_range(0.9,1.1),0).rotated(rng.randf_range(-0.1,0.1)))
 	var space_state = get_world_2d().direct_space_state
-	var result = space_state.intersect_ray(a,b,[player],0b110000,true,true)
+	var result = space_state.intersect_ray(a,b,[player] + current_ship_shield,0b1110000,true,true)
 
 	if "position" in result:
 		b = result.position
 		if result.collider.is_in_group("health"):
-			result.collider.health -= DAMAGE
+			result.collider.damage(DAMAGE)
 			$hitmarker.play()
 		var collider_parent = result.collider.get_parent()
 		if collider_parent and collider_parent.is_in_group("health") and result.collider.is_in_group("ship_wall"):
-			collider_parent.health -= DAMAGE
+			collider_parent.damage(DAMAGE)
 			$hitmarker.play()
 	new_laser.points[0] = player.get_parent().to_local(a)
 	new_laser.points[1] = player.get_parent().to_local(b)

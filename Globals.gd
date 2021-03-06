@@ -13,7 +13,7 @@ const DRAW_TIME = 1.0
 
 const MISSION_FREQUENCY = 1000000
 
-const GAME_AREA = Rect2(-10000.0,-10000.0,10000.0,10000.0)
+const GAME_AREA = Rect2(-1000.0,-1000.0,1000.0,1000.0)
 const SAFE_DISTANCE = 1000.0 #for spawning things
 # Called when the node enters the scene tree for the first time.
 func _ready():

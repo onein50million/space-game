@@ -25,7 +25,7 @@
 		{
 			"type": "turret",
 			"position": [0.0,50.0],
-			"range" : 10000,
+			"weapon_range" : 10000,
 			"damage": 300,
 			"fire_rate": 500000
 		},
@@ -36,6 +36,11 @@
 		{
 			"type": "capacitor",
 			"position": [50,50]
+		},
+		{
+			"type":"shield",
+			"position": [0,0],
+			"diameter": 500
 		}
 	],
 	"interior_walls":[

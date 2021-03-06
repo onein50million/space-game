@@ -1,6 +1,14 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://shared/ship_subsystems/capacitor/capacitor.gd" type="Script" id=1]
+[ext_resource path="res://assets/capacitor.png" type="Texture" id=2]
 
 [node name="capacitor" type="Node2D"]
 script = ExtResource( 1 )
+
+[node name="sprite" type="Sprite" parent="."]
+texture = ExtResource( 2 )
+
+[node name="charge" type="Polygon2D" parent="sprite"]
+color = Color( 0, 0.694118, 1, 1 )
+polygon = PoolVector2Array( -10, -3, -10, 2, 10, 2, 10, -3 )

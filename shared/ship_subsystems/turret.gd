@@ -39,17 +39,21 @@ func _physics_process(_delta):
 		var distance_travelled = 0.0
 		var space_state =  get_world_2d().direct_space_state
 		var hit_objects = []
+		var current_ship_shield = []
+		for system in ship.systems:
+			if system.type == "shield":
+				current_ship_shield += system.get_node("shield_area")
+
 		while damage_left > 0.0 and distance_travelled < RANGE:
 			var starting_point = global_position + Vector2(min(RANGE-1.0,distance_travelled),0).rotated(global_rotation)
 			var final_destination = global_position + Vector2(RANGE,0).rotated(global_rotation)
 			var result = space_state.intersect_ray(
-				starting_point, final_destination, [$"../.."] + hit_objects,	0b100010,true, true)
+				starting_point, final_destination, [$"../.."] + hit_objects + current_ship_shield,0b1100010,true, true)
 			if "position" in result:
 				hit_objects.append(result.collider)
 				final_destination = result.position
 				if result.collider.is_in_group("health"): #health objects absorb the impact
-					damage_left -= result.collider.health
-					result.collider.health -= DAMAGE
+					damage_left -= result.collider.damage(DAMAGE)
 					force_update_transform()
 					distance_travelled += starting_point.distance_to(final_destination)
 				elif result.collider.get_class() == "RigidBody2D": #rigidbodies stop the railgun

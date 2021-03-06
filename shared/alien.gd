@@ -22,6 +22,12 @@ var send_data = {
 var time = 0
 const DAMAGE_RATE = 10.0
 
+func damage(damage):
+	var damage_dealt = min(health,damage)
+	health -= damage_dealt
+	return damage_dealt
+
+
 func _ready():
 	var rng = RandomNumberGenerator.new()
 	rng.randomize()

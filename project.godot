@@ -144,6 +144,8 @@ zoomout={
 2d_physics/layer_3="player_wall"
 2d_physics/layer_4="vision_block"
 2d_physics/layer_5="lasers"
+2d_physics/layer_6="alien"
+2d_physics/layer_7="shield"
 
 [memory]
 

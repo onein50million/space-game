@@ -22,8 +22,6 @@ var ship_type = "test_ship_two.json"
 var max_health = 10000.0
 var health = max_health
 
-var has_shields = true
-
 var dying = false
 var die_timer_start = 3.0
 var die_timer = die_timer_start
@@ -37,16 +35,11 @@ var inputs = {
 	"right" : false,
 }
 
-func damage(amount, ignore_shields = false):
-	if server_side:
-		return #let the server handle everything
-	var damage_left = amount
-	var number_capacitors = systems.find("capacitor")
-	if number_capacitors > 0 and has_shields:
-		for system in systems:
-			if system.type == "capacitor":
-				damage_left -= system.charge(amount/number_capacitors) #gives back how much was "eaten"
-	health -= damage_left
+func damage(damage):
+	var damage_dealt = min(health,damage)
+	health -= damage_dealt
+	return damage_dealt
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	contact_monitor = true
@@ -169,12 +162,18 @@ func _ready():
 			"turret":
 				new_system = load("res://shared/ship_subsystems/turret.tscn").instance()
 				parent = $outside_layer
-				new_system.RANGE = system.range
+				new_system.RANGE = system.weapon_range
 				new_system.DAMAGE = system.damage
 				new_system.FIRE_RATE = system.fire_rate
 			"communications":
 				new_system = load("res://shared/ship_subsystems/communications.tscn").instance()
-			"_":
+			"capacitor":
+				new_system = load("res://shared/ship_subsystems/capacitor/capacitor.tscn").instance()
+			"shield":
+				new_system = load("res://shared/ship_subsystems/shield/shield.tscn").instance()
+				new_system.shield_diameter = system.diameter
+				parent = $outside_layer
+			_:
 				print("unknown system type")
 		if new_system != null:
 			systems.append(new_system)

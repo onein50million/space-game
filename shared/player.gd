@@ -65,6 +65,13 @@ var allowed_directions = {
 	}
 var collision_check = 1.0
 
+func damage(damage):
+	
+	var damage_dealt = min(health,damage)
+	health -= damage_dealt
+	return damage_dealt
+
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 
@@ -112,6 +119,7 @@ func _physics_process(_delta):
 							"rotation": input_buffer[input_buffer_head].angle,
 							"is_firing": input_buffer[input_buffer_head].lclick
 						}
+ 
 
 		return
 	

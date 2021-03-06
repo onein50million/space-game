@@ -34,3 +34,8 @@ func die():
 	blood.emitting = false
 	blood.get_node("blood_explosion").emitting = true
 	queue_free()
+
+func damage(damage):
+	var damage_dealt = min(health,damage)
+	health -= damage_dealt
+	return damage_dealt
