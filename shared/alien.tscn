@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://shared/alien.gd" type="Script" id=1]
 [ext_resource path="res://assets/alien.png" type="Texture" id=2]
@@ -6,6 +6,10 @@
 
 [sub_resource type="CircleShape2D" id=1]
 radius = 21.09
+
+[sub_resource type="AudioStreamRandomPitch" id=2]
+audio_stream = ExtResource( 3 )
+random_pitch = 1.2
 
 [node name="alien" type="RigidBody2D" groups=[
 "health",
@@ -25,5 +29,5 @@ rotation = 1.5708
 texture = ExtResource( 2 )
 
 [node name="gnaw_sound" type="AudioStreamPlayer2D" parent="."]
-stream = ExtResource( 3 )
+stream = SubResource( 2 )
 volume_db = -10.0

@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://client/client.gd" type="Script" id=1]
 [ext_resource path="res://assets/ouch.wav" type="AudioStream" id=2]
@@ -7,6 +7,10 @@
 [ext_resource path="res://assets/medkit_icon.png" type="Texture" id=5]
 [ext_resource path="res://assets/crowbar_icon.png" type="Texture" id=6]
 [ext_resource path="res://assets/gun_icon.png" type="Texture" id=7]
+
+[sub_resource type="AudioStreamRandomPitch" id=1]
+audio_stream = ExtResource( 2 )
+random_pitch = 1.5
 
 [node name="client" type="Node2D"]
 script = ExtResource( 1 )
@@ -64,5 +68,5 @@ stream = ExtResource( 3 )
 autoplay = true
 
 [node name="ouch" type="AudioStreamPlayer" parent="."]
-stream = ExtResource( 2 )
+stream = SubResource( 1 )
 volume_db = -15.0
