@@ -89,6 +89,7 @@ func _ready():
 
 	player_list[username] = local_player
 	socket.connect_to_host(local_player.ip, local_player.port)
+	
 	var join_lobby_data = {
 		"username" : local_player.username,
 		"color" : local_player.color,

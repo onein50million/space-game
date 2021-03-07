@@ -232,7 +232,13 @@ func respawn():
 	for attached_body in attached:
 		if attached_body:
 			attached_body.die()
-	global_position = get_parent().get_random_position()
+			
+	var rng = RandomNumberGenerator.new()
+	rng.randomize()
+	var new_position = Vector2(rng.randfn(Globals.GAME_AREA,0.1),0).rotated(rng.randf_range(0,TAU))
+	while not get_parent().is_position_clear(new_position):
+		new_position = Vector2(rng.randfn(Globals.GAME_AREA,0.1),0).rotated(rng.randf_range(0,TAU))
+	global_position = new_position
 	linear_velocity = Vector2.ZERO
 	angular_velocity = 0.0
 	health = max_health

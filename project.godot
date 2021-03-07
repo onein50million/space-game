@@ -29,10 +29,6 @@ config/icon="res://assets/icon.png"
 Globals="*res://Globals.gd"
 UI="res://shared/ui/ui.tscn"
 
-[debug]
-
-settings/fps/force_fps=70
-
 [display]
 
 window/size/width=1280

@@ -15,7 +15,7 @@ var server_side = false
 
 const DISTANCE_THRESHOLD = 20000
 
-const MOVE_FORCE = 3.0
+const MOVE_FORCE = 1.0
 
 var attached = false
 
@@ -60,10 +60,8 @@ func _physics_process(delta):
 				minimum_distance = distance
 				closest_ship = ship
 		if closest_ship:
-			if minimum_distance > DISTANCE_THRESHOLD:
-				
-				print("too far")
-				die()
+#			if minimum_distance > DISTANCE_THRESHOLD:
+#				die()
 			look_at(closest_ship.global_position)
 			add_central_force(Vector2.RIGHT.rotated(global_rotation) * MOVE_FORCE)
 			var velocity_vector_angle = linear_velocity.angle_to(Vector2.RIGHT.rotated(global_rotation))

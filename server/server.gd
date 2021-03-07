@@ -146,6 +146,7 @@ func handle_join(received):
 	new_player.server_side = true
 	if not ship_list.has(received.data.ship):
 		var new_ship = spawn_body(ship_scene, true)
+		new_ship.respawn()
 		new_ship.ship_type = received.data.ship_type
 		new_ship.server_side = true
 		new_ship.set_name(received.data.ship)
@@ -298,7 +299,6 @@ func spawn_body(body, is_ship = false, random_position = true, spawn_position = 
 		misc_objects[misc_id] = new_body
 		misc_id += 1
 		
-
 	new_body.global_position = spawn_position
 	if random_position:
 		new_body.global_position = get_random_position()
@@ -318,17 +318,22 @@ func get_random_position():
 			rng.randfn(0, Globals.GAME_AREA),
 			rng.randfn(0, Globals.GAME_AREA)
 		)
+		if is_position_clear(random_location):
+			return random_location
+
+
+func is_position_clear(position, safe_distance = Globals.SAFE_DISTANCE):
 		var minimum_distance = INF
 		for ship in ship_list.values():
-			var distance = random_location.distance_to(ship.get_position())
+			var distance = position.distance_to(ship.get_position())
 			if distance < minimum_distance:
 				minimum_distance = distance
 		for object in misc_objects.values():
-			var distance = random_location.distance_to(object.get_position())
+			var distance = position.distance_to(object.get_position())
 			if distance < minimum_distance:
 				minimum_distance = distance
 		if minimum_distance > Globals.SAFE_DISTANCE:
-			return random_location
+			return true
 
 func delete_misc(given_misc_id):
 	misc_objects.erase(given_misc_id)
