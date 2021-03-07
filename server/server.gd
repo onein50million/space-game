@@ -36,7 +36,7 @@ func _ready():
 	add_child(current_camera)
 	current_camera.make_current()
 	print("Socket result: %s " % socket.listen(port))
-	for _i in range(0,10):
+	for _i in range(0,15):
 		spawn_body(alien_scene)
 		spawn_body(asteroid_scene)
 	AudioServer.set_bus_mute(0,true)

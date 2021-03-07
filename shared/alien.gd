@@ -13,6 +13,10 @@ var misc_id
 var object_type = "alien"
 var server_side = false
 
+const DISTANCE_THRESHOLD = 20000
+
+const MOVE_FORCE = 3.0
+
 var attached = false
 
 var send_data = {
@@ -56,8 +60,17 @@ func _physics_process(delta):
 				minimum_distance = distance
 				closest_ship = ship
 		if closest_ship:
+			if minimum_distance > DISTANCE_THRESHOLD:
+				
+				print("too far")
+				die()
 			look_at(closest_ship.global_position)
-			add_central_force(Vector2.RIGHT.rotated(global_rotation))
+			add_central_force(Vector2.RIGHT.rotated(global_rotation) * MOVE_FORCE)
+			var velocity_vector_angle = linear_velocity.angle_to(Vector2.RIGHT.rotated(global_rotation))
+			if velocity_vector_angle > 0.0:
+				add_central_force(Vector2.RIGHT.rotated(global_rotation + PI/2.0)* MOVE_FORCE)
+			else:
+				add_central_force(Vector2.RIGHT.rotated(global_rotation - PI/2.0)* MOVE_FORCE)
 		rotate(sin(time*10.0)/100.0)
 		if attached:
 			get_parent().health -= DAMAGE_RATE*delta
