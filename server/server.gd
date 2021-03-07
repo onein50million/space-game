@@ -36,12 +36,19 @@ func _ready():
 	add_child(current_camera)
 	current_camera.make_current()
 	print("Socket result: %s " % socket.listen(port))
-	spawn_body(asteroid_scene)
 	for _i in range(0,10):
 		spawn_body(alien_scene)
+		spawn_body(asteroid_scene)
 	AudioServer.set_bus_mute(0,true)
 func _process(delta):
 
+	var num_aliens = 0
+	for object in misc_objects.values():
+		if object.object_type == "alien":
+			num_aliens += 1
+	if num_aliens < 20:
+		for _i in range(0,10):
+			spawn_body(alien_scene)
 	process_systems()
 	network_process_accumulator += delta
 	while 	network_process_accumulator > 1.0/Globals.NETWORK_UPDATE_INTERVAL:

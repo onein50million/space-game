@@ -19,16 +19,12 @@ __meta__ = {
 }
 
 [node name="settings" type="PanelContainer" parent="."]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -256.0
-margin_top = -219.5
-margin_right = 256.0
-margin_bottom = 219.5
+anchor_left = 0.3
+anchor_top = 0.195139
+anchor_right = 0.7
+anchor_bottom = 0.804861
 __meta__ = {
-"_edit_use_anchors_": false
+"_edit_use_anchors_": true
 }
 
 [node name="vbox" type="VBoxContainer" parent="settings"]
@@ -80,14 +76,14 @@ text = "Mute"
 script = ExtResource( 4 )
 
 [node name="settings_button" type="Button" parent="."]
-margin_left = 1132.0
-margin_top = 672.0
-margin_right = 1280.0
-margin_bottom = 720.0
+anchor_left = 0.884375
+anchor_top = 0.933333
+anchor_right = 1.0
+anchor_bottom = 1.0
 toggle_mode = true
 text = "Settings"
 script = ExtResource( 2 )
 __meta__ = {
-"_edit_use_anchors_": false
+"_edit_use_anchors_": true
 }
 [connection signal="value_changed" from="settings/vbox/volume/volume_slider" to="settings/vbox/volume/volume_slider" method="_on_volume_slider_value_changed"]

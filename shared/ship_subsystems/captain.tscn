@@ -1,9 +1,10 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://assets/console.png" type="Texture" id=1]
 [ext_resource path="res://shared/ship_subsystems/captain.gd" type="Script" id=2]
 [ext_resource path="res://shared/ship_subsystems/chair.tscn" type="PackedScene" id=3]
 [ext_resource path="res://assets/warning.ogg" type="AudioStream" id=4]
+[ext_resource path="res://shared/ship_subsystems/velocity_vector.gd" type="Script" id=5]
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0.65098, 0.866667, 0.996078, 0.196078 )
@@ -79,6 +80,11 @@ __meta__ = {
 }
 
 [node name="direction" type="Polygon2D" parent="console/panel"]
-position = Vector2( 103, 72 )
+position = Vector2( 67.6447, 34.1698 )
 scale = Vector2( 3, 3 )
 polygon = PoolVector2Array( -1, 5, -1, -1, -4, -1, 0, -5, 4, -1, 1, -1, 1, 5 )
+
+[node name="velocity_vector" type="Node2D" parent="console/panel"]
+position = Vector2( 150.212, 54.7193 )
+scale = Vector2( 3, 3 )
+script = ExtResource( 5 )
