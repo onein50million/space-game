@@ -1,9 +1,23 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://assets/TinyUnicode.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://shared/ship_subsystems/map/map.gd" type="Script" id=2]
 [ext_resource path="res://shared/ship_subsystems/map/radar_beam.gd" type="Script" id=3]
 [ext_resource path="res://assets/table.png" type="Texture" id=4]
+
+[sub_resource type="Shader" id=2]
+code = "shader_type canvas_item;
+
+void fragment(){
+	COLOR = texture(TEXTURE,UV);
+	float dist_from_middle = distance(UV,vec2(0.5,0.5));
+	if(sin(dist_from_middle*100.0) > 0.99){
+		COLOR.g *= 1.5
+	}
+}"
+
+[sub_resource type="ShaderMaterial" id=3]
+shader = SubResource( 2 )
 
 [sub_resource type="DynamicFont" id=1]
 font_data = ExtResource( 1 )
@@ -14,6 +28,7 @@ z_index = -1
 script = ExtResource( 2 )
 
 [node name="Sprite" type="Sprite" parent="."]
+material = SubResource( 3 )
 texture = ExtResource( 4 )
 
 [node name="radar_beam" type="Node2D" parent="."]

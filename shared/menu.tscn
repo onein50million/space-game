@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://shared/client_button.gd" type="Script" id=1]
 [ext_resource path="res://shared/server_button.gd" type="Script" id=2]
 [ext_resource path="res://shared/menu.gd" type="Script" id=3]
+[ext_resource path="res://assets/title.png" type="Texture" id=4]
 
 [node name="menu" type="Node"]
 script = ExtResource( 3 )
@@ -12,10 +13,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -415.5
-margin_top = -242.0
-margin_right = 415.5
-margin_bottom = 242.0
+margin_left = -401.5
+margin_top = -99.5
+margin_right = 401.5
+margin_bottom = 199.5
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -130,6 +131,17 @@ margin_top = 17.4692
 margin_right = 668.964
 margin_bottom = 51.4692
 text = "Ships"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect" type="TextureRect" parent="."]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -320.0
+margin_right = 320.0
+margin_bottom = 300.0
+texture = ExtResource( 4 )
 __meta__ = {
 "_edit_use_anchors_": false
 }

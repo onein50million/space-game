@@ -61,6 +61,7 @@ var draw_server_lasers = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	visible = false
 	print("TEST")
 	state = "unconnected"
 	add_notification("initializing world")
@@ -232,6 +233,7 @@ func process_packet(received):
 		return
 	match received.command:
 		"join_accepted":
+			visible = true
 			state = "connected"
 			add_notification("connection succeeded")
 			var round_trip_time = float(OS.get_ticks_usec() - time_ping_sent)

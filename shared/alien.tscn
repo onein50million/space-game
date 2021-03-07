@@ -4,7 +4,7 @@
 [ext_resource path="res://assets/alien.png" type="Texture" id=2]
 [ext_resource path="res://assets/gnaw.ogg" type="AudioStream" id=3]
 
-[sub_resource type="CircleShape2D" id=1]
+[sub_resource type="CircleShape2D" id=3]
 radius = 21.09
 
 [sub_resource type="AudioStreamRandomPitch" id=2]
@@ -21,7 +21,7 @@ linear_damp = 100.0
 script = ExtResource( 1 )
 
 [node name="circle" type="CollisionShape2D" parent="."]
-shape = SubResource( 1 )
+shape = SubResource( 3 )
 
 [node name="sprite" type="Sprite" parent="."]
 position = Vector2( -8.02715, 0 )

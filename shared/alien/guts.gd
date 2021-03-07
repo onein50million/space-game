@@ -8,14 +8,21 @@ var misc_id
 var object_type = "guts"
 var server_side = false
 
+var lifetime = 30.0
+
 var send_data = {"index": 0}
 func _ready():
+	var rng = RandomNumberGenerator.new()
+	rng.randomize()
+	
+	lifetime += rng.randf_range(-10.0,10.0)
 	linear_damp = 0.0
 	angular_damp = 0.0
 	$blood.get_node("blood_explosion").emitting = true
-func _process(_delta):
+func _process(delta):
 	if server_side:
-		if health <= 0.0:
+		lifetime -= delta
+		if health <= 0.0 or lifetime < 0.0:
 			die()
 
 func die():

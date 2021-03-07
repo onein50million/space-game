@@ -136,7 +136,7 @@ func _ready():
 		new_segment.a = a
 		new_segment.b = b
 		new_collision_shape.shape = new_segment
-		
+		new_area.add_to_group("ship_wall")
 		add_child(new_interior_wall)
 		new_interior_wall.points = PoolVector2Array([a,b])
 		
@@ -232,7 +232,7 @@ func respawn():
 	for attached_body in attached:
 		if attached_body:
 			attached_body.die()
-	global_position = Vector2.ZERO
+	global_position = get_parent().get_random_position()
 	linear_velocity = Vector2.ZERO
 	angular_velocity = 0.0
 	health = max_health

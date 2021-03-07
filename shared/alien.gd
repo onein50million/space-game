@@ -20,7 +20,7 @@ var send_data = {
 }
 
 var time = 0
-const DAMAGE_RATE = 10.0
+const DAMAGE_RATE = 100.0
 
 func damage(damage):
 	var damage_dealt = min(health,damage)

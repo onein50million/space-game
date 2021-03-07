@@ -298,14 +298,21 @@ func spawn_body(body, is_ship = false, random_position = true, spawn_position = 
 		misc_objects[misc_id] = new_body
 		misc_id += 1
 		
-	var rng = RandomNumberGenerator.new()
+
 	new_body.global_position = spawn_position
+	if random_position:
+		new_body.global_position = get_random_position()
+	return new_body
+
+func get_random_position():
+	var rng = RandomNumberGenerator.new()
 	rng.randomize()
+	
 	var attempts = 0
-	while(true and random_position):
+	while(true):
 		if attempts > 20:
 			print("Ran out of attempts when trying to spawn object")
-			break
+			return Vector2(0,0)
 		attempts += 1
 		var random_location = Vector2(
 			rng.randfn(0, Globals.GAME_AREA),
@@ -321,9 +328,7 @@ func spawn_body(body, is_ship = false, random_position = true, spawn_position = 
 			if distance < minimum_distance:
 				minimum_distance = distance
 		if minimum_distance > Globals.SAFE_DISTANCE:
-			new_body.set_position(random_location)
-			break
-	return new_body
+			return random_location
 
 func delete_misc(given_misc_id):
 	misc_objects.erase(given_misc_id)
