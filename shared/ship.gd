@@ -174,6 +174,10 @@ func _ready():
 				new_system = load("res://shared/ship_subsystems/shield/shield.tscn").instance()
 				new_system.shield_diameter = system.diameter
 				parent = $outside_layer
+			"engineering":
+				new_system = load("res://shared/ship_subsystems/engineering/engineering.tscn").instance()
+			"reactor":
+				new_system = load("res://shared/ship_subsystems/reactor/reactor.tscn").instance()
 			_:
 				print("unknown system type")
 		if new_system != null:
@@ -194,7 +198,6 @@ func _process(_delta):
 		if blocker[2] == "door":
 			blocker[0] = blocker[0] + Vector2(10,0)
 			blocker[1] = blocker[1] + Vector2(10,0)
-	$health.set_text("Integrity: %.2f%%" % ((health/max_health)*100))
 func _physics_process(delta):
 	
 	var total_max_charge = 0

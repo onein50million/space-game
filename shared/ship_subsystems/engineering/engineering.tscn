@@ -1,0 +1,152 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://shared/ship_subsystems/engineering/engineering.gd" type="Script" id=1]
+[ext_resource path="res://assets/engineering.png" type="Texture" id=2]
+[ext_resource path="res://shared/ship_subsystems/chair.tscn" type="PackedScene" id=3]
+[ext_resource path="res://shared/ship_subsystems/subsystem_theme.tres" type="Theme" id=4]
+
+[node name="engineering" type="Node2D"]
+z_index = -1
+script = ExtResource( 1 )
+
+[node name="sprite" type="Sprite" parent="."]
+texture = ExtResource( 2 )
+
+[node name="chair" parent="." instance=ExtResource( 3 )]
+position = Vector2( 0, 16 )
+
+[node name="console" type="Node2D" parent="."]
+z_index = 2048
+
+[node name="panel" type="PanelContainer" parent="console"]
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_left = -1.0
+margin_top = -316.0
+margin_right = 308.0
+theme = ExtResource( 4 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="vbox" type="VBoxContainer" parent="console/panel"]
+margin_right = 309.0
+margin_bottom = 316.0
+
+[node name="title" type="Label" parent="console/panel/vbox"]
+margin_right = 309.0
+margin_bottom = 34.0
+text = "ENGINEERING"
+align = 1
+
+[node name="current_target" type="HSplitContainer" parent="console/panel/vbox"]
+margin_top = 38.0
+margin_right = 309.0
+margin_bottom = 72.0
+
+[node name="label" type="Label" parent="console/panel/vbox/current_target"]
+margin_right = 126.0
+margin_bottom = 34.0
+text = "Current Target"
+align = 1
+valign = 1
+
+[node name="progress" type="ProgressBar" parent="console/panel/vbox/current_target"]
+margin_left = 138.0
+margin_right = 309.0
+margin_bottom = 34.0
+size_flags_vertical = 1
+
+[node name="target_energy" type="HSplitContainer" parent="console/panel/vbox"]
+margin_top = 76.0
+margin_right = 309.0
+margin_bottom = 110.0
+
+[node name="label" type="Label" parent="console/panel/vbox/target_energy"]
+margin_right = 120.0
+margin_bottom = 34.0
+text = "Target Energy"
+align = 1
+valign = 1
+
+[node name="slider" type="HSlider" parent="console/panel/vbox/target_energy"]
+margin_left = 132.0
+margin_right = 309.0
+margin_bottom = 34.0
+size_flags_vertical = 1
+
+[node name="current_energy" type="HSplitContainer" parent="console/panel/vbox"]
+margin_top = 114.0
+margin_right = 309.0
+margin_bottom = 148.0
+
+[node name="label" type="Label" parent="console/panel/vbox/current_energy"]
+margin_right = 128.0
+margin_bottom = 34.0
+text = "Current Energy"
+valign = 1
+
+[node name="amount" type="Label" parent="console/panel/vbox/current_energy"]
+margin_left = 140.0
+margin_right = 309.0
+margin_bottom = 34.0
+text = "69"
+align = 2
+valign = 1
+
+[node name="maximum_energy" type="HSplitContainer" parent="console/panel/vbox"]
+margin_top = 152.0
+margin_right = 309.0
+margin_bottom = 186.0
+
+[node name="label" type="Label" parent="console/panel/vbox/maximum_energy"]
+margin_right = 134.0
+margin_bottom = 34.0
+text = "Maximum Energy"
+valign = 1
+
+[node name="amount" type="Label" parent="console/panel/vbox/maximum_energy"]
+margin_left = 146.0
+margin_right = 309.0
+margin_bottom = 34.0
+text = "69"
+align = 2
+valign = 1
+
+[node name="power" type="HSplitContainer" parent="console/panel/vbox"]
+margin_top = 190.0
+margin_right = 309.0
+margin_bottom = 224.0
+
+[node name="label" type="Label" parent="console/panel/vbox/power"]
+margin_right = 50.0
+margin_bottom = 34.0
+text = "Power"
+valign = 1
+
+[node name="amount" type="Label" parent="console/panel/vbox/power"]
+margin_left = 62.0
+margin_right = 309.0
+margin_bottom = 34.0
+text = "69"
+align = 2
+valign = 1
+
+[node name="integrity" type="HSplitContainer" parent="console/panel/vbox"]
+margin_top = 228.0
+margin_right = 309.0
+margin_bottom = 262.0
+
+[node name="label" type="Label" parent="console/panel/vbox/integrity"]
+margin_right = 110.0
+margin_bottom = 34.0
+text = "Hull Integrty"
+valign = 1
+
+[node name="amount" type="Label" parent="console/panel/vbox/integrity"]
+margin_left = 122.0
+margin_right = 309.0
+margin_bottom = 34.0
+text = "69"
+align = 2
+valign = 1

@@ -193,8 +193,11 @@ func handle_systems_update(received):
 				if received.data.systems_data.request_mission and OS.get_ticks_usec() - time_last_mission_requested > Globals.MISSION_FREQUENCY:
 					time_last_mission_requested = OS.get_ticks_usec()
 					new_mission()
-			"_":
+			_:
 				pass
+		for system in current_client.get_parent().systems:
+			if system.type == received.data.type:
+				system.client_send_data = received.data.systems_data
 #fun indent slide
 func handle_interact(current_client):
 	if current_client.at_console == "none":

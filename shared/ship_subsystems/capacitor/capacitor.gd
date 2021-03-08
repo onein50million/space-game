@@ -3,8 +3,6 @@ extends Subsystem
 var current_charge = 0
 var max_charge = 1000
 
-const CHARGE_RATE = 100
-
 func _ready():
 	type = "capacitor"
 	latest_data = {
@@ -14,7 +12,6 @@ func _ready():
 
 func _process(delta):
 	if server_side:
-		charge(-2.0*(current_charge / max_charge - 0.5) *delta * CHARGE_RATE)
 		latest_data.current_charge = current_charge
 		latest_data.max_charge = max_charge
 	else: #client

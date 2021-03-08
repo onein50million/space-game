@@ -23,18 +23,6 @@ polygon = PoolVector2Array( -90, -170.22, -118.544, 15.0873, -116.763, 212.867, 
 position = Vector2( -0.33371, -0.33371 )
 polygon = PoolVector2Array( -20, -20, 0, -50, 20, -20, 25, 40, 10, 20, -10, 20, -25, 40 )
 
-[node name="health" type="Label" parent="."]
-margin_left = 91.0953
-margin_top = -272.966
-margin_right = 155.095
-margin_bottom = -201.966
-text = "health
-"
-align = 2
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
 [node name="outside_layer" type="Node2D" parent="."]
 z_index = 1024
 

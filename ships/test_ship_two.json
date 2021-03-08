@@ -5,8 +5,8 @@
 		[80.0,-80.0,"wall"],
 		[90.0,-10.0,"window"],
 		[90.0,10.0,"wall"],
-		[100,160.0,"wall"],
-		[40.0,80.0, "wall"],
+		[100,200.0,"wall"],
+		[40.0,100.0, "wall"],
 
 	],
 	"systems":[
@@ -42,16 +42,23 @@
 			"position": [50,60]
 		},
 		{
+			"type": "engineering",
+			"position": [50,10]
+		},
+		{
+			"type": "reactor",
+			"position": [-20,90]
+		},
+		{
+			"type": "reactor",
+			"position": [20,90]
+		},
+		{
 			"type":"shield",
 			"position": [0,0],
 			"diameter": 500
 		}
 	],
 	"interior_walls":[
-		{
-			"type": "wall",
-			"start": [50,0],
-			"end": [90,-10]
-		}
 	]
 }
