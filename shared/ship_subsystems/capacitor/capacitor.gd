@@ -29,3 +29,6 @@ func charge(amount):
 	else:
 		current_charge += storage_left
 		return storage_left
+
+func discharge(amount):
+	current_charge -= amount

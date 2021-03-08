@@ -12,5 +12,12 @@ func _ready():
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
+func _process(delta):
+	var total_max_charge = 0
+	var total_current_charge = 0
+	for system in get_parent().systems:
+		if system.type == "capacitor":
+			total_max_charge += system.max_charge
+			total_current_charge += system.current_charge
+	$console/weapons_control/vbox/capacitor/charge_bar.max_value = total_max_charge
+	$console/weapons_control/vbox/capacitor/charge_bar.value = total_current_charge

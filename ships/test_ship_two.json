@@ -38,6 +38,10 @@
 			"position": [50,50]
 		},
 		{
+			"type": "capacitor",
+			"position": [50,60]
+		},
+		{
 			"type":"shield",
 			"position": [0,0],
 			"diameter": 500

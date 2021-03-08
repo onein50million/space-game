@@ -74,6 +74,8 @@ func fire():
 		if collider_parent and collider_parent.is_in_group("health") and result.collider.is_in_group("ship_wall"):
 			collider_parent.damage(DAMAGE)
 			$hitmarker.play()
+		if collider_parent and "type" in collider_parent and collider_parent.type == "capacitor":
+			collider_parent.charge(DAMAGE)
 	new_laser.points[0] = player.get_parent().to_local(a)
 	new_laser.points[1] = player.get_parent().to_local(b)
 	

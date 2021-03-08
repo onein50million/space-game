@@ -27,6 +27,7 @@ var die_timer_start = 3.0
 var die_timer = die_timer_start
 const SPEED = 100.0
 const ROTATION = 10000.0
+var engine_energy_use_rate = 50
 
 var inputs = {
 	"forward" : false,
@@ -195,7 +196,18 @@ func _process(_delta):
 			blocker[1] = blocker[1] + Vector2(10,0)
 	$health.set_text("Integrity: %.2f%%" % ((health/max_health)*100))
 func _physics_process(delta):
-
+	
+	var total_max_charge = 0
+	var total_current_charge = 0
+	var num_capacitors = 0
+	for system in systems:
+		if system.type == "capacitor":
+			num_capacitors += 1
+			total_current_charge += system.current_charge
+			total_max_charge += system.max_charge
+	
+	var energy_used = 0
+	
 	if health <= 0.0 and not dying:
 		die()
 	if dying:
@@ -207,21 +219,30 @@ func _physics_process(delta):
 			die_timer = die_timer_start
 	if inputs.forward:
 #		position += Vector2.UP.rotated(global_rotation)* SPEED
-		if server_side:
+		if server_side and engine_energy_use_rate * delta < total_current_charge:
 			apply_central_impulse(Vector2.UP.rotated(global_rotation)* SPEED * delta)
-	elif inputs.backward:
+			total_current_charge -= engine_energy_use_rate * delta
+			energy_used += engine_energy_use_rate * delta
+	elif inputs.backward and engine_energy_use_rate * delta < total_current_charge:
 #		position += Vector2.DOWN.rotated(global_rotation) * SPEED
 		if server_side:
 			apply_central_impulse(Vector2.DOWN.rotated(global_rotation)* SPEED * delta)
-	if inputs.left:
+			total_current_charge -= engine_energy_use_rate * delta
+			energy_used += engine_energy_use_rate * delta
+	if inputs.left and engine_energy_use_rate * delta < total_current_charge:
 		if server_side:
 			apply_torque_impulse(-ROTATION * delta)
-	if inputs.right:
+			total_current_charge -= engine_energy_use_rate * delta
+			energy_used += engine_energy_use_rate * delta
+	if inputs.right and engine_energy_use_rate * delta < total_current_charge:
 		if server_side:
 			apply_torque_impulse(ROTATION * delta)
-	if not true in inputs.values():
-		pass
-
+			total_current_charge -= engine_energy_use_rate * delta
+			energy_used += engine_energy_use_rate * delta
+	for system in systems:
+		if system.type == "capacitor":
+			system.current_charge -= energy_used/num_capacitors
+	
 func die():
 	var new_explosion = explosion_scene.instance()
 	get_parent().add_child(new_explosion)
