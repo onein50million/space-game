@@ -45,16 +45,17 @@ align = 1
 margin_top = 38.0
 margin_right = 309.0
 margin_bottom = 72.0
+split_offset = 15
+dragger_visibility = 2
 
 [node name="label" type="Label" parent="console/panel/vbox/current_target"]
-margin_right = 126.0
+margin_right = 141.0
 margin_bottom = 34.0
 text = "Current Target"
-align = 1
 valign = 1
 
 [node name="progress" type="ProgressBar" parent="console/panel/vbox/current_target"]
-margin_left = 138.0
+margin_left = 141.0
 margin_right = 309.0
 margin_bottom = 34.0
 size_flags_vertical = 1
@@ -63,16 +64,17 @@ size_flags_vertical = 1
 margin_top = 76.0
 margin_right = 309.0
 margin_bottom = 110.0
+split_offset = 15
+dragger_visibility = 2
 
 [node name="label" type="Label" parent="console/panel/vbox/target_energy"]
-margin_right = 120.0
+margin_right = 135.0
 margin_bottom = 34.0
 text = "Target Energy"
-align = 1
 valign = 1
 
 [node name="slider" type="HSlider" parent="console/panel/vbox/target_energy"]
-margin_left = 132.0
+margin_left = 135.0
 margin_right = 309.0
 margin_bottom = 34.0
 size_flags_vertical = 1
@@ -81,15 +83,17 @@ size_flags_vertical = 1
 margin_top = 114.0
 margin_right = 309.0
 margin_bottom = 148.0
+split_offset = 15
+dragger_visibility = 2
 
 [node name="label" type="Label" parent="console/panel/vbox/current_energy"]
-margin_right = 128.0
+margin_right = 143.0
 margin_bottom = 34.0
 text = "Current Energy"
 valign = 1
 
 [node name="amount" type="Label" parent="console/panel/vbox/current_energy"]
-margin_left = 140.0
+margin_left = 143.0
 margin_right = 309.0
 margin_bottom = 34.0
 text = "69"
@@ -100,15 +104,17 @@ valign = 1
 margin_top = 152.0
 margin_right = 309.0
 margin_bottom = 186.0
+split_offset = 15
+dragger_visibility = 2
 
 [node name="label" type="Label" parent="console/panel/vbox/maximum_energy"]
-margin_right = 134.0
+margin_right = 149.0
 margin_bottom = 34.0
 text = "Maximum Energy"
 valign = 1
 
 [node name="amount" type="Label" parent="console/panel/vbox/maximum_energy"]
-margin_left = 146.0
+margin_left = 149.0
 margin_right = 309.0
 margin_bottom = 34.0
 text = "69"
@@ -119,15 +125,17 @@ valign = 1
 margin_top = 190.0
 margin_right = 309.0
 margin_bottom = 224.0
+split_offset = 15
+dragger_visibility = 2
 
 [node name="label" type="Label" parent="console/panel/vbox/power"]
-margin_right = 50.0
+margin_right = 65.0
 margin_bottom = 34.0
 text = "Power"
 valign = 1
 
 [node name="amount" type="Label" parent="console/panel/vbox/power"]
-margin_left = 62.0
+margin_left = 65.0
 margin_right = 309.0
 margin_bottom = 34.0
 text = "69"
@@ -138,15 +146,17 @@ valign = 1
 margin_top = 228.0
 margin_right = 309.0
 margin_bottom = 262.0
+split_offset = 15
+dragger_visibility = 2
 
 [node name="label" type="Label" parent="console/panel/vbox/integrity"]
-margin_right = 110.0
+margin_right = 125.0
 margin_bottom = 34.0
 text = "Hull Integrty"
 valign = 1
 
 [node name="amount" type="Label" parent="console/panel/vbox/integrity"]
-margin_left = 122.0
+margin_left = 125.0
 margin_right = 309.0
 margin_bottom = 34.0
 text = "69"

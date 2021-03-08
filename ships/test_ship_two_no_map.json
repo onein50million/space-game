@@ -1,0 +1,62 @@
+{
+	"ship_name": "test_ship_two_no_map",
+	"points": [
+		[0.0,-200.0,"window"],
+		[80.0,-80.0,"wall"],
+		[90.0,-10.0,"window"],
+		[90.0,10.0,"wall"],
+		[100,200.0,"wall"],
+		[40.0,100.0, "wall"],
+
+	],
+	"systems":[
+		{
+			"type": "captain",
+			"position": [0.0,0.0]
+		},
+		{
+			"type": "weapons",
+			"position":[0.0,50]
+		},
+		{
+			"type": "turret",
+			"position": [0.0,50.0],
+			"weapon_range" : 10000,
+			"damage": 300,
+			"fire_rate": 500000
+		},
+		{
+			"type": "communications",
+			"position": [-50,10]
+		},
+		{
+			"type": "capacitor",
+			"position": [50,50]
+		},
+		{
+			"type": "capacitor",
+			"position": [50,60]
+		},
+		{
+			"type": "engineering",
+			"position": [50,10]
+		},
+		{
+			"type": "reactor",
+			"position": [-20,90],
+			"power" : 50
+		},
+		{
+			"type": "reactor",
+			"position": [20,90],
+			"power" : 50
+		},
+		{
+			"type":"shield",
+			"position": [0,0],
+			"diameter": 500
+		}
+	],
+	"interior_walls":[
+	]
+}

@@ -46,13 +46,15 @@ align = 1
 margin_top = 38.0
 margin_right = 223.0
 margin_bottom = 72.0
+split_offset = 15
+dragger_visibility = 2
 
 [node name="charge_text" type="Label" parent="console/weapons_control/vbox/capacitor"]
-margin_right = 32.0
+margin_right = 47.0
 margin_bottom = 34.0
 text = "CAP:"
 
 [node name="charge_bar" type="ProgressBar" parent="console/weapons_control/vbox/capacitor"]
-margin_left = 44.0
+margin_left = 47.0
 margin_right = 223.0
 margin_bottom = 34.0

@@ -1,11 +1,12 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://assets/TinyUnicode.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://shared/ship_subsystems/map/map.gd" type="Script" id=2]
 [ext_resource path="res://shared/ship_subsystems/map/radar_beam.gd" type="Script" id=3]
 [ext_resource path="res://assets/table.png" type="Texture" id=4]
+[ext_resource path="res://assets/ping.wav" type="AudioStream" id=5]
 
-[sub_resource type="Shader" id=2]
+[sub_resource type="Shader" id=1]
 code = "shader_type canvas_item;
 
 void fragment(){
@@ -16,10 +17,10 @@ void fragment(){
 	}
 }"
 
-[sub_resource type="ShaderMaterial" id=3]
-shader = SubResource( 2 )
+[sub_resource type="ShaderMaterial" id=2]
+shader = SubResource( 1 )
 
-[sub_resource type="DynamicFont" id=1]
+[sub_resource type="DynamicFont" id=3]
 font_data = ExtResource( 1 )
 
 [node name="map" type="Node2D"]
@@ -28,7 +29,7 @@ z_index = -1
 script = ExtResource( 2 )
 
 [node name="Sprite" type="Sprite" parent="."]
-material = SubResource( 3 )
+material = SubResource( 2 )
 texture = ExtResource( 4 )
 
 [node name="radar_beam" type="Node2D" parent="."]
@@ -39,9 +40,12 @@ margin_left = -21.0
 margin_top = 11.0
 margin_right = -11.0
 margin_bottom = 24.0
-custom_fonts/font = SubResource( 1 )
+custom_fonts/font = SubResource( 3 )
 custom_colors/font_color = Color( 0, 1, 0, 1 )
 text = "69"
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="ping" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 5 )
