@@ -28,4 +28,6 @@ func charge(amount):
 		return storage_left
 
 func discharge(amount):
-	current_charge -= amount
+	var amount_discharged = min(amount,current_charge)
+	current_charge -= amount_discharged
+	return amount_discharged

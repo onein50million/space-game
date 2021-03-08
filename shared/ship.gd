@@ -243,9 +243,10 @@ func _physics_process(delta):
 			apply_torque_impulse(ROTATION * delta)
 			total_current_charge -= engine_energy_use_rate * delta
 			energy_used += engine_energy_use_rate * delta
+
 	for system in systems:
 		if system.type == "capacitor":
-			system.current_charge -= energy_used/num_capacitors
+			energy_used -= system.discharge(energy_used)
 	
 func die():
 	var new_explosion = explosion_scene.instance()

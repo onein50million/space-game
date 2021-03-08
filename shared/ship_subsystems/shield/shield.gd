@@ -36,7 +36,6 @@ func damage(damage):
 	if number_capacitors > 0:
 		for system in ship.systems:
 			if system.type == "capacitor":
-				print(damage_left)
-				damage_left -= system.charge(damage/number_capacitors) #gives back how much was "eaten"
+				damage_left -= system.charge(damage_left) #gives back how much was "eaten"
 	damage_left -= ship.damage(damage_left)
 	return damage - damage_left

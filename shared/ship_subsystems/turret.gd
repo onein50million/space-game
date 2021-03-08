@@ -37,9 +37,10 @@ func _physics_process(_delta):
 			charge_remaining += system.current_charge
 	if server_side:
 		if delta_fire > FIRE_RATE and latest_data.is_firing and charge_remaining > energy_use:
+			var energy_left = energy_use
 			for system in ship.systems:
 				if system.type == "capacitor":
-					system.discharge(energy_use/num_capacitors)
+					energy_left -= system.discharge(energy_left)
 			var recoil_offset = global_position - ship.global_position
 			ship.apply_impulse(recoil_offset,-Vector2(DAMAGE*FORCE_RATIO,0).rotated(global_rotation))
 			$railgun_sound.play()

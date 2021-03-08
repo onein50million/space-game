@@ -18,4 +18,4 @@ func _process(delta):
 					num_capacitors += 1
 			for system in ship.systems:
 				if system.type == "capacitor":
-					system.charge(added_energy/num_capacitors)
+					added_energy -= system.charge(added_energy)
