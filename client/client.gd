@@ -321,7 +321,6 @@ func process_update(received):
 				if draw_server_lasers or received_shot.player != local_player.username:
 					var new_laser = laser_scene.instance()
 					ship_list[received_shot.ship].add_child(new_laser)
-					new_laser.modulate = Color.red
 					new_laser.points[0] = received_shot.laser_start
 					new_laser.points[1] = received_shot.laser_end
 			"railgun":
