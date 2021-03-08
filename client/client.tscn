@@ -23,6 +23,7 @@ anchor_left = 1.0
 anchor_right = 1.0
 margin_left = -212.0
 margin_bottom = 167.0
+mouse_filter = 1
 scroll_horizontal_enabled = false
 scroll_vertical = 100
 __meta__ = {

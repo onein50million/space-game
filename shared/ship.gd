@@ -178,6 +178,7 @@ func _ready():
 				new_system = load("res://shared/ship_subsystems/engineering/engineering.tscn").instance()
 			"reactor":
 				new_system = load("res://shared/ship_subsystems/reactor/reactor.tscn").instance()
+				new_system.power = system.power
 			_:
 				print("unknown system type")
 		if new_system != null:

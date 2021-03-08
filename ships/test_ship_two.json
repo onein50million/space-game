@@ -31,7 +31,7 @@
 		},
 		{
 			"type": "communications",
-			"position": [-50,50]
+			"position": [-50,10]
 		},
 		{
 			"type": "capacitor",
@@ -47,11 +47,13 @@
 		},
 		{
 			"type": "reactor",
-			"position": [-20,90]
+			"position": [-20,90],
+			"power" : 50
 		},
 		{
 			"type": "reactor",
-			"position": [20,90]
+			"position": [20,90],
+			"power" : 50
 		},
 		{
 			"type":"shield",

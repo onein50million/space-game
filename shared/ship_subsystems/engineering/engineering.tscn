@@ -10,12 +10,14 @@ z_index = -1
 script = ExtResource( 1 )
 
 [node name="sprite" type="Sprite" parent="."]
+position = Vector2( 0, -16.0181 )
 texture = ExtResource( 2 )
 
 [node name="chair" parent="." instance=ExtResource( 3 )]
-position = Vector2( 0, 16 )
+position = Vector2( 0, -0.0180779 )
 
 [node name="console" type="Node2D" parent="."]
+position = Vector2( 0, -16.0181 )
 z_index = 2048
 
 [node name="panel" type="PanelContainer" parent="console"]
