@@ -203,10 +203,8 @@ func _physics_process(delta):
 	
 	var total_max_charge = 0
 	var total_current_charge = 0
-	var num_capacitors = 0
 	for system in systems:
 		if system.type == "capacitor":
-			num_capacitors += 1
 			total_current_charge += system.current_charge
 			total_max_charge += system.max_charge
 	

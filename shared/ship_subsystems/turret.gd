@@ -30,10 +30,8 @@ func _physics_process(_delta):
 
 	var ship = get_parent().get_parent()
 	var charge_remaining = 0
-	var num_capacitors = 0
 	for system in ship.systems:
 		if system.type == "capacitor":
-			num_capacitors += 1
 			charge_remaining += system.current_charge
 	if server_side:
 		if delta_fire > FIRE_RATE and latest_data.is_firing and charge_remaining > energy_use:

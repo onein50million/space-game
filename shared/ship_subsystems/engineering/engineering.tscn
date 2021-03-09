@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://shared/ship_subsystems/engineering/engineering.gd" type="Script" id=1]
 [ext_resource path="res://assets/engineering.png" type="Texture" id=2]
 [ext_resource path="res://shared/ship_subsystems/chair.tscn" type="PackedScene" id=3]
 [ext_resource path="res://shared/ship_subsystems/subsystem_theme.tres" type="Theme" id=4]
+[ext_resource path="res://shared/ship_subsystems/damage_effects/sparks.tscn" type="PackedScene" id=5]
 
 [node name="engineering" type="Node2D"]
 z_index = -1
@@ -162,3 +163,5 @@ margin_bottom = 34.0
 text = "69"
 align = 2
 valign = 1
+
+[node name="sparks" parent="." instance=ExtResource( 5 )]

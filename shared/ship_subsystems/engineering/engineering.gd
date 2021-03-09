@@ -34,4 +34,7 @@ func _process(delta):
 			if system.type == "reactor":
 				system.is_charging = total_charge < latest_data.current_target
 	else:
+		var client = ship.get_parent()
+		if client.local_player.at_console != type:
+			$console/panel/vbox/target_energy/slider.value = latest_data.current_target
 		client_send_data.current_target = $console/panel/vbox/target_energy/slider.value
